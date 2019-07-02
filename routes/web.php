@@ -14,12 +14,10 @@
 Auth::routes(['register'=>false,'reset'=>false]);
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', function () {
-        return view('auth.login');
-   });
+    Route::get('/', 'Auth\LoginController@showLoginForm');
 
    //admin
-   Route::group(['prefix' => 'admin'], function () {
+   Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
      Route::resource('question', 'QuestionController');
      Route::resource('user', 'UserController');

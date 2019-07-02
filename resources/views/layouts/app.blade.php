@@ -50,17 +50,23 @@
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
 						<img src="assets/images/image.png" alt="">
-						<span>Developer</span>
+						<span>{{Auth::user()->name}}</span>
 						<i class="caret"></i>
 					</a>
 
 					<ul class="dropdown-menu dropdown-menu-right">
 						<li><a href="#"><i class="icon-user-plus"></i> My profile</a></li>
-						<li><a href="#"><i class="icon-coins"></i> My balance</a></li>
-						<li><a href="#"><span class="badge badge-warning pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
-						<li class="divider"></li>
-						<li><a href="#"><i class="icon-cog5"></i> Account settings</a></li>
-						<li><a href="#"><i class="icon-switch2"></i> Logout</a></li>
+						<li><a class="dropdown-item" href="{{ route('logout') }}"
+								onclick="event.preventDefault();
+												document.getElementById('logout-form').submit();">
+								<i class="icon-switch2"></i>
+								Logout
+							</a>
+
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+								@csrf
+							</form>
+						</li>
 					</ul>
 				</li>
 			</ul>
@@ -80,14 +86,14 @@
 				<div class="sidebar-content">
 
 					<!-- User menu -->
-					<!-- <div class="sidebar-user">
+					<div class="sidebar-user">
 						<div class="category-content">
 							<div class="media">
 								<a href="#" class="media-left"><img src="assets/images/image.png" class="img-circle img-sm" alt=""></a>
 								<div class="media-body">
-									<span class="media-heading text-semibold">Victoria Baker</span>
+									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">
-										<i class="icon-pin text-size-small"></i> &nbsp;Santa Ana, CA
+										<i class="icon-pin text-size-small"></i> &nbsp;Sekip 3, UGM
 									</div>
 								</div>
 
@@ -100,7 +106,7 @@
 								</div>
 							</div>
 						</div>
-					</div> -->
+					</div>
 					<!-- /user menu -->
 
 
