@@ -7,11 +7,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasRoles;
-    use Notifiable, SoftDeletes;
+    use HasRoles, Notifiable, SoftDeletes, HasApiTokens;
     protected $dates = ['deleted_at'];
     public $timestamps = true;
 
@@ -42,12 +42,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Lecture()
+    public function lecture()
     {
         return $this->hasOne('App\Lecture', 'user_id', 'id');
     }
 
-    public function Collager()
+    public function collager()
     {
         return $this->hasOne('App\Collager', 'user_id', 'id');
     }

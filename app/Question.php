@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Question extends Model 
+class Question extends Model
 {
 
     protected $table = 'questions';
@@ -15,12 +15,12 @@ class Question extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function Quiz()
+    public function quiz()
     {
         return $this->belongsTo('App\Quiz', 'quiz_id', 'id');
     }
 
-    public function AnswerSave()
+    public function answerSave()
     {
         return $this->hasOne('App\AnswerSave', 'question_id', 'id');
     }

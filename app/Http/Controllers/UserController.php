@@ -1,10 +1,12 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Auth;
 
-class UserController extends Controller 
+class UserController extends Controller
 {
 
   /**
@@ -14,7 +16,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    
+
   }
 
   /**
@@ -24,7 +26,7 @@ class UserController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +36,7 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +47,7 @@ class UserController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +58,7 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +69,7 @@ class UserController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +80,69 @@ class UserController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
+
+  /*START OF API*/
+
+   public function api_collagerRegister(Request $request)
+   {
+     $request->validate([
+       'email' => 'required|string|email|unique:users|max:50',
+       'username' => 'required|unique:users|max:20',
+       'password' => 'required|string|max:191',
+       'name' => 'required|max:50',
+     ]);
+     $user = User::create([
+       // 'id' => Carbon::now()->format('ymd').rand(1000,9999),
+       'email'=>$request->email,
+       'username'=>$request->username,
+       'password'=>bcrypt($request->password),
+       'name'=>$request->name,
+     ])
+      ->collager()->create([
+        // 'id' => 'BY'.Carbon::now()->format('ymdH').rand(100,999),
+     ]);
+
+     $collager = User::where('id', $user->user_id)->with('collager')->first();
+     return response()->json([
+       'status'=>'success',
+       'user'=>$collager
+     ]);
+   }
+
+   public function api_collagerLogin(Request $request){
+    if(Auth::attempt([
+      'email' => request('email'),
+      'password' => request('password'),
+    ]))
+    {
+        $user = Auth::user();
+        $email = $request->get('email');
+        $password = $request->get('password');
+
+        $success['token'] =  $user->createToken('MyApp')-> accessToken;
+        $success['email'] = $email;
+        $success['password'] = $password;
+
+        $collager = User::where('email', $success['email'])->with('collager')->first();
+        $collager->token = $success['token'];
+        // $collager->foto= asset('images/'.$collager->foto.'');
+
+        return response()->json([
+            'status'=>'success',
+            'user' => $collager
+        ]);
+    }
+    else{
+        $success['status'] = 'failed';
+        $success['error'] = 'Unauthorised';
+        $success['message'] = 'Your email or password incorrect!';
+        return response()->json($success,401);
+    }
+  }
+
 }
 
 ?>
