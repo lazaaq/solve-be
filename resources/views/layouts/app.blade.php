@@ -14,6 +14,7 @@
 	<link href="{{asset('css/components.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/colors.css')}}" rel="stylesheet" type="text/css">
 	<!-- /global stylesheets -->
+	@stack('after_style')
 
 	<!-- Core JS files -->
 	<script type="text/javascript" src="{{asset('js/libraries/jquery.min.js')}}"></script>
@@ -23,6 +24,7 @@
 	<!-- Theme JS files -->
 	<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 	<!-- /theme JS files -->
+	@stack('after_script')
 
 </head>
 
