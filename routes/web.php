@@ -11,12 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+Auth::routes(['register'=>false,'reset'=>false]);
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', function () {
+        return view('auth.login');
+   });
+
+   //admin
+   Route::group(['prefix' => 'admin'], function () {
+        Route::resource('dashboard', 'DashboardController');
+   });
 });
 
-Auth::routes();
 
+<<<<<<< HEAD
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('question', 'QuestionController');
@@ -28,3 +37,5 @@ Route::resource('collager', 'CollagerController');
 Route::resource('quizcollager', 'QuizCollagerController');
 Route::resource('time', 'TimeController');
 Route::resource('quiz', 'QuizController');
+=======
+>>>>>>> 976c4c39906ea2c8666eb6b41465e551d88fd671
