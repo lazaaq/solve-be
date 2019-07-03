@@ -13,6 +13,8 @@
 	<link href="{{asset('css/core.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/components.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/colors.css')}}" rel="stylesheet" type="text/css">
+
+	
 	<!-- /global stylesheets -->
 	@stack('after_style')
 
