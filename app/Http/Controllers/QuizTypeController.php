@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\QuizType;
 
 class QuizTypeController extends Controller
 {
+  public function getData()
+  {
+    $data = QuizType::orderBy('name')->get();
 
+    return response()->json([
+      'status'=>'success',
+      'data'=> $data,
+    ]);
+  }
   /**
    * Display a listing of the resource.
    *
