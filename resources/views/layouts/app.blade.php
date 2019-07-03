@@ -56,7 +56,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/image.png" alt="">
+						{{-- <img src="assets/images/image.png" alt=""> --}}
 						<span>{{Auth::user()->name}}</span>
 						<i class="caret"></i>
 					</a>
@@ -96,7 +96,7 @@
 					<div class="sidebar-user">
 						<div class="category-content">
 							<div class="media">
-								<a href="#" class="media-left"><img src="assets/images/image.png" class="img-circle img-sm" alt=""></a>
+								{{-- <a href="#" class="media-left"><img src="assets/images/image.png" class="img-circle img-sm" alt=""></a> --}}
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">

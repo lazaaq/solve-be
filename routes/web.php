@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('time', 'TimeController');
      Route::resource('quiz', 'QuizController');
    });
+   Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
+     Route::get('/data-quiz-type', 'QuizTypeController@getData');
+   });
 });
-
-
-
