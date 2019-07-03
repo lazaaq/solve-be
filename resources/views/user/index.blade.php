@@ -23,18 +23,21 @@
 <div class="content">
   <!-- State saving -->
 	<div class="panel panel-flat">
-		<table id="table-user" class="table datatable-save-state">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Username</th>
-					<th>Email</th>
-					<th class="text-center">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+    <div style="padding:20px">
+  		<table id="table-user" class="table">
+  			<thead>
+  				<tr>
+            <th>Id</th>
+  					<th>Name</th>
+  					<th>Username</th>
+  					<th>Email</th>
+  					<th class="text-center">Actions</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+  			</tbody>
+  		</table>
+    </div>
 	</div>
 	<!-- /state saving -->
 </div>
@@ -44,26 +47,27 @@
 @push('after_script')
 <script>
 var tableUser;
-    $(document).ready(function(){
+  $(document).ready(function(){
 		/* tabel user */
-		tableUser = $('#table-user').DataTable({
-            processing	: true,
+    tableUser = $('#table-user').DataTable({
+      processing	: true,
 			serverSide	: true,
 			stateSave: true,
-            ajax		: {
-                url: "{{ url('table/data-user') }}",
-                type: "GET",
-                data: {
-                    '_token': $('meta[name="csrf-token"]').attr('content'),
-                },
-            },
-            columns: [
-                { data: 'id', name:'id', visible:false},
-                { data: 'name', name:'name', visible:true},
-                { data: 'username', name:'username', visible:true},
-				{ data: 'email', name:'email', visible:true},
-            ],
-        });
+      ajax		: {
+          url: "{{ url('table/data-user') }}",
+          type: "GET",
+          data: {
+              '_token': $('meta[name="csrf-token"]').attr('content'),
+          },
+      },
+      columns: [
+          { data: 'id', name:'id', visible:false},
+          { data: 'name', name:'name', visible:true},
+          { data: 'username', name:'username', visible:true},
+          { data: 'email', name:'email', visible:true},
+          { data: 'email', name:'email', visible:true},
+      ],
     });
+  });
 </script>
 @endpush

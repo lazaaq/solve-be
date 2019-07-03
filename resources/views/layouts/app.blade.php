@@ -14,7 +14,10 @@
 	<link href="{{asset('css/components.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/colors.css')}}" rel="stylesheet" type="text/css">
 
-	
+	<link href="{{ asset('DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('DataTables/Select-1.2.6/css/select.bootstrap4.min.css') }}" rel="stylesheet">
+
+	<link href="{{asset('css/icons/fontawesome/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<!-- /global stylesheets -->
 	@stack('after_style')
 
@@ -27,12 +30,25 @@
 	<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 	<!-- /theme JS files -->
 
-	<!-- Theme JS files -->
-	<script type="text/javascript" src="{{asset('js/plugins/tables/datatables/datatables.min.js')}}"></script>
-	<script type="text/javascript" src="{{asset('js/plugins/forms/selects/select2.min.js')}}"></script>
-
-	<script type="text/javascript" src="{{asset('js/pages/datatables_basic.js')}}"></script>
+	<script src="{{ asset('DataTables/jquery.dataTables.min.js') }}" ></script>
+  <script src="{{ asset('DataTables/dataTables.bootstrap4.min.js') }}" ></script>
 	<!-- /theme JS files -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="{{asset('js/plugins/loaders/pace.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/loaders/blockui.min.js')}}"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="{{asset('js/plugins/forms/validation/validate.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/selects/bootstrap_multiselect.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/inputs/touchspin.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/selects/select2.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/switch.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/switchery.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/uniform.min.js')}}"></script>
+
+	<script type="text/javascript" src="{{asset('js/pages/form_validation.js')}}"></script>
 	@stack('after_script')
 
 </head>
@@ -58,7 +74,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
-						{{-- <img src="assets/images/image.png" alt=""> --}}
+						{{-- <img src="asset/images/image.png" alt=""> --}}
 						<span>{{Auth::user()->name}}</span>
 						<i class="caret"></i>
 					</a>
@@ -98,7 +114,7 @@
 					<div class="sidebar-user">
 						<div class="category-content">
 							<div class="media">
-								{{-- <a href="#" class="media-left"><img src="assets/images/image.png" class="img-circle img-sm" alt=""></a> --}}
+								{{-- <a href="#" class="media-left"><img src="asset/images/image.png" class="img-circle img-sm" alt=""></a> --}}
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">
