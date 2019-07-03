@@ -13,7 +13,7 @@
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="">Master Data</a></li>
             <li><a href="">User</a></li>
-            <li class="active">Create</li>
+            <li class="active">Edit</li>
         </ul>
     </div>
 </div>
@@ -27,7 +27,7 @@
             <form class="form-horizontal form-validate-jquery" action="{{route('user.store')}}" method="post" enctype="multipart/form-data" files=true>
             {{ csrf_field() }}
                 <fieldset class="content-group">
-                <legend class="text-bold">Create User</legend>
+                <legend class="text-bold">Edit User</legend>
                 <div class="form-group">
                     <label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
                     <div class="col-lg-9">

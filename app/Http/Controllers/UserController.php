@@ -23,7 +23,13 @@ class UserController extends Controller
   public function getData()
   {
     $data = User::orderBy('name')->get();
-    return datatables()->of($data)->make(true);
+    return datatables()->of($data)->addColumn('action', function($row){
+          $btn = '<a href="'.route('user.edit',$row->id).'" class="btn btn-primary btn-sm">Edit</a>';
+          $btn = $btn.'  <a href="'.route('user.destroy',$row->id).'" class="btn btn-danger btn-sm">Delete</a>';
+          return $btn;
+    })
+    ->rawColumns(['action'])
+    ->make(true);
   }
 
   /**
@@ -33,7 +39,7 @@ class UserController extends Controller
    */
   public function create()
   {
-
+    return view('user.create');
   }
 
   /**
@@ -65,7 +71,7 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-
+    return view('user.edit');
   }
 
   /**

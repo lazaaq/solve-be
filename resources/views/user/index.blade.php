@@ -24,14 +24,15 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
+      <a href="{{route('user.create')}}" class="btn btn-primary btn-sm"><i class="icon-add position-left"></i>Create New</a>
   		<table id="table-user" class="table">
   			<thead>
   				<tr>
             <th>Id</th>
   					<th>Name</th>
   					<th>Username</th>
-  					<th>Email</th>
-  					<th class="text-center">Actions</th>
+            <th>Email</th>
+  					<th width="13%">Actions</th>
   				</tr>
   			</thead>
   			<tbody>
@@ -65,9 +66,10 @@ var tableUser;
           { data: 'name', name:'name', visible:true},
           { data: 'username', name:'username', visible:true},
           { data: 'email', name:'email', visible:true},
-          { data: 'email', name:'email', visible:true},
+          { data: 'action', name:'action', visible:true},
       ],
     });
   });
+  
 </script>
 @endpush
