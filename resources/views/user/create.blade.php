@@ -110,11 +110,11 @@
             <div>
 
             <div class="col-md-4">
-                <a href="{{route('user.index')}}"type="reset" class="btn btn-success" id=""> <i class="icon-arrow-left13"></i> Back</a>
+                <a href="{{route('user.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
             </div>
                 <div class="col-md-8 text-right">
-                    <button type="reset" class="btn btn-info" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
-                    <button type="submit" class="btn btn-success">Submit <i class="icon-arrow-right14 position-right"></i></button>
+                    <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
+                    <button type="submit" class="btn btn-primary bg-primary-800">Submit <i class="icon-arrow-right14 position-right"></i></button>
                 </div>
             </div>
             </form>

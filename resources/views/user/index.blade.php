@@ -24,7 +24,7 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
-      <a href="{{route('user.create')}}" class="btn btn-primary btn-sm"><i class="icon-add position-left"></i>Create New</a>
+      <a href="{{route('user.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
   		<table id="table-user" class="table">
   			<thead>
   				<tr>
@@ -32,7 +32,7 @@
   					<th>Name</th>
   					<th>Username</th>
             <th>Email</th>
-  					<th width="13%">Actions</th>
+  					<th class="col-md-2">Actions</th>
   				</tr>
   			</thead>
   			<tbody>
@@ -54,6 +54,10 @@ var tableUser;
       processing	: true,
 			serverSide	: true,
 			stateSave: true,
+      language: {
+                  search: "_INPUT_",
+                  searchPlaceholder: "Search records"
+                },
       ajax		: {
           url: "{{ url('table/data-user') }}",
           type: "GET",
@@ -70,6 +74,6 @@ var tableUser;
       ],
     });
   });
-  
+
 </script>
 @endpush
