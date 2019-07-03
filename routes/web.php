@@ -31,5 +31,6 @@ Route::group(['middleware' => 'auth'], function () {
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-type', 'QuizTypeController@getData');
+     Route::get('/data-user', 'UserController@getData');
    });
 });
