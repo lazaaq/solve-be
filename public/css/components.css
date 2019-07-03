@@ -16485,9 +16485,9 @@ thead .htCollapseButton:after {
   border-top: 1px solid #bbb;
 }
 .dataTables_length {
-  float: right;
+  float: left;
   display: inline-block;
-  margin: 0 0 20px 20px;
+  margin: 20px 0 0 20px;
 }
 .dataTables_length > label {
   margin-bottom: 0;
@@ -17290,7 +17290,7 @@ thead .htCollapseButton:after {
 *
 *  # Responsive extension
 *
-*  Optimise the table's layout for different screen sizes through the dynamic 
+*  Optimise the table's layout for different screen sizes through the dynamic
 *  insertion and removal of columns from the table
 *
 *  Version: 1.0
