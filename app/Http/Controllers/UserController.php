@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
-use Auth;
 use Datatables;
- 
+use App\User;
+use App\Collager;
+use Auth;
+use DB;
+
 class UserController extends Controller
 {
 
@@ -101,18 +103,36 @@ class UserController extends Controller
        'password' => 'required|string|max:191',
        'name' => 'required|max:50',
      ]);
+     DB::beginTransaction();
+
      $user = User::create([
        // 'id' => Carbon::now()->format('ymd').rand(1000,9999),
        'email'=>$request->email,
        'username'=>$request->username,
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
-     ])
-      ->collager()->create([
-        // 'id' => 'BY'.Carbon::now()->format('ymdH').rand(100,999),
+     ])->assignRole('user');
+     if (!$user) {
+       DB::rollback();
+       return response()->json([
+         'status'=>'failed',
+         'error'=>'Something wrong!',
+         'message'=>'Something wrong!',
+       ]);
+     }
+     $addCollager = Collager::create([
+        'user_id' => $user->id,
      ]);
-
-     $collager = User::where('id', $user->user_id)->with('collager')->first();
+     if (!$addCollager) {
+         DB::rollback();
+         return response()->json([
+             'status'=>'failed',
+             'error'=>'Something wrong!',
+             'message'=>'Something wrong!',
+         ]);
+     }
+     DB::commit();
+     $collager = User::where('id', $user->id)->with('collager')->first();
      return response()->json([
        'status'=>'success',
        'user'=>$collager

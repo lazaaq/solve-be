@@ -9,6 +9,7 @@ class Collager extends Model
 
     protected $table = 'collagers';
     public $timestamps = true;
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function user()
     {
