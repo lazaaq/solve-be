@@ -8,13 +8,13 @@
         </div>
     </div>
 
-    <!-- <div class="breadcrumb-line breadcrumb-line-component">
+    {{-- <div class="breadcrumb-line breadcrumb-line-component">
         <ul class="breadcrumb">
             <li><a href="index.html"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="2_col.html">Starters</a></li>
             <li class="active">2 columns</li>
         </ul>
-    </div> -->
+    </div> --}}
 </div>
 <!-- /page header -->
 

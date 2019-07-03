@@ -24,6 +24,14 @@
 	<!-- Theme JS files -->
 	<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 	<!-- /theme JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="{{asset('js/plugins/tables/datatables/datatables.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/forms/selects/select2.min.js')}}"></script>
+
+	<script type="text/javascript" src="{{asset('js/core/app.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/pages/datatables_basic.js')}}"></script>
+	<!-- /theme JS files -->
 	@stack('after_script')
 
 </head>
