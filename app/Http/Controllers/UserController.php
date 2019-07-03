@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Auth;
-
+use Datatables;
+ 
 class UserController extends Controller
 {
 
@@ -17,6 +18,12 @@ class UserController extends Controller
   public function index()
   {
     return view('user.index');
+  }
+
+  public function getData()
+  {
+    $data = User::orderBy('name')->get();
+    return datatables()->of($data)->make(true);
   }
 
   /**

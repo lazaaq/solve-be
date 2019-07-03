@@ -42,4 +42,28 @@
 @endsection
 
 @push('after_script')
+<script>
+var tableUser;
+    $(document).ready(function(){
+		/* tabel user */
+		tableUser = $('#table-user').DataTable({
+            processing	: true,
+			serverSide	: true,
+			stateSave: true,
+            ajax		: {
+                url: "{{ url('table/data-user') }}",
+                type: "GET",
+                data: {
+                    '_token': $('meta[name="csrf-token"]').attr('content'),
+                },
+            },
+            columns: [
+                { data: 'id', name:'id', visible:false},
+                { data: 'name', name:'name', visible:true},
+                { data: 'username', name:'username', visible:true},
+				{ data: 'email', name:'email', visible:true},
+            ],
+        });
+    });
+</script>
 @endpush
