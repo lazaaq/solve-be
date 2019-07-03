@@ -38,7 +38,7 @@
              <th>Id</th>
              <th>Name</th>
              <th>Description</th>
-             <th>Picture</th>
+             <th>Action</th>
           </tr>
   			</thead>
   			<tbody>
@@ -70,7 +70,8 @@
             { data: 'id', name:'id', visible:false},
             { data: 'name', name:'name', visible:true},
             { data: 'description', name:'description', visible:true},
-            { data: 'pic_url', name:'pic_url', visible:true},
+            { data: 'description', name:'description', visible:true},
+            // {'<button type="button" class="btn btn-danger btn-sm" id="hapus-alergi"> Hapus</button>'},
         ],
       });
     });

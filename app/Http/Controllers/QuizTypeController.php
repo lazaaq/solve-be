@@ -50,16 +50,17 @@ class QuizTypeController extends Controller
       ]
     );
     if(!empty($request->picture)){
-       //   $file = $request->file('picture');
-       //   $extension = strtolower($file->getClientOriginalExtension());
-       //   $filename = $request->name . '.' . $extension;
-       //   Storage::put('images/' . $filename, File::get($file));
-       //   $file_server = Storage::get('images/' . $filename);
-       //   $img = Image::make($file_server)->resize(141, 141);
-       //   $img->save(base_path('public/images/' . $filename));
-       // }else{
+         $file = $request->file('picture');
+         $extension = strtolower($file->getClientOriginalExtension());
+         $filename = $request->name . '.' . $extension;
+         Storage::put('images/' . $filename, File::get($file));
+         $file_server = Storage::get('images/' . $filename);
+         $img = Image::make($file_server)->resize(141, 141);
+         $img->save(base_path('public/img/quiztype/' . $filename));
+       }else{
          $filename='-';
-       // }
+       }
+       // dd($filename);
     QuizType::create(
       [
             'name' => request('name'),
