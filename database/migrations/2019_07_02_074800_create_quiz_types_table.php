@@ -9,9 +9,9 @@ class CreateQuizTypesTable extends Migration {
 	{
 		Schema::create('quiz_types', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('name', 40)->default('40');
-			$table->string('description', 255)->default('255');
-			$table->string('pic_url', 255)->default('255');
+			$table->string('name', 40);
+			$table->string('description', 255);
+			$table->string('pic_url', 255);
 			$table->timestamps();
 		});
 	}
