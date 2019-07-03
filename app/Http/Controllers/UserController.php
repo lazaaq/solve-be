@@ -8,6 +8,8 @@ use App\User;
 use App\Collager;
 use Auth;
 use DB;
+use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller
 {
@@ -41,7 +43,8 @@ class UserController extends Controller
    */
   public function create()
   {
-    return view('user.create');
+    $role = Role::all();
+    return view('user.create',compact('role'));
   }
 
   /**
@@ -51,7 +54,26 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
+    $this->validate(request(),
+      [
+        'name' => 'required',
+        'username' => 'required|unique:users,username',
+        'email' => 'required|unique:users,email', 
+        'password' => 'required|confirmed',
+        'password_confirmation' => 'required',  
+        'role' => 'required',
+      ]
+    );
 
+    $user = new User();
+    $user->name = $request->name;
+    $user->username = $request->username;
+    $user->email = $request->email;
+    $user->password = \Hash::make($request->password);
+    $user->save();
+    $user->roles()->sync($request->role);
+
+    return redirect()->route('user.index');
   }
 
   /**
@@ -73,7 +95,9 @@ class UserController extends Controller
    */
   public function edit($id)
   {
-    return view('user.edit');
+    $data = User::find($id);
+    $role = Role::all();
+    return view('user.edit',compact('data','role'));
   }
 
   /**
@@ -82,9 +106,28 @@ class UserController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update($id)
+  public function update(Request $request, $id)
   {
+    $this->validate(request(),
+      [
+        'name' => 'required',
+        'username' => 'required|unique:users,username,'.$id,
+        'email' => 'required|unique:users,email,'.$id,
+        'password' => 'confirmed',
+        'role' => 'required',
+      ]
+    );
 
+    $user = User::find($id);
+    $user->name = $request->name;
+    $user->username = $request->username;
+    $user->email = $request->email;
+    if ($request->password) {
+      $user->password = \Hash::make($request->password);
+    }
+    $user->save();
+    $user->roles()->sync($request->role);
+    return redirect()->route('user.index');
   }
 
   /**

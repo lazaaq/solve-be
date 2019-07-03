@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Email <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="text" name="email" class="form-control" value="{{ old('email') }}" placeholder="">
+                        <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="">
                         @if ($errors->has('email'))
                         <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i>{{ $errors->first('email') }}</strong>
@@ -73,12 +73,29 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-lg-3">Password Confirmation <span class="text-danger">*</span></label>
+                    <div class="col-lg-9">
+                        <input type="password" name="password_confirmation" class="form-control" value="{{ old('password_confirmation') }}" placeholder="">
+                        @if ($errors->has('password_confirmation'))
+                        <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password_confirmation') }}</strong>
+                        </label>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-lg-3">Role <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="password" name="password" class="form-control" value="{{ old('password') }}" placeholder="">
-                        @if ($errors->has('password'))
+                        <div class="multi-select-full">
+                            <select name="role[]" class="multiselect" multiple="multiple">
+                                @foreach($role as $data)
+                                <option value="{{$data->id}}" {{ (collect(old('role'))->contains($data->id)) ? 'selected':'' }}>{{$data->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @if ($errors->has('role'))
                         <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password') }}</strong>
+                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('role') }}</strong>
                         </label>
                         @endif
                     </div>
@@ -107,7 +124,4 @@
 <!-- /content area -->
 @endsection
 @push('after_script')
-  <script>
-
-  </script>
 @endpush
