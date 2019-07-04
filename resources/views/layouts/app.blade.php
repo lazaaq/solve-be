@@ -88,7 +88,7 @@
 						@if(Auth::user()->picture == 'avatar.png')
 						<img src="{{asset('img/avatar.png')}}">
 						@else
-						<img src="{{route('user.picture',Auth::user()->picture)}}">
+						<img src="{{route('user.picture',Auth::user()->id)}}">
 						@endif
 						<span>{{Auth::user()->name}}</span>
 						<i class="caret"></i>
@@ -132,7 +132,7 @@
 								@if(Auth::user()->picture == 'avatar.png')
 								<a href="#" class="media-left"><img src="{{asset('img/avatar.png')}}" class="img-circle img-sm" alt=""></a>
 								@else
-								<a href="#" class="media-left"><img src="{{route('user.picture',Auth::user()->picture)}}" class="img-circle img-sm" alt=""></a>
+								<a href="#" class="media-left"><img src="{{route('user.picture',Auth::user()->id)}}" class="img-circle img-sm" alt=""></a>
 								@endif
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>

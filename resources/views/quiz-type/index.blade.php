@@ -76,5 +76,13 @@
         ],
       });
     });
+
+    $('#delete-quiz-type').click(function(){ 
+    DeleteQuizType();
+    });
+
+    function DeleteQuizType() {
+      return confirm('Are you sure want to delete this data?');
+    }
   </script>
 @endpush
