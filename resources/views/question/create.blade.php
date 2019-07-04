@@ -43,7 +43,12 @@
                 <textarea type="text" name="question" rows="3" class="form-control"  placeholder="">{{ old('question') }}</textarea>
 							</div>
 						</div>
-
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="control-label col-lg-3">Picture</label>
+                <input type="file" name="picture" class="form-control">
+              </div>
+            </div>
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
