@@ -107,7 +107,7 @@
                         @if($data->picture == 'avatar.png')
                         <img class="img-responsive" src="{{asset('img/avatar.png')}}" alt="Avatar" title="Change the avatar" width="100" height="50">
                         @else
-                        <img class="img-responsive" src="{{route('user.picture',$data->picture)}}" alt="Avatar" title="Change the avatar" width="100" height="50">
+                        <img class="img-responsive" src="{{route('user.picture',$data->id)}}" alt="Avatar" title="Change the avatar" width="100" height="50">
                         @endif
                         <br>
                         <input type="file" name="picture" class="form-control">

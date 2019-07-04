@@ -111,9 +111,10 @@ class UserController extends Controller
     return view('user.edit',compact('data','role'));
   }
 
-  public function picture($picture)
+  public function picture($id)
   {
-    return \Image::make(\Storage::get('public/images/user/'.$picture))->response();
+    $user = User::find($id);
+    return \Image::make(\Storage::get('public/images/user/'.$user->picture))->response();
   }
 
   /**
@@ -141,6 +142,7 @@ class UserController extends Controller
       $file = $request->file('picture');
       $extension = strtolower($file->getClientOriginalExtension());
       $filename = uniqid() . '.' . $extension;
+      \Storage::delete('public/images/user/' . $user->picture);
       \Storage::put('public/images/user/' . $filename, \File::get($file));
     } else {
       $filename = $user->picture;
@@ -167,7 +169,7 @@ class UserController extends Controller
   public function destroy($id)
   {
     $user = User::find($id);
-    \Storage::delete('images/user/'.$user->picture);
+    \Storage::delete('public/images/user/'.$user->picture);
     $user->delete();
 
     return redirect()->route('user.index');
@@ -255,8 +257,7 @@ class UserController extends Controller
   public function api_index($id)
   {
       $user = User::find($id);
-      $url_img = \Image::make(\Storage::get('public/images/user/'.$user->picture))->response();
-      $user->picture = $url_img;
+      $user->picture = route('user.picture',$user->picture);
       return response()->json([
         'status'=>'success',
         'user' => $user

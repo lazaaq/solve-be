@@ -16,7 +16,7 @@ class QuizTypeController extends Controller
     $data = QuizType::all()->sortBy('name');
     return datatables()->of($data)->addColumn('action', function($row){
       $btn = '<a href="'.route('quiztype.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-      $btn = $btn.'  <a href="'.route('quiztype.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
+      $btn = $btn.'  <a id="delete-quiz-type" href="'.route('quiztype.destroy',$row->id).'" onclick="return DeleteQuizType()" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
     ->rawColumns(['action'])
@@ -122,6 +122,7 @@ class QuizTypeController extends Controller
          $file = $request->file('picture');
          $extension = strtolower($file->getClientOriginalExtension());
          $filename = $request->name . '.' . $extension;
+         Storage::delete('public/images/quiztype/' . $data->pic_url);
          Storage::put('public/images/quiztype/' . $filename, File::get($file));
     }else{
          $filename=$data->pic_url;
@@ -142,7 +143,11 @@ class QuizTypeController extends Controller
    */
   public function destroy($id)
   {
+    $data = QuizType::find($id);
+    Storage::delete('public/images/quiztype/'.$data->pic_url);
+    $data->delete();
 
+    return redirect()->route('quiztype.index');
   }
 
   /*START OF API*/

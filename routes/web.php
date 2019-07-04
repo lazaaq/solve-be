@@ -22,7 +22,7 @@ Route::group(['middleware' => 'auth'], function () {
      // Route::resource('question', 'QuestionController');
      Route::resource('user', 'UserController')->except('destroy');
      Route::resource('answersave', 'AnswerSaveController');
-     Route::resource('quiztype', 'QuizTypeController');
+     Route::resource('quiztype', 'QuizTypeController')->except('destroy');
      Route::resource('lecture', 'LectureController');
      Route::resource('collager', 'CollagerController');
      Route::resource('quizcollager', 'QuizCollagerController');
@@ -30,7 +30,9 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('quiz', 'QuizController');
 
      Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
+     
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
+     Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');
 
      Route::get('storage/user/{id}', 'UserController@picture')->name('user.picture');
      Route::get('storage/quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
