@@ -75,5 +75,12 @@ var tableUser;
     });
   });
 
+  $('#delete').click(function(){ 
+    Delete();
+  });
+
+  function Delete() {
+    return confirm('tes');
+  }
 </script>
 @endpush
