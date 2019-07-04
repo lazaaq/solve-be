@@ -9,10 +9,11 @@ class CreateAnswerSavesTable extends Migration {
 	{
 		Schema::create('answer_saves', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('collager_id');
-			$table->string('question_id');
+			$table->integer('collager_id');
+			$table->integer('question_id');
 			$table->string('collager_answer');
-			$table->string('score');
+			$table->smallInteger('isTrue');
+			$table->integer('score');
 			$table->timestamps();
 		});
 	}

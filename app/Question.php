@@ -25,4 +25,9 @@ class Question extends Model
         return $this->hasOne('App\AnswerSave', 'question_id', 'id');
     }
 
+    public function answer()
+    {
+        return $this->hasOne('App\Answer', 'question_id', 'id');
+    }
+
 }
