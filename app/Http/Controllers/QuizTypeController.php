@@ -61,7 +61,7 @@ class QuizTypeController extends Controller
          $filename = $request->name . '.' . $extension;
          Storage::put('public/images/quiztype/' . $filename, File::get($file));
        }else{
-         $filename='avatar.png';
+         $filename='blank.jpg';
        }
        // dd($filename);
     QuizType::create(
@@ -155,7 +155,9 @@ class QuizTypeController extends Controller
   function api_index(){
     $data = QuizType::orderBy('name')->get();
     foreach ($data as $key => $value) {
-      if(!empty($value->pic_url)){
+      if($value->pic_url == 'blank.jpg'){
+        $value->pic_url = asset('img/'.$value->pic_url.'');
+      }else {
         $value->pic_url = route('quiztype.picture',$value->id);
       }
     }
