@@ -48,8 +48,9 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div class="panel-body">
-      <form class="stepy-clickable" action="#">
-        @for ($i=1; $i < $quiz->sum_question+1; $i++)
+      <form class="stepy-clickable" action="{{route('question.store')}}" method="post" enctype="multipart/form-data" files=true>
+        @csrf
+        @for ($i=0; $i < $quiz->sum_question; $i++)
           <fieldset>
 					<legend class="text-semibold"></legend>
 
@@ -57,58 +58,58 @@
 						<div class="col-md-12">
 							<div class="form-group">
 								<label>Question:</label>
-                <textarea type="text" name="question" rows="3" class="form-control"  placeholder="">{{ old('question') }}</textarea>
+                <textarea type="text" name="question[]" rows="3" class="form-control"  placeholder="">{{ old('question') }}</textarea>
 							</div>
 						</div>
             <div class="col-md-12">
               <div class="form-group">
                 <label class="control-label col-lg-3">Picture</label>
-                <input type="file" name="picture" class="form-control">
+                <input type="file" name="picture[]" class="form-control">
               </div>
             </div>
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
-                <input type="text" name="first_multiple_choice" class="form-control" value="{{ old('first_multiple_choice') }}" placeholder="">
+                <input type="text" name="first_multiple_choice[]" class="form-control" value="{{ old('first_multiple_choice') }}" placeholder="">
                   @if ($errors->has('first_multiple_choice'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('first_multiple_choice') }}</strong>
                   </label>
                   @endif
-                <input type="file" name="pic_first" class="form-control">
+                <input type="file" name="pic_first[]" class="form-control">
 							</div>
 						</div>
             <div class="col-sm-12">
 							<div class="form-group">
 								<label>Second Multiple Choice:</label>
-                <input type="text" name="second_multiple_choice" class="form-control" value="{{ old('second_multiple_choice') }}" placeholder="">
+                <input type="text" name="second_multiple_choice[]" class="form-control" value="{{ old('second_multiple_choice') }}" placeholder="">
                   @if ($errors->has('second_multiple_choice'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('second_multiple_choice') }}</strong>
                   </label>
                   @endif
-                  <input type="file" name="pic_second" class="form-control">
+                  <input type="file" name="pic_second[]" class="form-control">
 							</div>
 						</div>
             <div class="col-sm-12">
 							<div class="form-group">
-								<label>First Multiple Choice:</label>
-                <input type="text" name="third_multiple_choice" class="form-control" value="{{ old('third_multiple_choice') }}" placeholder="">
+								<label>Third Multiple Choice:</label>
+                <input type="text" name="third_multiple_choice[]" class="form-control" value="{{ old('third_multiple_choice') }}" placeholder="">
                   @if ($errors->has('third_multiple_choice'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('third_multiple_choice') }}</strong>
                   </label>
                   @endif
-                  <input type="file" name="pic_third" class="form-control">
+                  <input type="file" name="pic_third[]" class="form-control">
 							</div>
 						</div>
             <div class="col-sm-12">
 							<div class="form-group">
-								<label>First Multiple Choice:</label>
-                <input type="text" name="fourth_multiple_choice" class="form-control" value="{{ old('fourth_multiple_choice') }}" placeholder="">
+								<label>Fourth Multiple Choice:</label>
+                <input type="text" name="fourth_multiple_choice[]" class="form-control" value="{{ old('fourth_multiple_choice') }}" placeholder="">
                   @if ($errors->has('fourth_multiple_choice'))
                   <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('fourth_multiple_choice') }}</strong>
+                      <strong><i class="fa fa-times-circle[]"></i> {{ $errors->first('fourth_multiple_choice') }}</strong>
                   </label>
                   @endif
                   <input type="file" name="pic_fourth" class="form-control">
@@ -116,37 +117,37 @@
 						</div>
             <div class="col-sm-12">
 							<div class="form-group">
-								<label>First Multiple Choice:</label>
-                <input type="text" name="fifth_multiple_choice" class="form-control" value="{{ old('fifth_multiple_choice') }}" placeholder="">
+								<label>Fifth Multiple Choice:</label>
+                <input type="text" name="fifth_multiple_choice[]" class="form-control" value="{{ old('fifth_multiple_choice') }}" placeholder="">
                   @if ($errors->has('fifth_multiple_choice'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('fifth_multiple_choice') }}</strong>
                   </label>
                   @endif
-                  <input type="file" name="pic_fifth" class="form-control">
+                  <input type="file" name="pic_fifth[]" class="form-control">
 							</div>
 						</div>
             <div class="col-md-12">
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="radio-inline-left" class="styled" checked="checked">
+                  <input type="radio" name="true-answer[{{$i}}]" value="1" class="styled">
                   First
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="radio-inline-left" class="styled">
+                  <input type="radio" name="true-answer[{{$i}}]" value="2" class="styled">
                   Second
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="radio-inline-left" class="styled">
+                  <input type="radio" name="true-answer[{{$i}}]" value="3" class="styled">
                   Third
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="radio-inline-left" class="styled">
+                  <input type="radio" name="true-answer[{{$i}}]" value="4" class="styled">
                   Fourth
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="radio-inline-left" class="styled">
+                  <input type="radio" name="true-answer[{{$i}}]" value="5" class="styled">
                   Fifth
                 </label>
 							</div>

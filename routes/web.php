@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
    //admin
    Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
-     // Route::resource('question', 'QuestionController');
+     Route::resource('question', 'QuestionController');
      Route::resource('user', 'UserController')->except('destroy');
      Route::resource('answersave', 'AnswerSaveController');
      Route::resource('quiztype', 'QuizTypeController')->except('destroy');
