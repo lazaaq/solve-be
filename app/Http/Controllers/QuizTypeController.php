@@ -62,7 +62,7 @@ class QuizTypeController extends Controller
          $filename = $request->name . '.' . $extension;
          Storage::put('public/images/quiztype' . $filename, File::get($file));
        }else{
-         $filename='-';
+         $filename='avatar.png';
        }
 
     QuizType::create(

@@ -17,7 +17,7 @@ class QuizController extends Controller
 
   public function getData()
   {
-    $data = Quiz::with('quiztype')->get()->sortBy('title');
+    $data = Quiz::all()->sortBy('title');
     return datatables()->of($data)->addColumn('action', function($row){
       // <i class="glyphicon glyphicon-eye-open"></i>
       // $btn = "<a href='.url('master/admin/quiz/question/'$row->id)' class='btn border-info btn-xs text-info-600 btn-flat btn-icon'><i class='icon-pencil6'></i></a>";
@@ -27,6 +27,9 @@ class QuizController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('quiz_type', function($row){
+      return $row->quizType->name;
+    })
     ->make(true);
   }
 
