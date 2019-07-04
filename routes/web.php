@@ -29,7 +29,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('time', 'TimeController');
      Route::resource('quiz', 'QuizController');
 
-     Route::get('quiz/question/{id}','QuestionController@create');
+     Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {

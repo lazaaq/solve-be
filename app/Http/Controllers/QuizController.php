@@ -10,23 +10,23 @@ use File;
 use App\QuizType;
 use App\Quiz;
 use DataTables;
+use DB;
 
 class QuizController extends Controller
 {
 
   public function getData()
   {
-    $data = Quiz::all()->sortBy('title');
+    $data = Quiz::with('quiztype')->get()->sortBy('title');
     return datatables()->of($data)->addColumn('action', function($row){
-      // $btn = '<a href="'.url('master/admin/quiz/question/'.$row->id.).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-      $btn = '<a href="'.route('quiz.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-      $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
+      // <i class="glyphicon glyphicon-eye-open"></i>
+      // $btn = "<a href='.url('master/admin/quiz/question/'$row->id)' class='btn border-info btn-xs text-info-600 btn-flat btn-icon'><i class='icon-pencil6'></i></a>";
+      $btn = '<a href="'.route('quisz.question',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
+      $btn = $btn.'<a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
     ->rawColumns(['action'])
-    ->addColumn('total_question', function($row){
-      return $row->question->count();
-    })
     ->make(true);
   }
 
@@ -63,6 +63,7 @@ class QuizController extends Controller
           'quiz_type' => 'required',
           'title' => 'required|max:50|unique:quizs',
           'description' => 'required|max:191',
+          'total_question' => 'required',
         ]
       );
       if(!empty($request->picture)){
@@ -82,6 +83,7 @@ class QuizController extends Controller
               'quiz_type_id' => request('quiz_type'),
               'title' => request('title'),
               'description'=>request('description'),
+              'sum_question'=>request('total_question'),
               'pic_url'=>$filename
         ]
       );

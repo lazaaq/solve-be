@@ -77,7 +77,7 @@
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'quiz_type_id', name:'quiz_type_id', visible:true},
-            { data: 'total_question', name:'total_question', visible:true},
+            { data: 'sum_question', name:'sum_question', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });

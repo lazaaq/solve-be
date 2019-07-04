@@ -64,6 +64,17 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="control-label col-lg-3">Total Question <span class="text-danger">*</span></label>
+            <div class="col-lg-9">
+              <input type="number" name="total_question" class="form-control" value="{{ old('total_question') }}" placeholder="">
+                @if ($errors->has('total_question'))
+                <label style="padding-top:7px;color:#F44336;">
+                    <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_question') }}</strong>
+                </label>
+                @endif
+            </div>
+          </div>
+          <div class="form-group">
             <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
             <div class="col-lg-9">
               <textarea type="text" name="description" rows="3" class="form-control"  placeholder="">{{ old('description') }}</textarea>

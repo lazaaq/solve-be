@@ -1091,7 +1091,7 @@ a.badge,
   }
 }
 .content {
-  padding: 0 20px 60px 20px;
+  padding: 0 20px 0 20px;
 }
 .content:after {
   content: '';

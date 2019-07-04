@@ -14,6 +14,7 @@ class CreateQuizsTable extends Migration {
 			$table->string('title', 40);
 			$table->string('description');
 			$table->string('pic_url', 255);
+			$table->integer('sum_question');
 			$table->timestamps();
 		});
 	}
