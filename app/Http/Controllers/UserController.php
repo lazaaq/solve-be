@@ -58,9 +58,9 @@ class UserController extends Controller
       [
         'name' => 'required',
         'username' => 'required|unique:users,username',
-        'email' => 'required|unique:users,email', 
+        'email' => 'required|unique:users,email',
         'password' => 'required|confirmed',
-        'password_confirmation' => 'required',  
+        'password_confirmation' => 'required',
         'role' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
@@ -169,7 +169,7 @@ class UserController extends Controller
     $user = User::find($id);
     \Storage::delete('images/user/'.$user->picture);
     $user->delete();
-    
+
     return redirect()->route('user.index');
   }
 
@@ -192,6 +192,7 @@ class UserController extends Controller
        'username'=>$request->username,
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
+       'picture'=>'avatar.png',
      ])->assignRole('user');
      if (!$user) {
        DB::rollback();
@@ -251,6 +252,16 @@ class UserController extends Controller
     }
   }
 
+  public function api_index($id)
+  {
+      $user = User::find($id);
+      $url_img = \Image::make(\Storage::get('public/images/user/'.$user->picture))->response();
+      $user->picture = $url_img;
+      return response()->json([
+        'status'=>'success',
+        'user' => $user
+      ]);
+  }
 }
 
 ?>

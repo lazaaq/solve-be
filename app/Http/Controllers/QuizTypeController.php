@@ -59,12 +59,9 @@ class QuizTypeController extends Controller
          $file = $request->file('picture');
          $extension = strtolower($file->getClientOriginalExtension());
          $filename = $request->name . '.' . $extension;
-         Storage::put('images/' . $filename, File::get($file));
-         $file_server = Storage::get('images/' . $filename);
-         $img = Image::make($file_server)->resize(141, 141);
-         $img->save(base_path('public/img/quiztype/' . $filename));
+         Storage::put('public/images/quiztype/' . $filename, File::get($file));
        }else{
-         $filename='-';
+         $filename='avatar.png';
        }
        // dd($filename);
     QuizType::create(
@@ -99,6 +96,12 @@ class QuizTypeController extends Controller
     return view('quiz-type.edit', compact('data'));
   }
 
+  public function picture($id)
+  {
+    $picture = QuizType::find($id);
+    return Image::make(Storage::get('public/images/quiztype/'.$picture->pic_url))->response();
+  }
+
   /**
    * Update the specified resource in storage.
    *
@@ -119,10 +122,7 @@ class QuizTypeController extends Controller
          $file = $request->file('picture');
          $extension = strtolower($file->getClientOriginalExtension());
          $filename = $request->name . '.' . $extension;
-         Storage::put('images/' . $filename, File::get($file));
-         $file_server = Storage::get('images/' . $filename);
-         $img = Image::make($file_server)->resize(141, 141);
-         $img->save(base_path('public/img/quiztype/' . $filename));
+         Storage::put('public/images/quiztype/' . $filename, File::get($file));
     }else{
          $filename=$data->pic_url;
     }
@@ -151,7 +151,7 @@ class QuizTypeController extends Controller
     $data = QuizType::orderBy('name')->get();
     foreach ($data as $key => $value) {
       if(!empty($value->pic_url)){
-        $value->pic_url = asset('img/quiztype/'.$value->pic_url.'');
+        $value->pic_url = route('quiztype.picture',$value->id);
       }
     }
     return response()->json([
