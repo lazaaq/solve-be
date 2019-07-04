@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Input;
+use DataTables;
+use App\QuizType;
 use App\Quiz;
 use App\Question;
+use File;
+use DB;
 
 class QuestionController extends Controller
 {

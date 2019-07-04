@@ -75,7 +75,7 @@ class QuizController extends Controller
            $filename = $request->title . '.' . $extension;
            Storage::put('public/images/quiz/' . $filename, File::get($file));
          }else{
-           $filename='avatar.png';
+           $filename='blank.jpg';
          }
          // dd($filename);
       $data = Quiz::create(
@@ -134,6 +134,12 @@ class QuizController extends Controller
 
   }
 
+  public function picture($id)
+  {
+    $picture = Quiz::find($id);
+    return Image::make(Storage::get('public/images/quiz/'.$picture->pic_url))->response();
+  }
+
   /*START OF API*/
 
   public function api_index($id){
@@ -143,8 +149,10 @@ class QuizController extends Controller
                   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   ->get();
     foreach ($data as $key => $value) {
-      if(!empty($value->pic_url)){
-        $value->pic_url = asset('img/quiz/'.$value->pic_url.'');
+      if($value->pic_url == 'blank.jpg'){
+        $value->pic_url = asset('img/'.$value->pic_url.'');
+      }else {
+        $value->pic_url = route('quiz.picture',$value->id);
       }
     }
     return response()->json([

@@ -27,18 +27,26 @@
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> QUIZ INFO</h6>
 		</div>
 		<div class="panel-body">
-			<div class="col-md-12">
-        <label class="text-bold col-md-2">Quis Type</label>
-        <label class="col-md-10">: {{$quiz->quizType['name']}}</label>
+			<div class="col-md-6">
+        <label class="text-bold col-md-4">Quis Type</label>
+        <label class="col-md-8">: {{$quiz->quizType['name']}}</label>
 
-        <label class="text-bold col-md-2">Title</label>
-        <label class="col-md-10">: {{$quiz->title}}</label>
+        <label class="text-bold col-md-4">Title</label>
+        <label class="col-md-8">: {{$quiz->title}}</label>
 
-        <label class="text-bold col-md-2">Total Question</label>
-        <label class="col-md-10">: {{$quiz->sum_question}}</label>
+        <label class="text-bold col-md-4">Total Question</label>
+        <label class="col-md-8">: {{$quiz->sum_question}}</label>
 
-        <label class="text-bold col-md-2">Description</label>
-        <label class="col-md-10">: {{$quiz->description}}</label>
+        <label class="text-bold col-md-4">Description</label>
+        <label class="col-md-8">: {{$quiz->description}}</label>
+      </div>
+      <div class="col-md-6">
+        @if($quiz->pic_url == 'blank.jpg')
+        <img class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+        @else
+        <img class="img-responsive" src="{{route('quiz.picture',$quiz->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+        @endif
+        <br>
       </div>
 		</div>
 	</div>
