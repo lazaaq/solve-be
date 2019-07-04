@@ -85,7 +85,11 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown dropdown-user">
 					<a class="dropdown-toggle" data-toggle="dropdown">
-						{{-- <img src="asset/images/image.png" alt=""> --}}
+						@if(Auth::user()->picture == 'avatar.png')
+						<img src="{{asset('img/avatar.png')}}">
+						@else
+						<img src="{{route('user.picture',Auth::user()->picture)}}">
+						@endif
 						<span>{{Auth::user()->name}}</span>
 						<i class="caret"></i>
 					</a>
@@ -125,7 +129,11 @@
 					<div class="sidebar-user">
 						<div class="category-content">
 							<div class="media">
-								{{-- <a href="#" class="media-left"><img src="asset/images/image.png" class="img-circle img-sm" alt=""></a> --}}
+								@if(Auth::user()->picture == 'avatar.png')
+								<a href="#" class="media-left"><img src="{{asset('img/avatar.png')}}" class="img-circle img-sm" alt=""></a>
+								@else
+								<a href="#" class="media-left"><img src="{{route('user.picture',Auth::user()->picture)}}" class="img-circle img-sm" alt=""></a>
+								@endif
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">
