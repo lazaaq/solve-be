@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Quiz;
+use DataTables;
 
 class QuizController extends Controller
 {
@@ -17,6 +18,9 @@ class QuizController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('total_question', function($row){
+      return $row->question->count();
+    })
     ->make(true);
   }
 

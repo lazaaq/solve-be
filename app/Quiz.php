@@ -23,7 +23,7 @@ class Quiz extends Model
 
     public function question()
     {
-        return $this->hasOne('App\Question', 'quiz_id', 'id');
+        return $this->hasMany('App\Question', 'quiz_id', 'id');
     }
 
     public function quizCollager()
