@@ -86,7 +86,7 @@ class QuizController extends Controller
         ]
       );
       // return view('question.create', compact('data'));
-      return redirect('admin/quiz/question/'.$user->id);
+      return redirect('admin/quiz/question/'.$data->id);
 
       // return redirect('master/penjual/barang-jual/'.$data->id);
 
