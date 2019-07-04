@@ -138,6 +138,25 @@ class QuizController extends Controller
 
   }
 
+  /*START OF API*/
+
+  public function api_index($id){
+    $data = Quiz::where('quiz_type_id', $id)
+                  ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
+                  ->orderBy('title')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->get();
+    foreach ($data as $key => $value) {
+      if(!empty($value->pic_url)){
+        $value->pic_url = asset('img/quiz/'.$value->pic_url.'');
+      }
+    }
+    return response()->json([
+      'status'=>'success',
+      'user'=>$data
+    ]);
+  }
+
 }
 
 ?>

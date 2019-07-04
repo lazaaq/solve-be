@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::middleware('api')->post('collager/register', 'UserController@api_collagerRegister');
 Route::middleware('api')->post('collager/login','UserController@api_collagerLogin');
 Route::middleware('auth:api')->get('collager/quiztype','QuizTypeController@api_index');
+Route::middleware('auth:api')->get('collager/quiz/{id}','QuizController@api_index');
+Route::middleware('auth:api')->get('collager/question/{id}','QuestionController@api_index');

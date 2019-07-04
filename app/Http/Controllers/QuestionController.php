@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Quiz;
+use App\Question;
 
 class QuestionController extends Controller
 {
@@ -81,6 +82,21 @@ class QuestionController extends Controller
   public function destroy($id)
   {
 
+  }
+
+  /*START OF API*/
+
+  public function api_index($id){
+    $data = Question::where('quiz_id', $id)->get();
+    foreach ($data as $key => $value) {
+      if(!empty($value->pic_url)){
+        $value->pic_url = asset('img/question/'.$value->pic_url.'');
+      }
+    }
+    return response()->json([
+      'status'=>'success',
+      'user'=>$data
+    ]);
   }
 
 }
