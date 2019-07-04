@@ -9,6 +9,7 @@ class Quiz extends Model
 
     protected $table = 'quizs';
     public $timestamps = true;
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function quizType()
     {
