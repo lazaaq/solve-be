@@ -13,7 +13,7 @@
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="">Master Data</a></li>
             <li><a href="{{route('quiz.index')}}">Quiz</a></li>
-            <li class="active">Create</li>
+            <li class="active">Create Question</li>
         </ul>
     </div>
 </div>
@@ -50,7 +50,7 @@
     <div class="panel-body">
       <form class="stepy-clickable" action="#">
         @for ($i=1; $i < $quiz->sum_question+1; $i++)
-          <fieldset title="{{$i}}">
+          <fieldset>
 					<legend class="text-semibold"></legend>
 
 					<div class="row">
@@ -66,7 +66,7 @@
                 <input type="file" name="picture" class="form-control">
               </div>
             </div>
-						<div class="col-md-12">
+						<div class="col-sm-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
                 <input type="text" name="first_multiple_choice" class="form-control" value="{{ old('first_multiple_choice') }}" placeholder="">
@@ -75,9 +75,10 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('first_multiple_choice') }}</strong>
                   </label>
                   @endif
+                <input type="file" name="pic_first" class="form-control">
 							</div>
 						</div>
-            <div class="col-md-12">
+            <div class="col-sm-12">
 							<div class="form-group">
 								<label>Second Multiple Choice:</label>
                 <input type="text" name="second_multiple_choice" class="form-control" value="{{ old('second_multiple_choice') }}" placeholder="">
@@ -86,9 +87,10 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('second_multiple_choice') }}</strong>
                   </label>
                   @endif
+                  <input type="file" name="pic_second" class="form-control">
 							</div>
 						</div>
-            <div class="col-md-12">
+            <div class="col-sm-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
                 <input type="text" name="third_multiple_choice" class="form-control" value="{{ old('third_multiple_choice') }}" placeholder="">
@@ -97,9 +99,10 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('third_multiple_choice') }}</strong>
                   </label>
                   @endif
+                  <input type="file" name="pic_third" class="form-control">
 							</div>
 						</div>
-            <div class="col-md-12">
+            <div class="col-sm-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
                 <input type="text" name="fourth_multiple_choice" class="form-control" value="{{ old('fourth_multiple_choice') }}" placeholder="">
@@ -108,9 +111,10 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('fourth_multiple_choice') }}</strong>
                   </label>
                   @endif
+                  <input type="file" name="pic_fourth" class="form-control">
 							</div>
 						</div>
-            <div class="col-md-12">
+            <div class="col-sm-12">
 							<div class="form-group">
 								<label>First Multiple Choice:</label>
                 <input type="text" name="fifth_multiple_choice" class="form-control" value="{{ old('fifth_multiple_choice') }}" placeholder="">
@@ -119,6 +123,7 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('fifth_multiple_choice') }}</strong>
                   </label>
                   @endif
+                  <input type="file" name="pic_fifth" class="form-control">
 							</div>
 						</div>
             <div class="col-md-12">
