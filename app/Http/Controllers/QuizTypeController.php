@@ -145,6 +145,16 @@ class QuizTypeController extends Controller
 
   }
 
+  /*START OF API*/
+
+  function api_index(){
+    $data = QuizType::orderBy('name')->get();
+    return response()->json([
+      'status'=>'success',
+      'user'=>$data
+    ]);
+  }
+
 }
 
 ?>

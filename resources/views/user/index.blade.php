@@ -61,9 +61,6 @@ var tableUser;
       ajax		: {
           url: "{{ url('table/data-user') }}",
           type: "GET",
-          data: {
-              '_token': $('meta[name="csrf-token"]').attr('content'),
-          },
       },
       columns: [
           { data: 'id', name:'id', visible:false},

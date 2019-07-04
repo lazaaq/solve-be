@@ -1,11 +1,24 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Quiz;
 
-class QuizController extends Controller 
+class QuizController extends Controller
 {
+
+  public function getData()
+  {
+    $data = Quiz::orderBy('title')->get();
+    return datatables()->of($data)->addColumn('action', function($row){
+      $btn = '<a href="'.route('quiz.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
+      return $btn;
+    })
+    ->rawColumns(['action'])
+    ->make(true);
+  }
 
   /**
    * Display a listing of the resource.
@@ -14,7 +27,7 @@ class QuizController extends Controller
    */
   public function index()
   {
-    
+    return view('quiz.index');
   }
 
   /**
@@ -24,7 +37,7 @@ class QuizController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +47,7 @@ class QuizController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +58,7 @@ class QuizController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +69,7 @@ class QuizController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +80,7 @@ class QuizController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +91,9 @@ class QuizController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>
