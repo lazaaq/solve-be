@@ -29,7 +29,7 @@ class UserController extends Controller
     $data = User::orderBy('name')->get();
     return datatables()->of($data)->addColumn('action', function($row){
           $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-          $btn = $btn.'  <a href="'.route('user.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
+          $btn = $btn.'  <a id="delete" href="'.route('user.destroy',$row->id).'" onclick="return Delete()" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
           return $btn;
     })
     ->rawColumns(['action'])
@@ -138,7 +138,10 @@ class UserController extends Controller
    */
   public function destroy($id)
   {
+    $user = User::find($id);
+    $user->delete();
 
+    return redirect()->route('user.index');
   }
 
 

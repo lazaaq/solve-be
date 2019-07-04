@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
      // Route::resource('question', 'QuestionController');
-     Route::resource('user', 'UserController');
+     Route::resource('user', 'UserController')->except('destroy');
      Route::resource('answersave', 'AnswerSaveController');
      Route::resource('quiztype', 'QuizTypeController');
      Route::resource('lecture', 'LectureController');
@@ -29,7 +29,11 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('time', 'TimeController');
      Route::resource('quiz', 'QuizController');
 
+<<<<<<< HEAD
      Route::get('quiz/question/{id}','QuestionController@create');
+=======
+     Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
+>>>>>>> 287f89abfbe07609ac500b4109d4f9a838ef18fc
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-type', 'QuizTypeController@getData');

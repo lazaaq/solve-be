@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use File;
 use App\QuizType;
 use App\Quiz;
+use DataTables;
 
 class QuizController extends Controller
 {
@@ -23,6 +24,9 @@ class QuizController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('total_question', function($row){
+      return $row->question->count();
+    })
     ->make(true);
   }
 

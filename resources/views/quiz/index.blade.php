@@ -40,6 +40,7 @@
              <th>Title</th>
              <th>Description</th>
              <th>Quiz Type</th>
+             <th>Total Question</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -76,6 +77,7 @@
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'quiz_type_id', name:'quiz_type_id', visible:true},
+            { data: 'total_question', name:'total_question', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
