@@ -24,14 +24,15 @@
 <div class="content">
     <div class="panel panel-flat">
         <div class="panel-body">
-            <form class="form-horizontal form-validate-jquery" action="{{route('user.store')}}" method="post" enctype="multipart/form-data" files=true>
-            {{ csrf_field() }}
+            <form class="form-horizontal form-validate-jquery" action="{{route('user.update',$data->id)}}" method="post" enctype="multipart/form-data" files=true>
+            @method('PUT')
+            @csrf
                 <fieldset class="content-group">
                 <legend class="text-bold">Edit User</legend>
                 <div class="form-group">
                     <label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">
+                        <input type="text" name="name" class="form-control" value="{{ old('name') ? old('name') : $data->name }}" placeholder="">
                         @if ($errors->has('name'))
                         <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i> {{ $errors->first('name') }}</strong>
@@ -42,7 +43,7 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Username <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="text" name="username" class="form-control" value="{{ old('username') }}" placeholder="">
+                        <input type="text" name="username" class="form-control" value="{{ old('username') ? old('username') : $data->username }}" placeholder="">
                         @if ($errors->has('username'))
                         <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i>{{ $errors->first('username') }}</strong>
@@ -53,7 +54,7 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Email <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="text" name="email" class="form-control" value="{{ old('email') }}" placeholder="">
+                        <input type="email" name="email" class="form-control" value="{{ old('email') ? old('email') : $data->email }}" placeholder="">
                         @if ($errors->has('email'))
                         <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i>{{ $errors->first('email') }}</strong>
@@ -64,7 +65,7 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Password <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="password" name="password" class="form-control" value="{{ old('password') }}" placeholder="">
+                        <input type="password" name="password" class="form-control" value="" placeholder="">
                         @if ($errors->has('password'))
                         <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password') }}</strong>
@@ -73,12 +74,29 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-lg-3">Password Confirmation <span class="text-danger">*</span></label>
+                    <div class="col-lg-9">
+                        <input type="password" name="password_confirmation" class="form-control" value="" placeholder="">
+                        @if ($errors->has('password_confirmation'))
+                        <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password_confirmation') }}</strong>
+                        </label>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-lg-3">Role <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <input type="password" name="password" class="form-control" value="{{ old('password') }}" placeholder="">
-                        @if ($errors->has('password'))
+                        <div class="multi-select-full">
+                            <select name="role[]" class="multiselect" multiple="multiple">
+                                @foreach($role as $item)
+                                <option value="{{$item->id}}" {{ $data->roles->contains($item->id) ? 'selected' : '' }}>{{$item->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @if ($errors->has('role'))
                         <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password') }}</strong>
+                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('role') }}</strong>
                         </label>
                         @endif
                     </div>
@@ -107,7 +125,4 @@
 <!-- /content area -->
 @endsection
 @push('after_script')
-  <script>
-
-  </script>
 @endpush
