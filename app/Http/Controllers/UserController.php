@@ -192,6 +192,7 @@ class UserController extends Controller
        'username'=>$request->username,
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
+       'picture'=>'avatar.png',
      ])->assignRole('user');
      if (!$user) {
        DB::rollback();
@@ -249,6 +250,17 @@ class UserController extends Controller
         $success['message'] = 'Your email or password incorrect!';
         return response()->json($success,401);
     }
+  }
+
+  public function api_index($id)
+  {
+      $user = User::find($id);
+      $url_img = \Image::make(\Storage::get('public/images/user/'.$user->picture))->response();
+      $user->picture = $url_img;
+      return response()->json([
+        'status'=>'success',
+        'user' => $user
+      ]);
   }
 
 }

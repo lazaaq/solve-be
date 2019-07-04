@@ -65,7 +65,7 @@
               @if($data->pic_url == 'avatar.png')
               <img class="img-responsive" src="{{asset('img/avatar.png')}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
               @else
-              <img class="img-responsive" src="{{route('quiztype.picture',$data->pic_url)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+              <img class="img-responsive" src="{{route('quiztype.picture',$data->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
               @endif
               <br>
               <input type="file" name="picture" class="form-control">

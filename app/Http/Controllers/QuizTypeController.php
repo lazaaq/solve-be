@@ -97,9 +97,10 @@ class QuizTypeController extends Controller
     return view('quiz-type.edit', compact('data'));
   }
 
-  public function picture($picture)
+  public function picture($id)
   {
-    return Image::make(Storage::get('public/images/quiztype/'.$picture))->response();
+    $picture = QuizType::find($id);
+    return Image::make(Storage::get('public/images/quiztype/'.$picture->pic_url))->response();
   }
 
   /**
