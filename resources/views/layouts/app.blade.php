@@ -47,8 +47,19 @@
 	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/switch.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/switchery.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('js/plugins/forms/styling/uniform.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/libraries/jquery_ui/interactions.min.js')}}"></script>
 
 	<script type="text/javascript" src="{{asset('js/pages/form_validation.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/pages/form_select2.js')}}"></script>
+
+
+	{{-- WIZARD DI SOAL --}}
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="{{asset('js/plugins/forms/wizards/stepy.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/libraries/jasny_bootstrap.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/pages/wizard_stepy.js')}}"></script>
+	<!-- /theme JS files -->
+
 	@stack('after_script')
 
 </head>

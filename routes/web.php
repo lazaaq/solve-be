@@ -19,7 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
    //admin
    Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
-     Route::resource('question', 'QuestionController');
+     // Route::resource('question', 'QuestionController');
      Route::resource('user', 'UserController');
      Route::resource('answersave', 'AnswerSaveController');
      Route::resource('quiztype', 'QuizTypeController');
@@ -28,6 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('quizcollager', 'QuizCollagerController');
      Route::resource('time', 'TimeController');
      Route::resource('quiz', 'QuizController');
+
+     Route::get('quiz/question/{id}','QuestionController@create');
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-type', 'QuizTypeController@getData');

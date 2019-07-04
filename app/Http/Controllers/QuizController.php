@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Input;
+use File;
+use App\QuizType;
 use App\Quiz;
 
 class QuizController extends Controller
@@ -10,8 +15,9 @@ class QuizController extends Controller
 
   public function getData()
   {
-    $data = Quiz::orderBy('title')->get();
+    $data = Quiz::all()->sortBy('title');
     return datatables()->of($data)->addColumn('action', function($row){
+      // $btn = '<a href="'.url('master/admin/quiz/question/'.$row->id.).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = '<a href="'.route('quiz.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
@@ -37,7 +43,8 @@ class QuizController extends Controller
    */
   public function create()
   {
-
+    $quiztype = QuizType::all()->sortBy('name');
+    return view('quiz.create', compact('quiztype'));
   }
 
   /**
@@ -47,6 +54,37 @@ class QuizController extends Controller
    */
   public function store(Request $request)
   {
+      $this->validate(request(),
+        [
+          'quiz_type' => 'required',
+          'title' => 'required|max:50|unique:quizs',
+          'description' => 'required|max:191',
+        ]
+      );
+      if(!empty($request->picture)){
+           $file = $request->file('picture');
+           $extension = strtolower($file->getClientOriginalExtension());
+           $filename = $request->title . '.' . $extension;
+           Storage::put('images/quiz/' . $filename, File::get($file));
+           $file_server = Storage::get('images/quiz/' . $filename);
+           $img = Image::make($file_server)->resize(141, 141);
+           $img->save(base_path('public/img/quiz/' . $filename));
+         }else{
+           $filename='-';
+         }
+         // dd($filename);
+      $data = Quiz::create(
+        [
+              'quiz_type_id' => request('quiz_type'),
+              'title' => request('title'),
+              'description'=>request('description'),
+              'pic_url'=>$filename
+        ]
+      );
+      // return view('question.create', compact('data'));
+      return redirect('admin/quiz/question/'.$user->id);
+
+      // return redirect('master/penjual/barang-jual/'.$data->id);
 
   }
 

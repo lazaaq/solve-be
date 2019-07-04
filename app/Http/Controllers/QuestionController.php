@@ -1,10 +1,11 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Quiz;
 
-class QuestionController extends Controller 
+class QuestionController extends Controller
 {
 
   /**
@@ -14,7 +15,7 @@ class QuestionController extends Controller
    */
   public function index()
   {
-    
+
   }
 
   /**
@@ -22,9 +23,10 @@ class QuestionController extends Controller
    *
    * @return Response
    */
-  public function create()
+  public function create($id)
   {
-    
+    $quiz = Quiz::find($id);
+    return view('question.create', compact('quiz'));
   }
 
   /**
@@ -34,7 +36,7 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +47,7 @@ class QuestionController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +58,7 @@ class QuestionController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +69,7 @@ class QuestionController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +80,9 @@ class QuestionController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>

@@ -13,7 +13,7 @@ class QuizTypeController extends Controller
 {
   public function getData()
   {
-    $data = QuizType::orderBy('name')->get();
+    $data = QuizType::all()->sortBy('name');
     return datatables()->of($data)->addColumn('action', function($row){
       $btn = '<a href="'.route('quiztype.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <a href="'.route('quiztype.destroy',$row->id).'" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
