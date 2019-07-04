@@ -62,8 +62,14 @@
           <div class="form-group">
   					<label class="control-label col-lg-3">Picture</label>
   					<div class="col-lg-9">
-              <img class="img-responsive" src="{{asset('img/quiztype/'.$data->pic_url.'')}}" alt="Avatar" title="Change the avatar">
-  						<input type="file" name="picture" class="form-control">
+              <img class="img-responsive" src="{{route('quiztype.picture',$data->pic_url)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+  						<br>
+              <input type="file" name="picture" class="form-control">
+              @if ($errors->has('picture'))
+              <label style="padding-top:7px;color:#F44336;">
+              <strong><i class="fa fa-times-circle"></i>{{ $errors->first('picture') }}</strong>
+              </label>
+              @endif
   					</div>
   				</div>
   			</fieldset>

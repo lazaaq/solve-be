@@ -53,20 +53,18 @@ class QuizTypeController extends Controller
       [
         'name' => 'required|max:20|unique:quiz_types',
         'description' => 'required|max:191',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
     if(!empty($request->picture)){
          $file = $request->file('picture');
          $extension = strtolower($file->getClientOriginalExtension());
          $filename = $request->name . '.' . $extension;
-         Storage::put('images/' . $filename, File::get($file));
-         $file_server = Storage::get('images/' . $filename);
-         $img = Image::make($file_server)->resize(141, 141);
-         $img->save(base_path('public/img/quiztype/' . $filename));
+         Storage::put('public/images/quiztype' . $filename, File::get($file));
        }else{
          $filename='-';
        }
-       // dd($filename);
+
     QuizType::create(
       [
             'name' => request('name'),
@@ -99,6 +97,11 @@ class QuizTypeController extends Controller
     return view('quiz-type.edit', compact('data'));
   }
 
+  public function picture($picture)
+  {
+    return Image::make(Storage::get('public/images/quiztype/'.$picture))->response();
+  }
+
   /**
    * Update the specified resource in storage.
    *
@@ -113,16 +116,14 @@ class QuizTypeController extends Controller
       [
         'name' => 'required|max:20|unique:quiz_types,name,'.$data->id.',id',
         'description' => 'required|max:191',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
     if(!empty($request->picture)){
          $file = $request->file('picture');
          $extension = strtolower($file->getClientOriginalExtension());
          $filename = $request->name . '.' . $extension;
-         Storage::put('images/' . $filename, File::get($file));
-         $file_server = Storage::get('images/' . $filename);
-         $img = Image::make($file_server)->resize(141, 141);
-         $img->save(base_path('public/img/quiztype/' . $filename));
+         Storage::put('public/images/quiztype/' . $filename, File::get($file));
     }else{
          $filename=$data->pic_url;
     }
@@ -151,7 +152,7 @@ class QuizTypeController extends Controller
     $data = QuizType::orderBy('name')->get();
     foreach ($data as $key => $value) {
       if(!empty($value->pic_url)){
-        $value->pic_url = asset('img/quiztype/'.$value->pic_url.'');    
+        $value->pic_url = Image::make(Storage::get('public/images/quiztype/'.$value->pic_url))->response();    
       }
     }
     return response()->json([

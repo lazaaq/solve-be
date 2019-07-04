@@ -70,12 +70,9 @@ class QuizController extends Controller
            $file = $request->file('picture');
            $extension = strtolower($file->getClientOriginalExtension());
            $filename = $request->title . '.' . $extension;
-           Storage::put('images/quiz/' . $filename, File::get($file));
-           $file_server = Storage::get('images/quiz/' . $filename);
-           $img = Image::make($file_server)->resize(141, 141);
-           $img->save(base_path('public/img/quiz/' . $filename));
+           Storage::put('public/images/quiz/' . $filename, File::get($file));
          }else{
-           $filename='-';
+           $filename='avatar.png';
          }
          // dd($filename);
       $data = Quiz::create(
@@ -87,11 +84,7 @@ class QuizController extends Controller
               'pic_url'=>$filename
         ]
       );
-      // return view('question.create', compact('data'));
       return redirect('admin/quiz/question/'.$data->id);
-
-      // return redirect('master/penjual/barang-jual/'.$data->id);
-
   }
 
   /**

@@ -36,7 +36,6 @@
   			<thead>
       		<tr>
              <th>id</th>
-             <th>Picture</th>
              <th>Title</th>
              <th>Description</th>
              <th>Quiz Type</th>
@@ -73,7 +72,6 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
-            { data: 'pic_url', name:'pic_url', visible:true},
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'quiz_type_id', name:'quiz_type_id', visible:true},

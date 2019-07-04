@@ -104,7 +104,18 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Picture</label>
                     <div class="col-lg-9">
+                        @if($data->picture == 'avatar.png')
+                        <img class="img-responsive" src="{{asset('img/avatar.png')}}" alt="Avatar" title="Change the avatar" width="100" height="50">
+                        @else
+                        <img class="img-responsive" src="{{route('user.picture',$data->picture)}}" alt="Avatar" title="Change the avatar" width="100" height="50">
+                        @endif
+                        <br>
                         <input type="file" name="picture" class="form-control">
+                        @if ($errors->has('picture'))
+                        <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i>{{ $errors->first('picture') }}</strong>
+                        </label>
+                        @endif
                     </div>
                 </div>
                 </fieldset>

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'username'  => 'developer',
             'email'     => 'developer@dev.com',
             'password'  =>  bcrypt('devpass'),
+            'picture'   => '-',
         ]);
 
         $user->assignRole('admin');

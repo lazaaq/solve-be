@@ -62,14 +62,25 @@ class UserController extends Controller
         'password' => 'required|confirmed',
         'password_confirmation' => 'required',  
         'role' => 'required',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
+
+    if(!empty($request->picture)){
+      $file = $request->file('picture');
+      $extension = strtolower($file->getClientOriginalExtension());
+      $filename = uniqid() . '.' . $extension;
+      \Storage::put('public/images/user/' . $filename, \File::get($file));
+    } else {
+      $filename = 'avatar.png';
+    }
 
     $user = new User();
     $user->name = $request->name;
     $user->username = $request->username;
     $user->email = $request->email;
     $user->password = \Hash::make($request->password);
+    $user->picture = $filename;
     $user->save();
     $user->roles()->sync($request->role);
 
@@ -100,6 +111,11 @@ class UserController extends Controller
     return view('user.edit',compact('data','role'));
   }
 
+  public function picture($picture)
+  {
+    return \Image::make(\Storage::get('public/images/user/'.$picture))->response();
+  }
+
   /**
    * Update the specified resource in storage.
    *
@@ -115,16 +131,28 @@ class UserController extends Controller
         'email' => 'required|unique:users,email,'.$id,
         'password' => 'confirmed',
         'role' => 'required',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
 
     $user = User::find($id);
+
+    if(!empty($request->picture)){
+      $file = $request->file('picture');
+      $extension = strtolower($file->getClientOriginalExtension());
+      $filename = uniqid() . '.' . $extension;
+      \Storage::put('public/images/user/' . $filename, \File::get($file));
+    } else {
+      $filename = $user->picture;
+    }
+
     $user->name = $request->name;
     $user->username = $request->username;
     $user->email = $request->email;
     if ($request->password) {
       $user->password = \Hash::make($request->password);
     }
+    $user->picture = $filename;
     $user->save();
     $user->roles()->sync($request->role);
     return redirect()->route('user.index');
@@ -139,8 +167,9 @@ class UserController extends Controller
   public function destroy($id)
   {
     $user = User::find($id);
+    \Storage::delete('images/user/'.$user->picture);
     $user->delete();
-
+    
     return redirect()->route('user.index');
   }
 
