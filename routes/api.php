@@ -24,5 +24,5 @@ Route::middleware('auth:api')->put('collager/update', 'UserController@api_update
 Route::middleware('auth:api')->put('collager/update-password', 'UserController@api_updatePassword');
 
 Route::middleware('auth:api')->get('collager/quiztype','QuizTypeController@api_index');
-Route::middleware('auth:api')->get('collager/quiz/{id}','QuizController@api_index');
-Route::middleware('auth:api')->get('collager/question/{id}','QuestionController@api_index');
+Route::middleware('auth:api')->get('collager/quiz/{quiztype_id}','QuizController@api_index');
+Route::middleware('auth:api')->get('collager/question/{quiz_id}','QuestionController@api_index');
