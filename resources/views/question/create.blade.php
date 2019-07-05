@@ -85,91 +85,41 @@
                 @endif
               </div>
             </div>
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label>First Multiple Choice:</label>
-                <input type="text" name="first_multiple_choice[]" class="form-control" value="{{ old('first_multiple_choice.'.$i) }}" placeholder="">
-                <input type="file" name="pic_first[{{$i}}]" class="form-control">
-                @if ($errors->has('first_multiple_choice.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> The first multiple choice field is required when file field is not present.</strong>
-                  </label>
-                @endif
-                @if ($errors->has('pic_first.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('pic_first.'.$i)}}</strong>
-                  </label>
-                @endif
-							</div>
-						</div>
+            @for ($j=0; $j < 5; $j++)
             <div class="col-sm-12">
 							<div class="form-group">
-								<label>Second Multiple Choice:</label>
-                <input type="text" name="second_multiple_choice[]" class="form-control" value="{{ old('second_multiple_choice.'.$i) }}" placeholder="">
-                <input type="file" name="pic_second[{{$i}}]" class="form-control">
-                @if ($errors->has('second_multiple_choice.'.$i))
+            @switch($j)
+                @case(0)
+                  <label>First Multiple Choice:</label>
+                  @break
+                @case(1)
+                  <label>Second Multiple Choice:</label>
+                  @break
+                @case(2)
+                  <label>Third Multiple Choice:</label>
+                  @break
+                @case(3)
+                  <label>Fourth Multiple Choice:</label>
+                  @break
+                @default
+                  <label>Fifth Multiple Choice:</label>
+                @endswitch
+                <input type="text" name="choice[{{$i}}][{{$j}}]" class="form-control" value="{{ old('choice.'.$i.'.'.$j) }}" placeholder="">
+                <input type="file" name="picture_choice[{{$i}}][{{$j}}]" class="form-control">
+                @if ($errors->has('choice.'.$i.'.'.$j))
                   <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> The second multiple choice field is required when file field is not present.</strong>
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.'.$j)}}</strong>
                   </label>
                 @endif
-                @if ($errors->has('pic_second.'.$i))
+                @if ($errors->has('picture_choice.'.$i.'.'.$j))
                   <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('pic_second.'.$i)}}</strong>
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.'.$j)}}</strong>
                   </label>
                 @endif
-							</div>
+              </div>
 						</div>
-            <div class="col-sm-12">
-							<div class="form-group">
-								<label>Third Multiple Choice:</label>
-                <input type="text" name="third_multiple_choice[]" class="form-control" value="{{ old('third_multiple_choice.'.$i) }}" placeholder="">
-                <input type="file" name="pic_third[{{$i}}]" class="form-control">
-                @if ($errors->has('third_multiple_choice.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> The third multiple choice field is required when file field is not present.</strong>
-                  </label>
-                @endif
-                @if ($errors->has('pic_third.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('pic_third.'.$i)}}</strong>
-                  </label>
-                @endif
-							</div>
-						</div>
-            <div class="col-sm-12">
-							<div class="form-group">
-								<label>Fourth Multiple Choice:</label>
-                <input type="text" name="fourth_multiple_choice[]" class="form-control" value="{{ old('fourth_multiple_choice.'.$i) }}" placeholder="">
-                <input type="file" name="pic_fourth[{{$i}}]" class="form-control">
-                @if ($errors->has('fourth_multiple_choice.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> The fourth multiple choice field is required when file field is not present.</strong>
-                  </label>
-                @endif
-                @if ($errors->has('pic_fourth.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('pic_fourth.'.$i)}}</strong>
-                  </label>
-                @endif
-							</div>
-						</div>
-            <div class="col-sm-12">
-							<div class="form-group">
-								<label>Fifth Multiple Choice:</label>
-                <input type="text" name="fifth_multiple_choice[]" class="form-control" value="{{ old('fifth_multiple_choice.'.$i) }}" placeholder="">
-                <input type="file" name="pic_fifth[{{$i}}]" class="form-control">
-                @if ($errors->has('fifth_multiple_choice.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> The fifth multiple choice field is required when file field is not present.</strong>
-                  </label>
-                @endif
-                @if ($errors->has('pic_fifth.'.$i))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('pic_fifth.'.$i)}}</strong>
-                  </label>
-                @endif
-							</div>
-						</div>
+            @endfor
+							
             <div class="col-md-12">
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>

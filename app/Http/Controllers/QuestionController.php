@@ -44,35 +44,68 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate($request,
-    [
-      'question.*' => 'required',
-      'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+    // $this->validate($request,
+    // [
+    //   'question.*' => 'required',
+    //   'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+    //   'choice.*.*' => 'required_without:picture_choice.*.*',
+    //   'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
+    // ],
+    // [
+    //   'question.*.required' => 'The question field is required.',
+    //   'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    //   'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
+    //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
+    //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
 
-      'first_multiple_choice.*' => 'required_without:pic_first.*',
-      'second_multiple_choice.*' => 'required_without:pic_second.*',
-      'third_multiple_choice.*' => 'required_without:pic_third.*',
-      'fourth_multiple_choice.*' => 'required_without:pic_fourth.*',
-      'fifth_multiple_choice.*' => 'required_without:pic_fifth.*',
-      
-      'pic_first.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:first_multiple_choice.*',
-      'pic_second.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:second_multiple_choice.*',
-      'pic_third.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:third_multiple_choice.*',
-      'pic_fourth.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:fourth_multiple_choice.*',
-      'pic_fifth.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:fifth_multiple_choice.*',
-    ],
-    [
-      'question.*.required' => 'The question field is required.',
-      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'pic_first.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'pic_second.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'pic_third.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'pic_fourth.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'pic_fifth.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    // ]);    
 
-    ]);    
-    // return $request->all();
-      
+    $question = [];
+
+    for ($i=0; $i < @count($request->question); $i++) {
+        if (!empty($request->picture[$i])) {
+            $file[$i] = $request->file('picture.'.$i);
+            $extension[$i] = strtolower($file[$i]->getClientOriginalExtension());
+            $filename[$i] = uniqid() . '.' . $extension[$i];
+            \Storage::put('public/images/question/' . $filename[$i], \File::get($file[$i]));
+        } else {
+          $filename = '-';
+        }
+        $question[$i] = [
+            'quiz_id'       => $request->quiz_id,
+            'question'      => $request->question[$i],
+            'pic_url'       => $filename,
+        ];
+
+    }
+
+    $answers = [];
+    $option = ['1', '2', '3', '4', '5'];
+    for ($i=0; $i < @count($request->choice); $i++) {
+        for ($j=0; $j < @count($request->choice[$i]); $j++) {
+
+          if (!empty($request->picture_choice[$i][$j])) {
+              $file[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
+              $extension[$i][$j] = strtolower($file[$i][$j]->getClientOriginalExtension());
+              $filename[$i][$j] = uniqid() . '.' . $extension[$i][$j];
+              \Storage::put('public/images/option/' . $filename[$i][$j], \File::get($file[$i][$j]));
+          } else {
+            $filename = '-';
+          }
+
+            $answers[$i][$j] = [
+                 'option'        => $option[$j],
+                 'content'       => $request->choice[$i][$j],
+                 'pic_url'       => $filename,
+                 'isTrue'     => $request->true_answer[$i] == $j+1 ? 1 : 0
+            ];
+        }
+    }
+
+  foreach ($question as $key => $q) {
+    Question::create($q)->answer()->createMany($answers[$key]);
+  }
+    return redirect()->route('quiz.index');
   }
 
   /**
