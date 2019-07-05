@@ -44,7 +44,35 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    dd($request->all());
+    $this->validate($request,
+    [
+      'question.*' => 'required',
+      'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+
+      'first_multiple_choice.*' => 'required_without:pic_first.*',
+      'second_multiple_choice.*' => 'required_without:pic_second.*',
+      'third_multiple_choice.*' => 'required_without:pic_third.*',
+      'fourth_multiple_choice.*' => 'required_without:pic_fourth.*',
+      'fifth_multiple_choice.*' => 'required_without:pic_fifth.*',
+      
+      'pic_first.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:first_multiple_choice.*',
+      'pic_second.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:second_multiple_choice.*',
+      'pic_third.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:third_multiple_choice.*',
+      'pic_fourth.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:fourth_multiple_choice.*',
+      'pic_fifth.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:fifth_multiple_choice.*',
+    ],
+    [
+      'question.*.required' => 'The question field is required.',
+      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'pic_first.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'pic_second.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'pic_third.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'pic_fourth.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'pic_fifth.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+
+    ]);    
+    // return $request->all();
+      
   }
 
   /**

@@ -11,6 +11,8 @@ class Question extends Model
     protected $table = 'questions';
     public $timestamps = true;
 
+    protected $fillable = ['quiz_id','question','pic_url','created_at','updated_at'];
+
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
@@ -27,7 +29,7 @@ class Question extends Model
 
     public function answer()
     {
-        return $this->hasOne('App\Answer', 'question_id', 'id');
+        return $this->hasMany('App\Answer', 'question_id', 'id');
     }
 
 }
