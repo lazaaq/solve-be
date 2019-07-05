@@ -15,11 +15,6 @@ class Quiz extends Model
         return $this->belongsTo('App\QuizType', 'quiz_type_id', 'id');
     }
 
-    public function time()
-    {
-        return $this->belongsTo('App\Time', 'time_id', 'id');
-    }
-
     public function question()
     {
         return $this->hasMany('App\Question', 'quiz_id', 'id');

@@ -18,6 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::middleware('api')->post('collager/register', 'UserController@api_collagerRegister');
 Route::middleware('api')->post('collager/login','UserController@api_collagerLogin');
+Route::middleware('auth:api')->get('collager/logout', 'UserController@api_logout');
+Route::middleware('auth:api')->get('collager/detail', 'UserController@api_index');
+Route::middleware('auth:api')->put('collager/update', 'UserController@api_update');
+Route::middleware('auth:api')->put('collager/update-password', 'UserController@api_updatePassword');
+
 Route::middleware('auth:api')->get('collager/quiztype','QuizTypeController@api_index');
-Route::middleware('auth:api')->get('collager/quiz/{id}','QuizController@api_index');
-Route::middleware('auth:api')->get('collager/question/{id}','QuestionController@api_index');
+Route::middleware('auth:api')->get('collager/quiz/{quiztype_id}','QuizController@api_index');
+Route::middleware('auth:api')->get('collager/question/{quiz_id}','QuestionController@api_index');

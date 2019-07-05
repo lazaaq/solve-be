@@ -9,6 +9,7 @@ use App\Collager;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
+use Hash;
 
 
 class UserController extends Controller
@@ -254,14 +255,75 @@ class UserController extends Controller
     }
   }
 
-  public function api_index($id)
+  public function api_logout(Request $request)
+   {
+     $request->user()->token()->revoke();
+     return response()->json([
+       'message' => 'Successfully logged out'
+     ]);
+   }
+
+  public function api_index()
   {
-      $user = User::find($id);
-      $user->picture = route('user.picture',$user->picture);
+      $users = User::with('collager')->where('id', Auth::user()->id)->first();
+      if($users->picture == 'avatar.png'){
+        $users->picture = asset('img/'.$users->picture.'');
+      }else {
+        $users->picture = route('user.picture',$users->id);
+      }
       return response()->json([
         'status'=>'success',
-        'user' => $user
+        'user' => $users
       ]);
+  }
+  public function api_update(Request $request)
+  {
+    $data= User::where('id',Auth::user()->id)->first();
+    $this->validate($request,
+    [
+      'email' => 'required|string|email|unique:users,email,'.$data->id.',id|max:50',
+      'username' => 'required|unique:users,username,'.$data->id.',id|max:20',
+      'name' => 'required|max:50',
+    ]);
+    $data->email=$request->email;
+    $data->username=$request->username;
+    $data->name=$request->name;
+    $data->save();
+    if($data->picture == 'avatar.png'){
+      $data->picture = asset('img/'.$data->picture.'');
+    }else {
+      $data->picture = route('user.picture',$data->id);
+    }
+    return response()->json([
+      'status'=>'success',
+      'user'=>$data,
+    ]);
+  }
+
+  public function api_updatePassword(Request $request)
+  {
+    $data= User::find(Auth::user()->id);
+    if(Hash::check($request->password_current,$data->password)){
+      $data->password = Hash::make($request->password);
+      $this->validate($request,
+        [
+          'password_current' => 'required',
+          'password' => 'required|string|min:8|confirmed|max:191',
+          'password_confirmation' => 'required',
+        ]);
+      $data->save();
+      $data->foto= asset('images/'.$data->foto.'');
+      return response()->json([
+        'status'=>'success',
+        'user'=>$data
+      ]);
+    }
+    else{
+      return response()->json([
+        'status'=>'failed',
+        'message'=>'Incorrect current password.'
+      ]);
+    }
   }
 }
 
