@@ -128,7 +128,10 @@ class QuestionController extends Controller
    */
   public function edit($id)
   {
-
+    $data = Question::find($id);
+    $quiz = Quiz::find($data->quiz_id);
+    // dd($data);
+    return view('question.edit', compact('data','quiz'));
   }
 
   /**
