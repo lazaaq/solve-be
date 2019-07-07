@@ -58,7 +58,7 @@ class QuestionController extends Controller
     //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
     //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
 
-    // ]);    
+    // ]);
 
     $question = [];
 
@@ -153,19 +153,6 @@ class QuestionController extends Controller
   }
 
   /*START OF API*/
-
-  // public function api_index($id){
-  //   $data = Question::where('quiz_id', $id)->get();
-  //   foreach ($data as $key => $value) {
-  //     if(!empty($value->pic_url)){
-  //       $value->pic_url = asset('img/question/'.$value->pic_url.'');
-  //     }
-  //   }
-  //   return response()->json([
-  //     'status'=>'success',
-  //     'user'=>$data
-  //   ]);
-  // }
   public function api_index($id)
     {
         $quiz = Quiz::where('id', $id)->first();
@@ -202,7 +189,6 @@ class QuestionController extends Controller
         }
 
         return response()->json([
-            'error'  => false,
             'status' => 'success',
             'result'   => $collection
         ]);

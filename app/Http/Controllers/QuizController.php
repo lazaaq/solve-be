@@ -148,6 +148,12 @@ class QuizController extends Controller
                   ->orderBy('title')
                   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   ->get();
+    if (empty($data[0])) {
+      return response()->json([
+        'status'=>'failed',
+        'message'=>'Not found quiz data.'
+      ]);
+    }
     foreach ($data as $key => $value) {
       if($value->pic_url == 'blank.jpg'){
         $value->pic_url = asset('img/'.$value->pic_url.'');
@@ -157,7 +163,7 @@ class QuizController extends Controller
     }
     return response()->json([
       'status'=>'success',
-      'user'=>$data
+      'result'=>$data
     ]);
   }
 

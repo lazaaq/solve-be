@@ -9,10 +9,11 @@ class QuizCollager extends Model
 
     protected $table = 'quiz_collagers';
     public $timestamps = true;
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function quiz()
     {
-        return $this->belongsTo('App\Question', 'quiz_id', 'id');
+        return $this->belongsTo('App\Quiz', 'quiz_id', 'id');
     }
 
     public function collager()

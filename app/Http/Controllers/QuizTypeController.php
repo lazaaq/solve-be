@@ -163,7 +163,7 @@ class QuizTypeController extends Controller
     }
     return response()->json([
       'status'=>'success',
-      'user'=>$data
+      'result'=>$data
     ]);
   }
 
