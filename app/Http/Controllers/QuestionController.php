@@ -44,21 +44,21 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    // $this->validate($request,
-    // [
-    //   'question.*' => 'required',
-    //   'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
-    //   'choice.*.*' => 'required_without:picture_choice.*.*',
-    //   'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
-    // ],
-    // [
-    //   'question.*.required' => 'The question field is required.',
-    //   'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    //   'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
-    //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
-    //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    $this->validate($request,
+    [
+      'question.*' => 'required',
+      'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+      'choice.*.*' => 'required_without:picture_choice.*.*',
+      'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
+    ],
+    [
+      'question.*.required' => 'The question field is required.',
+      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
+      'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
+      'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
 
-    // ]);
+    ]);
 
     $question = [];
 
@@ -69,12 +69,12 @@ class QuestionController extends Controller
             $filename[$i] = uniqid() . '.' . $extension[$i];
             \Storage::put('public/images/question/' . $filename[$i], \File::get($file[$i]));
         } else {
-          $filename = '-';
+          $filename[$i] = '-';
         }
         $question[$i] = [
             'quiz_id'       => $request->quiz_id,
             'question'      => $request->question[$i],
-            'pic_url'       => $filename,
+            'pic_url'       => $filename[$i],
         ];
 
     }
@@ -83,29 +83,30 @@ class QuestionController extends Controller
     $option = ['1', '2', '3', '4', '5'];
     for ($i=0; $i < @count($request->choice); $i++) {
         for ($j=0; $j < @count($request->choice[$i]); $j++) {
-
-          if (!empty($request->picture_choice[$i][$j])) {
-              $file[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
-              $extension[$i][$j] = strtolower($file[$i][$j]->getClientOriginalExtension());
-              $filename[$i][$j] = uniqid() . '.' . $extension[$i][$j];
-              \Storage::put('public/images/option/' . $filename[$i][$j], \File::get($file[$i][$j]));
-          } else {
-            $filename = '-';
-          }
-
             $answers[$i][$j] = [
                  'option'        => $option[$j],
                  'content'       => $request->choice[$i][$j],
-                 'pic_url'       => $filename,
-                 'isTrue'     => $request->true_answer[$i] == $j+1 ? 1 : 0
+                 'isTrue'        => $request->true_answer[$i] == $j+1 ? 1 : 0
             ];
+        }
+
+        for ($j=0; $j < @count($request->picture_choice[$i]); $j++) {
+          if (!empty($request->picture_choice[$i][$j])) {
+              $fileChoice[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
+              $extensionChoice[$i][$j] = strtolower($fileChoice[$i][$j]->getClientOriginalExtension());
+              $filenameChoice[$i][$j] = uniqid() . '.' . $extensionChoice[$i][$j];
+              \Storage::put('public/images/option/' . $filenameChoice[$i][$j], \File::get($fileChoice[$i][$j]));
+          } else {
+            $filenameChoice[$i][$j] = '-';
+          }
+           $data[$i][$j] = array_slice($answers[$i][$j], 0, 2, true) + array("pic_url" => $filenameChoice[$i][$j]) + array_slice($answers[$i][$j], 2, count($answers[$i][$j]) - 1, true);
         }
     }
 
-  foreach ($question as $key => $q) {
-    Question::create($q)->answer()->createMany($answers[$key]);
-  }
-    return redirect()->route('quiz.index');
+    foreach ($question as $key => $q) {
+      Question::create($q)->answer()->createMany($data[$key]);
+    }
+      return redirect()->route('quiz.index');
   }
 
   /**
