@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Answer;
 
 class AnswerController extends Controller
 {
@@ -80,5 +81,11 @@ class AnswerController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function picture($id)
+    {
+      $data = Answer::find($id);
+      return \Image::make(\Storage::get('public/images/option/'.$data->pic_url))->response();
     }
 }

@@ -30,13 +30,15 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('quiz', 'QuizController');
 
      Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
-     
+
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
      Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');
 
      Route::get('storage/user/{id}', 'UserController@picture')->name('user.picture');
      Route::get('storage/quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
      Route::get('storage/quiz/{id}', 'QuizController@picture')->name('quiz.picture');
+     Route::get('storage/question/{id}', 'QuestionController@picture')->name('question.picture');
+     Route::get('storage/answer/{id}', 'AnswerController@picture')->name('answer.picture');
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-type', 'QuizTypeController@getData');
