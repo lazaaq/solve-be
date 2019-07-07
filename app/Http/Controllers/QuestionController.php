@@ -99,12 +99,12 @@ class QuestionController extends Controller
           } else {
             $filenameChoice[$i][$j] = '-';
           }
-           $data[$i][$j] = array_slice($answers[$i][$j], 0, 2, true) + array("pic_url" => $filenameChoice[$i][$j]) + array_slice($answers[$i][$j], 2, count($answers[$i][$j]) - 1, true);
+           $answers[$i][$j] = array_slice($answers[$i][$j], 0, 2, true) + array("pic_url" => $filenameChoice[$i][$j]) + array_slice($answers[$i][$j], 2, count($answers[$i][$j]) - 1, true);
         }
     }
 
     foreach ($question as $key => $q) {
-      Question::create($q)->answer()->createMany($data[$key]);
+      Question::create($q)->answer()->createMany($answers[$key]);
     }
       return redirect()->route('quiz.index');
   }
