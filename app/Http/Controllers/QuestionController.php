@@ -157,36 +157,43 @@ class QuestionController extends Controller
     //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
     //
     // ]);
+
     $data = Question::find($id);
     $quiz = Quiz::find($data->quiz_id);
 
-    $answers = [];
-    foreach ($data->answer as $key => $value) {
-      $answers[$key] = [
-        $value->option        = $option[$value->id],
-        $value->content       = $request->choice[$value->id],
-        $value->isTrue        = $request->true_answer == $value->id+1 ? 1 : 0
-      ];
+    DB::beginTransaction();
+    if (!empty($request->picture)) {
+        $file = $request->file('picture');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename = uniqid() . '.' . $extension;
+        \Storage::put('public/images/question/' . $filename, \File::get($file));
+        $data->pic_url=$filename;
     }
-    dd($answers);
-    for ($j=0; $j < @count($request->choice[$i]); $j++) {
+    $data->question=$request->question;
+    $data->save();
+    if (!$data) {
+      DB::rollback();
+      return 'failed DB transaction';
     }
 
-    for ($j=0; $j < @count($request->picture_choice[$i]); $j++) {
-      if (!empty($request->picture_choice[$i][$j])) {
-          $fileChoice[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
-          $extensionChoice[$i][$j] = strtolower($fileChoice[$i][$j]->getClientOriginalExtension());
-          $filenameChoice[$i][$j] = uniqid() . '.' . $extensionChoice[$i][$j];
-          \Storage::put('public/images/option/' . $filenameChoice[$i][$j], \File::get($fileChoice[$i][$j]));
-      } else {
-        $filenameChoice[$i][$j] = '';
+    foreach ($data->answer as $key => $value) {
+        $value->content       = $request->choice[$value->id];
+        $value->save();
+    }
+
+    foreach ($data->answer as $key => $value2) {
+      if (!empty($request->picture_choice[$value2->id])) {
+          $fileChoice[$value2->id] = $request->file('picture_choice.'.$value2->id);
+          $extensionChoice[$value2->id] = strtolower($fileChoice[$value2->id]->getClientOriginalExtension());
+          $filenameChoice[$value2->id] = uniqid() . '.' . $extensionChoice[$value2->id];
+          \Storage::put('public/images/option/' . $filenameChoice[$value2->id], \File::get($fileChoice[$value2->id]));
+          $value2->pic_url = $filenameChoice[$value2->id];
       }
-       $answers[$i][$j] = array_slice($answers[$i][$j], 0, 2, true) + array("pic_url" => $filenameChoice[$i][$j]) + array_slice($answers[$i][$j], 2, count($answers[$i][$j]) - 1, true);
+      $value2->save();
+       // $answers[$value2->id] = array_slice($answers[$value2->id], 0, 2, true) + array("pic_url" => $filenameChoice[$value2->id]) + array_slice($answers[$value2->id], 2, count($answers[$value2->id]) - 1, true);
     }
-    foreach ($question as $key => $q) {
-      Question::create($q)->answer()->createMany($answers[$key]);
-    }
-      return redirect()->route('quiz.index');
+    DB::commit();
+    return redirect()->route('quiz.show',$data->quiz_id);
   }
 
   /**

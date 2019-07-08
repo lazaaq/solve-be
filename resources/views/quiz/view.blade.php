@@ -119,6 +119,7 @@
       		</div>
       	</div>
       @endforeach
+      <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
   	</div>
 	<!-- /state saving -->
   </div>

@@ -90,7 +90,8 @@
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control">
+                        <input type="file" style="width:200px" name="picture_choice[{{$value->id}}]" class="form-control">
+                        {{-- <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control"> --}}
                         <input type="text" name="choice[{{$value->id}}]" class="form-control" value="{{ $value->content }}" placeholder="">
                         @if ($errors->has('choice.'.$value->id))
                         <label style="padding-top:7px;color:#F44336;">
@@ -108,7 +109,8 @@
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control">
+                        <input type="file" style="width:200px" name="picture_choice[{{$value->id}}]" class="form-control">
+                        {{-- <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control"> --}}
                         @if ($errors->has('picture_choice.'.$value->id))
                           <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice_'.$value->id)}}</strong>
