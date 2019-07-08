@@ -60,6 +60,9 @@
 	<script type="text/javascript" src="{{asset('js/pages/wizard_stepy.js')}}"></script>
 	<!-- /theme JS files -->
 
+	{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
+	<script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
+
 	@stack('after_script')
 
 </head>
@@ -176,6 +179,6 @@
 
 	</div>
 	<!-- /page container -->
-
+	@include('sweetalert::alert')
 </body>
 </html>

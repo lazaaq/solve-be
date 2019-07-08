@@ -72,7 +72,7 @@ var tableUser;
     });
   });
 
-  $('#delete').click(function(){ 
+  $('#delete').click(function(){
     Delete();
   });
 

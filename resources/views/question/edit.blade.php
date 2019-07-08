@@ -125,7 +125,7 @@
             <label class="display-block"><b>True Answer:</b></label>
             @foreach ($data->answer as $key2 => $value2)
             <label class="radio-inline col-md-1">
-              <input checked type="radio" name="true_answer" {{$value->isRight == '1' ? 'checked' : '' }} value="1" class="styled">
+              <input checked type="radio" name="true_answer" {{$value2->isTrue == '1' ? 'checked' : '' }} value="" class="styled">
               @switch($key2)
                 @case(0)<label>First</label>@break
                 @case(1)<label>Second</label>@break
