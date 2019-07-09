@@ -24,7 +24,7 @@ class QuizController extends Controller
       // $btn = "<a href='.url('master/admin/quiz/question/'$row->id)' class='btn border-info btn-xs text-info-600 btn-flat btn-icon'><i class='icon-pencil6'></i></a>";
       $btn = '<a href="'.route('quiz.show',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
       // $btn = $btn.'<a href="'.route('quisz.question',$row->id).'" title="Sementara Edit" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
-      // $btn = $btn.'<a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = $btn.'<a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
@@ -69,6 +69,7 @@ class QuizController extends Controller
           'title' => 'required|max:50|unique:quizs',
           'description' => 'required|max:191',
           'total_question' => 'required',
+          'picture' => 'max:2048|mimes:png,jpg,jpeg',
         ]
       );
       if(!empty($request->picture)){
@@ -112,7 +113,9 @@ class QuizController extends Controller
    */
   public function edit($id)
   {
-
+    $data = Quiz::find($id);
+    $quiztype = QuizType::all()->sortBy('name');
+    return view('quiz.edit', compact('data','quiztype'));
   }
 
   /**
@@ -121,9 +124,33 @@ class QuizController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update($id)
+  public function update(Request $request, $id)
   {
+    $data= Quiz::find($id);
+    $this->validate(request(),
+      [
+        'quiz_type' => 'required',
+        'title' => 'required|max:20|unique:quizs,title,'.$data->id.',id',
+        'description' => 'required|max:191',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
+      ]
+    );
+    if(!empty($request->picture)){
+         $file = $request->file('picture');
+         $extension = strtolower($file->getClientOriginalExtension());
+         $filename = $request->name . '.' . $extension;
+         Storage::delete('public/images/quiz/' . $data->pic_url);
+         Storage::put('public/images/quiz/' . $filename, File::get($file));
+    }else{
+         $filename=$data->pic_url;
+    }
 
+    $data->quiz_type_id=$request->quiz_type;
+    $data->title=$request->title;
+    $data->description=$request->description;
+    $data->pic_url=$filename;
+    $data->save();
+    return redirect()->route('quiz.index');
   }
 
   /**
