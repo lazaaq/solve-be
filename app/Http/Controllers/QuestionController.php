@@ -142,21 +142,21 @@ class QuestionController extends Controller
    */
   public function update(Request $request, $id)
   {
-    // $this->validate($request,
-    // [
-    //   'question.*' => 'required',
-    //   'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
-    //   'choice.*.*' => 'required_without:picture_choice.*.*',
-    //   'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
-    // ],
-    // [
-    //   'question.*.required' => 'The question field is required.',
-    //   'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    //   'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
-    //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
-    //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    //
-    // ]);
+    $this->validate($request,
+    [
+      'question' => 'required',
+      'picture' => 'mimes:png,jpg,jpeg|max:2048',
+      'choice.*' => 'required_without:picture_choice.*',
+      'picture_choice.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*',
+    ],
+    [
+      'question.*.required' => 'The question field is required.',
+      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'choice.*.required_without' => 'The choice field is required when file field is not present.',
+      'picture_choice.*.required_without' => 'The file field is required when choice field is not present.',
+      'picture_choice.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    
+    ]);
 
     $data = Question::find($id);
     $quiz = Quiz::find($data->quiz_id);
@@ -177,20 +177,20 @@ class QuestionController extends Controller
     }
 
     foreach ($data->answer as $key => $value) {
-        $value->content       = $request->choice[$value->id];
+        $value->content       = $request->choice[$key];
+        $value->isTrue        = $request->true_answer[0] == $value->option ? 1 : 0;
         $value->save();
     }
 
     foreach ($data->answer as $key => $value2) {
-      if (!empty($request->picture_choice[$value2->id])) {
-          $fileChoice[$value2->id] = $request->file('picture_choice.'.$value2->id);
-          $extensionChoice[$value2->id] = strtolower($fileChoice[$value2->id]->getClientOriginalExtension());
-          $filenameChoice[$value2->id] = uniqid() . '.' . $extensionChoice[$value2->id];
-          \Storage::put('public/images/option/' . $filenameChoice[$value2->id], \File::get($fileChoice[$value2->id]));
-          $value2->pic_url = $filenameChoice[$value2->id];
+      if (!empty($request->picture_choice[$key])) {
+          $fileChoice[$key] = $request->file('picture_choice.'.$key);
+          $extensionChoice[$key] = strtolower($fileChoice[$key]->getClientOriginalExtension());
+          $filenameChoice[$key] = uniqid() . '.' . $extensionChoice[$key];
+          \Storage::put('public/images/option/' . $filenameChoice[$key], \File::get($fileChoice[$key]));
+          $value2->pic_url = $filenameChoice[$key];
       }
       $value2->save();
-       // $answers[$value2->id] = array_slice($answers[$value2->id], 0, 2, true) + array("pic_url" => $filenameChoice[$value2->id]) + array_slice($answers[$value2->id], 2, count($answers[$value2->id]) - 1, true);
     }
     DB::commit();
     return redirect()->route('quiz.show',$data->quiz_id);

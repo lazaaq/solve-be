@@ -90,30 +90,28 @@
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input type="file" style="width:200px" name="picture_choice[{{$value->id}}]" class="form-control">
-                        {{-- <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control"> --}}
-                        <input type="text" name="choice[{{$value->id}}]" class="form-control" value="{{ $value->content }}" placeholder="">
-                        @if ($errors->has('choice.'.$value->id))
+                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control">
+                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $value->content }}" placeholder="">
+                        @if ($errors->has('choice.'.$key))
                         <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice_'.$value->id)}}</strong>
+                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$key)}}</strong>
                         </label>
                         @endif
                       </div>
                   @else
                       <div class="col-md-12">
-                        <input type="text" name="choice[{{$value->id}}]" class="form-control" value="{{ $value->content }}" placeholder="">
-                        @if ($errors->has('choice.'.$value->id))
+                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $value->content }}" placeholder="">
+                        @if ($errors->has('choice.'.$key))
                         <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice_'.$value->id)}}</strong>
+                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$key)}}</strong>
                         </label>
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input type="file" style="width:200px" name="picture_choice[{{$value->id}}]" class="form-control">
-                        {{-- <input style="width:200px" type="file" name="picture_choice_{{$value->id}}" class="form-control"> --}}
-                        @if ($errors->has('picture_choice.'.$value->id))
+                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control">
+                        @if ($errors->has('picture_choice.'.$key))
                           <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice_'.$value->id)}}</strong>
+                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$key)}}</strong>
                           </label>
                         @endif
                       </div>
@@ -125,18 +123,26 @@
           </div>
           <div class="form-group">
             <label class="display-block"><b>True Answer:</b></label>
-            @foreach ($data->answer as $key2 => $value2)
             <label class="radio-inline col-md-1">
-              <input checked type="radio" name="true_answer" {{$value2->isTrue == '1' ? 'checked' : '' }} value="" class="styled">
-              @switch($key2)
-                @case(0)<label>First</label>@break
-                @case(1)<label>Second</label>@break
-                @case(2)<label>Third</label>@break
-                @case(3)<label>Fourth</label>@break
-                @case(4)<label>Fifth</label>@break
-              @endswitch
+              <input type="radio" name="true_answer[]" @if ($data->answer[0]->isTrue == '1') checked @endif value="1" class="styled">
+              First
             </label>
-            @endforeach
+            <label class="radio-inline col-md-1">
+              <input type="radio" name="true_answer[]" @if ($data->answer[1]->isTrue == '1') checked @endif value="2" class="styled">
+              Second
+            </label>
+            <label class="radio-inline col-md-1">
+              <input type="radio" name="true_answer[]" @if ($data->answer[2]->isTrue == '1') checked @endif value="3" class="styled">
+              Third
+            </label>
+            <label class="radio-inline col-md-1">
+              <input type="radio" name="true_answer[]" @if ($data->answer[3]->isTrue == '1') checked @endif value="4" class="styled">
+              Fourth
+            </label>
+            <label class="radio-inline col-md-1">
+              <input type="radio" name="true_answer[]" @if ($data->answer[4]->isTrue == '1') checked @endif value="5" class="styled">
+              Fifth
+            </label>
           </div>
         </fieldset>
         <div>
