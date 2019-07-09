@@ -30,7 +30,7 @@ class UserController extends Controller
     $data = User::orderBy('name')->get();
     return datatables()->of($data)->addColumn('action', function($row){
           $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-          $btn = $btn.'  <a id="delete" href="'.route('user.destroy',$row->id).'" onclick="return Delete()" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
+          $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
           return $btn;
     })
     ->rawColumns(['action'])
@@ -173,7 +173,7 @@ class UserController extends Controller
     \Storage::delete('public/images/user/'.$user->picture);
     $user->delete();
 
-    return redirect()->route('user.index');
+    return response()->json(['data'=>'success delete data']);
   }
 
 

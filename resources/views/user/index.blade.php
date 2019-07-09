@@ -70,29 +70,33 @@ var tableUser;
           { data: 'action', name:'action', visible:true},
       ],
     });
-  });
-
-  $('#delete').click(function(){
-    Delete();
-  });
-
-  function Delete() {
-    swal({
-      // title: "Are you sure?",
-      text: "Are you sure to delete data?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your imaginary file has been deleted!", {
-          icon: "success",
+    $('#table-user tbody').on( 'click', 'button', function () {
+        var data = tableUser.row( $(this).parents('tr') ).data();
+          swal({
+          // title: "Are you sure?",
+          text: "Are you sure to delete data?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/user/delete') }}"+"/"+data['id'],
+              method: 'get',
+              success: function(result){
+                tableUser.ajax.reload();
+                swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                });
+              } 
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
         });
-      } else {
-        swal("Your imaginary file is safe!");
-      }
-    });
-  }
+      });
+  });
+
 </script>
 @endpush
