@@ -56,7 +56,7 @@
   <!-- State saving -->
 	<div class="panel panel-white">
     <div class="panel-heading">
-      <a style="margin-top:-6px" href="#" class="btn btn-primary btn-sm pull-right"><i class="icon-add position-left"></i>Create New</a>
+      <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New</button>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
@@ -124,10 +124,32 @@
 	<!-- /state saving -->
   </div>
 </div>
-<!-- /content area -->
+<!-- Modal -->
+<div id="addQuestionModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-body text-center">
+              <i class="fa fa-4x fa-trash"></i>
+              <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
+                <h6>How many questions do you want to make?</h6>
+                <input type="number" name="total_add" class="form-control" value="{{ old('total_add') }}" placeholder="">
+                  {{-- @if ($errors->has('title'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('title') }}</strong>
+                  </label>
+                  @endif --}}
+                <button type="submit" class="btn btn-primary btn-sm pull-right bg-primary-800">Go! <i class="icon-arrow-right14 position-right"></i></button>
+                {{-- <a style="margin-top:5px" href="{{route('quiz.questionAdd',$quiz->id)}}" class="btn btn-primary btn-sm pull-right"><i class="icon-add position-left"></i>Go</a> --}}
+              .</form>
+          </div>
+      </div>
+  </div>
+</div>
 @endsection
 @push('after_script')
-  <script>
-
-  </script>
+<script type="text/javascript">
+  $(document).on('click', '.add-modal', function() {
+    $('#addQuestionModal').modal('show');
+  });
+</script>
 @endpush

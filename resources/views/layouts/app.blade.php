@@ -60,6 +60,13 @@
 	<script type="text/javascript" src="{{asset('js/pages/wizard_stepy.js')}}"></script>
 	<!-- /theme JS files -->
 
+	<script type="text/javascript" src="{{asset('js/plugins/velocity/velocity.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/velocity/velocity.ui.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/buttons/spin.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/plugins/buttons/ladda.min.js')}}"></script>
+
+	<script type="text/javascript" src="{{asset('js/pages/components_buttons.js')}}"></script>
+
 	{{-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> --}}
 	<script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script>
 
