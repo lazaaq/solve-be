@@ -44,22 +44,28 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate($request,
-    [
-      'question.*' => 'required',
-      'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
-      'choice.*.*' => 'required_without:picture_choice.*.*',
-      'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
-    ],
-    [
-      'question.*.required' => 'The question field is required.',
-      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
-      'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
-      'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-
-    ]);
-
+    // $this->validate($request,
+    // [
+    //   'question.*' => 'required',
+    //   'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+    //   'choice.*.*' => 'required_without:picture_choice.*.*',
+    //   'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
+    // ],
+    // [
+    //   'question.*.required' => 'The question field is required.',
+    //   'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    //   'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
+    //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
+    //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+    //
+    // ]);
+    $quiz = Quiz::find($request->quiz_id);
+    $questionCount = Question::where('quiz_id', $quiz->id)->get()->count();
+    if ($quiz->sum_question == $questionCount) {
+      $quiz->sum_question+= @count($request->question);
+      $quiz->save();
+    }
+    $quiz->sum_question = $quiz->sum_question - @count($request->question);
     $question = [];
 
     for ($i=0; $i < @count($request->question); $i++) {
@@ -102,11 +108,20 @@ class QuestionController extends Controller
            $answers[$i][$j] = array_slice($answers[$i][$j], 0, 2, true) + array("pic_url" => $filenameChoice[$i][$j]) + array_slice($answers[$i][$j], 2, count($answers[$i][$j]) - 1, true);
         }
     }
-
     foreach ($question as $key => $q) {
       Question::create($q)->answer()->createMany($answers[$key]);
     }
+    if ($quiz->sum_question == $questionCount) {
+      return redirect()->route('quiz.show',$quiz->id);
+    }
       return redirect()->route('quiz.index');
+  }
+
+  public function add(Request $request, $id)
+  {
+      $quiz = Quiz::find($id);
+      $total = $request->total_add;
+      return view('question.create-add', compact('quiz','total'));
   }
 
   /**

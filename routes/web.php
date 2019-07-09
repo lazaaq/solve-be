@@ -30,6 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('quiz', 'QuizController');
 
      Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
+     Route::get('quiz/question/{id}/add','QuestionController@add')->name('quiz.questionAdd');
 
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
      Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');
