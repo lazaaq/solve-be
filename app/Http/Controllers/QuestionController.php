@@ -170,7 +170,7 @@ class QuestionController extends Controller
       'choice.*.required_without' => 'The choice field is required when file field is not present.',
       'picture_choice.*.required_without' => 'The file field is required when choice field is not present.',
       'picture_choice.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    
+
     ]);
 
     $data = Question::find($id);
@@ -260,7 +260,8 @@ class QuestionController extends Controller
             'pic_d' => $option[$i]->get(3)->pic_url,
             'e' => $option[$i]->get(4)->content,
             'pic_e' => $option[$i]->get(4)->pic_url,
-            'isTrue' => $option[$i]->where('isTrue', 1)->first()->content.', '.$option[$i]->where('isTrue', 1)->first()->pic_url,
+            'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->content,
+            'isTruePic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
           ];
         }
 
