@@ -78,8 +78,8 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <a style="margin-top:-8px;color:#fff" href="{{route('question.destroy',$value->id)}}" class="btn btn-danger btn-sm pull-right"><i class="icon-pencil6 position-left"></i>Delete</a>
-                <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn btn-info btn-sm pull-right"><i class="icon-trash position-left"></i>Edit</a>
+                <a style="margin-top:-8px;color:#fff" href="{{route('question.destroy',$value->id)}}" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</a>
+                <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-pencil6 position-left"></i>Edit</a>
               </div>
       			</p>
       		</div>
@@ -129,17 +129,16 @@
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-body text-center">
-              <i class="fa fa-4x fa-trash"></i>
+              <i class="fa fa-4x fa-plus-square-o"></i>
               <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
                 <h6>How many questions do you want to make?</h6>
                 <input type="number" name="total_add" class="form-control" value="{{ old('total_add') }}" placeholder="">
-                  {{-- @if ($errors->has('title'))
+                  @if ($errors->has('total_add'))
                   <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('title') }}</strong>
+                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
                   </label>
-                  @endif --}}
+                  @endif
                 <button type="submit" class="btn btn-primary btn-sm pull-right bg-primary-800">Go! <i class="icon-arrow-right14 position-right"></i></button>
-                {{-- <a style="margin-top:5px" href="{{route('quiz.questionAdd',$quiz->id)}}" class="btn btn-primary btn-sm pull-right"><i class="icon-add position-left"></i>Go</a> --}}
               .</form>
           </div>
       </div>

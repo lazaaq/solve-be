@@ -44,28 +44,31 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    // $this->validate($request,
-    // [
-    //   'question.*' => 'required',
-    //   'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
-    //   'choice.*.*' => 'required_without:picture_choice.*.*',
-    //   'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
-    // ],
-    // [
-    //   'question.*.required' => 'The question field is required.',
-    //   'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    //   'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
-    //   'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
-    //   'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-    //
-    // ]);
+    $this->validate($request,
+    [
+      'question.*' => 'required',
+      'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
+      'choice.*.*' => 'required_without:picture_choice.*.*',
+      'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
+    ],
+    [
+      'question.*.required' => 'The question field is required.',
+      'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+      'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
+      'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
+      'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
+
+    ]);
     $quiz = Quiz::find($request->quiz_id);
     $questionCount = Question::where('quiz_id', $quiz->id)->get()->count();
+    DB::beginTransaction();
+    /*fitur add question*/
     if ($quiz->sum_question == $questionCount) {
       $quiz->sum_question+= @count($request->question);
       $quiz->save();
     }
     $quiz->sum_question = $quiz->sum_question - @count($request->question);
+    /*end of fitur add question*/
     $question = [];
 
     for ($i=0; $i < @count($request->question); $i++) {
@@ -86,7 +89,7 @@ class QuestionController extends Controller
     }
 
     $answers = [];
-    $option = ['1', '2', '3', '4', '5'];
+    $option = ['A', 'B', 'C', 'D', 'E'];
     for ($i=0; $i < @count($request->choice); $i++) {
         for ($j=0; $j < @count($request->choice[$i]); $j++) {
             $answers[$i][$j] = [
@@ -111,6 +114,7 @@ class QuestionController extends Controller
     foreach ($question as $key => $q) {
       Question::create($q)->answer()->createMany($answers[$key]);
     }
+    DB::commit();
     if ($quiz->sum_question == $questionCount) {
       return redirect()->route('quiz.show',$quiz->id);
     }
@@ -240,9 +244,19 @@ class QuestionController extends Controller
               'message'   => 'Quiz not found'
           ]);
         }
+        foreach ($quiz as $key => $value) {
+          if(!empty($value->pic_url)){
+            $value->pic_url = route('question.picture',$value->id);
+          }
+        }
         $option  = [];
         foreach ($quiz as $key => $item) {
             $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
+        }
+        foreach ($option[0] as $key => $value) {
+          if(!empty($value->pic_url)){
+            $value->pic_url = route('answer.picture',$value->id);
+          }
         }
         $collection = [];
         foreach ($quiz as $i => $item) {
@@ -255,13 +269,12 @@ class QuestionController extends Controller
             'b' => $option[$i]->get(1)->content,
             'pic_b' => $option[$i]->get(1)->pic_url,
             'c' => $option[$i]->get(2)->content,
-            'pic_b' => $option[$i]->get(2)->pic_url,
+            'pic_c' => $option[$i]->get(2)->pic_url,
             'd' => $option[$i]->get(3)->content,
             'pic_d' => $option[$i]->get(3)->pic_url,
             'e' => $option[$i]->get(4)->content,
             'pic_e' => $option[$i]->get(4)->pic_url,
-            'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->content,
-            'isTruePic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
+            'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
           ];
         }
 

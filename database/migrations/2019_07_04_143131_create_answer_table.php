@@ -14,12 +14,12 @@ class CreateAnswerTable extends Migration
     public function up()
     {
       Schema::create('answers', function(Blueprint $table) {
-        $table->increments('id');
+        $table->bigIncrements('id');
         $table->integer('question_id');
         $table->string('option');
         $table->string('content')->nullable();
         $table->string('pic_url')->nullable();
-        $table->string('isTrue');
+        $table->enum('isTrue', ['1', '0']);
         $table->timestamps();
         $table->softDeletes();
       });
