@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['api'],'prefix' => '/collager'], function () {
   Route::post('/register', 'UserController@api_collagerRegister');
   Route::post('/login','UserController@api_collagerLogin');
+  Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
 });
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
   Route::get('/logout', 'UserController@api_logout');
