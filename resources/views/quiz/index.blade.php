@@ -36,9 +36,10 @@
   			<thead>
       		<tr>
              <th>id</th>
+             <th>Category</th>
+             <th>Type</th>
              <th>Title</th>
              <th>Description</th>
-             <th>Quiz Type</th>
              <th>Total Question</th>
              <th class="col-md-2">Action</th>
           </tr>
@@ -72,9 +73,10 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
+            { data: 'quiz_category', name:'quiz_category', visible:true},
+            { data: 'quiz_type', name:'quiz_type', visible:true},
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
-            { data: 'quiz_type', name:'quiz_type', visible:true},
             { data: 'sum_question', name:'sum_question', visible:true},
             { data: 'action', name:'action', visible:true},
         ],

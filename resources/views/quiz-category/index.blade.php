@@ -4,7 +4,7 @@
 <div class="page-header">
     <div class="page-header-content">
         <div class="page-title">
-            <h4><i class=""></i> <span class="text-semibold">Quiz Type</span></h4>
+            <h4><i class=""></i> <span class="text-semibold">Quiz Category</span></h4>
         </div>
     </div>
 
@@ -12,7 +12,7 @@
         <ul class="breadcrumb">
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="">Master Data</a></li>
-            <li class="active">Quiz Type</li>
+            <li class="active">Quiz Category</li>
         </ul>
     </div>
 </div>
@@ -31,12 +31,11 @@
 			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
 		{{-- </div> --}}
     <div style="padding:20px">
-      <a href="{{route('quiztype.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
-    	<table class="table" id="table-quiz-type" class="display" style="width:100%">
+      <a href="{{route('quizcategory.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+    	<table class="table" id="table-quiz-category" class="display" style="width:100%">
   			<thead>
       		<tr>
              <th>Id</th>
-             <th>Category</th>
              <th>Name</th>
              <th>Description</th>
              <th class="col-md-2">Action</th>
@@ -53,10 +52,10 @@
 @endsection
 @push('after_script')
   <script>
-  var tableQuizType;
+  var tableQuizCategory;
     $(document).ready(function(){
   		/* tabel user */
-      tableQuizType = $('#table-quiz-type').DataTable({
+      tableQuizCategory = $('#table-quiz-category').DataTable({
         processing	: true,
         language: {
                     search: "_INPUT_",
@@ -66,19 +65,18 @@
   			serverSide	: true,
   			stateSave: true,
         ajax		: {
-            url: "{{ url('table/data-quiz-type') }}",
+            url : "{{ url('table/data-quiz-category') }}",
             type: "GET",
         },
         columns: [
             { data: 'id', name:'id', visible:false},
-            { data: 'quiz_category', name:'quiz_category', visible:true},
             { data: 'name', name:'name', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
-      $('#table-quiz-type tbody').on( 'click', 'button', function () {
-        var data = tableQuizType.row( $(this).parents('tr') ).data();
+      $('#table-quiz-category tbody').on( 'click', 'button', function () {
+        var data = tableQuizCategory.row( $(this).parents('tr') ).data();
         swal({
           // title: "Are you sure?",
           text: "Are you sure to delete data?",
@@ -89,10 +87,10 @@
         .then((willDelete) => {
           if (willDelete) {
             $.ajax({
-              url: "{{ url('admin/quiztype/delete') }}"+"/"+data['id'],
+              url: "{{ url('admin/quizcategory/delete') }}"+"/"+data['id'],
               method: 'get',
               success: function(result){
-                tableQuizType.ajax.reload();
+                tableQuizCategory.ajax.reload();
                 swal("Poof! Your imaginary file has been deleted!", {
                   icon: "success",
                 });

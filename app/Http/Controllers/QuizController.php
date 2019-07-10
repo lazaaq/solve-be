@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use File;
+use App\QuizCategory;
 use App\QuizType;
 use App\Quiz;
 use App\Question;
@@ -31,6 +32,9 @@ class QuizController extends Controller
     ->addColumn('quiz_type', function($row){
       return $row->quizType->name;
     })
+    ->addColumn('quiz_category', function($row){
+      return $row->quizType->quizCategory->name;
+    })
     ->make(true);
   }
 
@@ -41,6 +45,7 @@ class QuizController extends Controller
    */
   public function index()
   {
+
     return view('quiz.index');
   }
 
@@ -51,8 +56,9 @@ class QuizController extends Controller
    */
   public function create()
   {
+    $category = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
-    return view('quiz.create', compact('quiztype'));
+    return view('quiz.create', compact('quiztype','category'));
   }
 
   /**
@@ -113,8 +119,9 @@ class QuizController extends Controller
   public function edit($id)
   {
     $data = Quiz::find($id);
+    $category = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
-    return view('quiz.edit', compact('data','quiztype'));
+    return view('quiz.edit', compact('data','quiztype','category'));
   }
 
   /**

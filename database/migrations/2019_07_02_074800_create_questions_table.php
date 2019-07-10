@@ -11,7 +11,7 @@ class CreateQuestionsTable extends Migration {
 			$table->increments('id');
 			$table->integer('quiz_id');
 			$table->string('question');
-			$table->string('pic_url');
+			$table->string('pic_url')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\QuizType;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
+use App\QuizType;
+use App\QuizCategory;
 use File;
 
 class QuizTypeController extends Controller
@@ -20,6 +21,9 @@ class QuizTypeController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('quiz_category', function($row){
+      return $row->quizCategory->name;
+    })
     ->make(true);
   }
   /**
@@ -39,7 +43,8 @@ class QuizTypeController extends Controller
    */
   public function create()
   {
-    return view('quiz-type.create');
+    $category = QuizCategory::all()->sortBy('name');
+    return view('quiz-type.create', compact('category'));
   }
 
   /**
@@ -51,8 +56,10 @@ class QuizTypeController extends Controller
   {
     $this->validate(request(),
       [
+        'quiz_category' => 'required',
         'name' => 'required|max:20|unique:quiz_types',
         'description' => 'required|max:191',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
     if(!empty($request->picture)){
@@ -66,6 +73,7 @@ class QuizTypeController extends Controller
        // dd($filename);
     QuizType::create(
       [
+            'quiz_category_id' => request('quiz_category'),
             'name' => request('name'),
             'description'=>request('description'),
             'pic_url'=>$filename
@@ -92,8 +100,9 @@ class QuizTypeController extends Controller
    */
   public function edit($id)
   {
+    $category = QuizCategory::all()->sortBy('name');
     $data = QuizType::find($id);
-    return view('quiz-type.edit', compact('data'));
+    return view('quiz-type.edit', compact('data','category'));
   }
 
   public function picture($id)
@@ -114,8 +123,10 @@ class QuizTypeController extends Controller
     $data= QuizType::find($id);
     $this->validate(request(),
       [
+        'quiz_category' => 'required',
         'name' => 'required|max:20|unique:quiz_types,name,'.$data->id.',id',
         'description' => 'required|max:191',
+        'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
     if(!empty($request->picture)){
@@ -128,6 +139,7 @@ class QuizTypeController extends Controller
          $filename=$data->pic_url;
     }
 
+    $data->quiz_category_id=$request->quiz_category;
     $data->name=$request->name;
     $data->description=$request->description;
     $data->pic_url=$filename;
