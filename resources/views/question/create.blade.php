@@ -124,23 +124,23 @@
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>
                 <label class="radio-inline col-md-1">
-                  <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="1" class="styled">
+                  <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="A" class="styled">
                   First
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
+                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="B" class="styled">
                   Second
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="3" class="styled">
+                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="C" class="styled">
                   Third
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="4" class="styled">
+                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="D" class="styled">
                   Fourth
                 </label>
                 <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="5" class="styled">
+                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="E" class="styled">
                   Fifth
                 </label>
 							</div>

@@ -19,7 +19,7 @@ class CreateAnswerTable extends Migration
         $table->string('option');
         $table->string('content')->nullable();
         $table->string('pic_url')->nullable();
-        $table->enum('isTrue', ['1', '0']);
+        $table->string('isTrue',1);
         $table->timestamps();
         $table->softDeletes();
       });

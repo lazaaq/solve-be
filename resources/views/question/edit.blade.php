@@ -124,23 +124,23 @@
           <div class="form-group">
             <label class="display-block"><b>True Answer:</b></label>
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[0]->isTrue == '1') checked @endif value="1" class="styled">
+              <input type="radio" name="true_answer[]" @if ($data->answer[0]->isTrue == '1') checked @endif value="A" class="styled">
               First
             </label>
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[1]->isTrue == '1') checked @endif value="2" class="styled">
+              <input type="radio" name="true_answer[]" @if ($data->answer[1]->isTrue == '1') checked @endif value="B" class="styled">
               Second
             </label>
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[2]->isTrue == '1') checked @endif value="3" class="styled">
+              <input type="radio" name="true_answer[]" @if ($data->answer[2]->isTrue == '1') checked @endif value="C" class="styled">
               Third
             </label>
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[3]->isTrue == '1') checked @endif value="4" class="styled">
+              <input type="radio" name="true_answer[]" @if ($data->answer[3]->isTrue == '1') checked @endif value="D" class="styled">
               Fourth
             </label>
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[4]->isTrue == '1') checked @endif value="5" class="styled">
+              <input type="radio" name="true_answer[]" @if ($data->answer[4]->isTrue == '1') checked @endif value="E" class="styled">
               Fifth
             </label>
           </div>

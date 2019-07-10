@@ -46,6 +46,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('storage/quiz/{id}', 'QuizController@picture')->name('quiz.picture');
      Route::get('storage/question/{id}', 'QuestionController@picture')->name('question.picture');
      Route::get('storage/answer/{id}', 'AnswerController@picture')->name('answer.picture');
+
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-category', 'QuizCategoryController@getData');
