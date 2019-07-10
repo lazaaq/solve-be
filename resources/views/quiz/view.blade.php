@@ -132,7 +132,7 @@
               <i class="fa fa-4x fa-plus-square-o"></i>
               <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
                 <h6>How many questions do you want to make?</h6>
-                <input type="number" name="total_add" class="form-control" value="{{ old('total_add') }}" placeholder="">
+                <input type="number" name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
                   @if ($errors->has('total_add'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
