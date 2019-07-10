@@ -79,6 +79,32 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
+      $('#table-quiz tbody').on( 'click', 'button', function () {
+          var data = tableQuiz.row( $(this).parents('tr') ).data();
+            swal({
+            // title: "Are you sure?",
+            text: "Are you sure to delete data?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                url: "{{ url('admin/quiz/delete') }}"+"/"+data['id'],
+                method: 'get',
+                success: function(result){
+                  tableQuiz.ajax.reload();
+                  swal("Poof! Your imaginary file has been deleted!", {
+                    icon: "success",
+                  });
+                }
+              });
+            } else {
+              swal("Your imaginary file is safe!");
+            }
+          });
+        });
     });
   </script>
 @endpush

@@ -75,14 +75,32 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
+      $('#table-quiz-type tbody').on( 'click', 'button', function () {
+        var data = tableQuizType.row( $(this).parents('tr') ).data();
+        swal({
+          // title: "Are you sure?",
+          text: "Are you sure to delete data?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/quiztype/delete') }}"+"/"+data['id'],
+              method: 'get',
+              success: function(result){
+                tableQuizType.ajax.reload();
+                swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                });
+              }
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+      });
     });
-
-    $('#delete-quiz-type').click(function(){ 
-    DeleteQuizType();
-    });
-
-    function DeleteQuizType() {
-      return confirm('Are you sure want to delete this data?');
-    }
   </script>
 @endpush
