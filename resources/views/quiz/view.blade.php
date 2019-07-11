@@ -61,6 +61,7 @@
 		</div>
     <div class="panel-body">
       @foreach ($quiz->question as $key => $value)
+        <input type="hidden" name="id-question" value="{{$value->id}}">
         <div class="panel panel-white">
       		<div class="panel-body">
       			<p class="panel-title">
@@ -78,6 +79,7 @@
                 </div>
               </div>
               <div class="col-md-3">
+                {{-- <button id="delete" style="margin-top:-8px;color:#fff" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</button> --}}
                 <a style="margin-top:-8px;color:#fff" href="{{route('question.destroy',$value->id)}}" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</a>
                 <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-pencil6 position-left"></i>Edit</a>
               </div>
@@ -149,6 +151,37 @@
 <script type="text/javascript">
   $(document).on('click', '.add-modal', function() {
     $('#addQuestionModal').modal('show');
+  });
+</script>
+<script>
+var tableQuiz;
+  $(document).ready(function(){
+    $('#delete').on( 'click', function () {
+          var idQuestion = $('input[name=id-question]').val();
+          console.log(idQuestion);
+          swal({
+          // title: "Are you sure?",
+          text: "Are you sure to delete data?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/question/delete') }}"+"/"+idQuestion,
+              method: 'get',
+              success: function(result){
+                swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                });
+              }
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+      });
   });
 </script>
 @endpush

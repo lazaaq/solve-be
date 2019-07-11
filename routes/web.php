@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');
      Route::get('quiz/delete/{id}', 'QuizController@destroy')->name('quiz.destroy');
      Route::get('quizcategory/delete/{id}', 'QuizCategoryController@destroy')->name('quizcategory.destroy');
+     Route::get('question/delete/{id}', 'QuestionController@destroy')->name('question.destroy');
 
      Route::get('storage/user/{id}', 'UserController@picture')->name('user.picture');
      Route::get('storage/quizcategory/{id}', 'QuizCategoryController@picture')->name('quizcategory.picture');

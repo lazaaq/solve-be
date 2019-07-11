@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use DataTables;
 use App\QuizType;
 use App\Quiz;
+use App\Answer;
 use App\Question;
 use File;
 use DB;
@@ -223,7 +224,35 @@ class QuestionController extends Controller
    */
   public function destroy($id)
   {
+    DB::beginTransaction();
+    $data = Question::find($id);
 
+    $answer = Answer::where('question_id', $id)->get();
+    foreach ($answer as $key => $value) {
+      Storage::delete('public/images/answer/'.$value->pic_url);
+      $value->delete();
+    }
+    if (!$answer) {
+      DB::rollback();
+      return 'failed DB transaction';
+    }
+
+    Storage::delete('public/images/question/'.$data->pic_url);
+    $data->delete();
+    if (!$data) {
+      DB::rollback();
+      return 'failed DB transaction';
+    }
+
+    $quiz = Quiz::where('id', $data->quiz_id)->first();
+    $quiz->sum_question = $quiz->sum_question - 1;
+    $quiz->save();
+    if (!$quiz) {
+      DB::rollback();
+      return 'failed DB transaction';
+    }
+    DB::commit();
+    return redirect()->route('quiz.show',$quiz->id);
   }
 
   public function picture($id)
