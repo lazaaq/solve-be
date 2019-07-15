@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Datatables;
 use App\User;
 use App\Collager;
+use App\QuizCollager;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
@@ -271,6 +272,8 @@ class UserController extends Controller
       }else {
         $users->picture = route('user.picture',$users->id);
       }
+      $countPlayed= QuizCollager::where('collager_id', Auth::user()->collager->id)->get()->count();
+      $users->countPlayed = $countPlayed;
       return response()->json([
         'status'=>'success',
         'user' => $users
