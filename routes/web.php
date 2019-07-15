@@ -34,6 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
 
      Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
      Route::get('quiz/question/{id}/add','QuestionController@add')->name('quiz.questionAdd');
+     Route::get('quiz/bulk/import','QuizController@import')->name('quiz.import');
+     Route::post('quiz/bulk/import','QuizController@saveImport')->name('quiz.saveImport');
+     Route::get('quiz/import/download', 'QuizController@downloadTemplate')->name('quiz.downloadTemplate');
 
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
      Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');

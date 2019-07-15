@@ -180,6 +180,22 @@ class QuizController extends Controller
     return Image::make(Storage::get('public/images/quiz/'.$picture->pic_url))->response();
   }
 
+  public function import()
+  {
+    return view('quiz.import');
+  }
+
+  public function saveImport()
+  {
+    return redirect()->route('quiz.index');
+  }
+
+  public function downloadTemplate()
+  {
+    $path = 'template/Template Import Quiz.xlsx';
+    return response()->download($path);
+  }
+
   /*START OF API*/
 
   public function api_index($id){
