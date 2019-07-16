@@ -39,6 +39,10 @@
 
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>
+
+        <div class="col-md-4">
+          <a href="{{route('quiz.import',$quiz->id)}}" class="btn btn-primary btn-sm bg-primary"><i class="icon-upload position-left"></i>Bulk Import</a>
+        </div>
       </div>
       <div class="col-md-6">
         @if($quiz->pic_url == 'blank.jpg')

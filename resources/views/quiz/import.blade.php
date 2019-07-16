@@ -32,7 +32,7 @@
 			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
 		{{-- </div> --}}
     <div class="panel-body">
-  		<form class="form-horizontal form-validate-jquery" action="{{route('quiz.saveImport')}}" method="post" enctype="multipart/form-data" files=true>
+  		<form class="form-horizontal form-validate-jquery" action="{{route('quiz.saveImport',$data->id)}}" method="post" enctype="multipart/form-data" files=true>
         {{ csrf_field() }}
   			<fieldset class="content-group">
   				<legend class="text-bold">Import Quiz</legend>

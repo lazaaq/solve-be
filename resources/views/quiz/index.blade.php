@@ -32,7 +32,6 @@
 		{{-- </div> --}}
     <div style="padding:20px">
       <a href="{{route('quiz.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
-      <a href="{{route('quiz.import')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-upload position-left"></i>Bulk Import</a>
       <table class="table" id="table-quiz" class="display" style="width:100%">
   			<thead>
       		<tr>

@@ -180,12 +180,13 @@ class QuizController extends Controller
     return Image::make(Storage::get('public/images/quiz/'.$picture->pic_url))->response();
   }
 
-  public function import()
+  public function import($id)
   {
-    return view('quiz.import');
+    $data = Quiz::find($id);
+    return view('quiz.import',compact('data'));
   }
 
-  public function saveImport()
+  public function saveImport($id)
   {
     return redirect()->route('quiz.index');
   }
