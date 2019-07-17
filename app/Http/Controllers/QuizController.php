@@ -13,6 +13,9 @@ use App\Quiz;
 use App\Question;
 use DataTables;
 use DB;
+use Excel;
+use App\Imports\QuestionImport;
+
 
 class QuizController extends Controller
 {
@@ -178,6 +181,36 @@ class QuizController extends Controller
   {
     $picture = Quiz::find($id);
     return Image::make(Storage::get('public/images/quiz/'.$picture->pic_url))->response();
+  }
+
+  public function import($id)
+  {
+    $data = Quiz::find($id);
+    return view('quiz.import',compact('data'));
+  }
+
+  public function saveImport(Request $request, $id)
+  {
+    $this->validate(request(),
+      [
+        'excel' => 'required|mimes:xlsx',
+      ]
+    );
+    $data = Quiz::find($id);
+
+    $file = $request->file('excel');
+    $tes = Excel::import(new QuestionImport($id), $file);
+    
+    $question = Question::where('quiz_id',$id)->count();
+    $data->sum_question = $data->sum_question + $question;
+    $data->save();
+    return redirect()->route('quiz.show',$id);
+  }
+
+  public function downloadTemplate()
+  {
+    $path = 'template/Template Import Quiz.xlsx';
+    return response()->download($path);
   }
 
   /*START OF API*/

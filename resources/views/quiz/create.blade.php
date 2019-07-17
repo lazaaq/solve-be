@@ -35,7 +35,7 @@
   		<form class="form-horizontal form-validate-jquery" action="{{route('quiz.store')}}" method="post" enctype="multipart/form-data" files=true>
         {{ csrf_field() }}
   			<fieldset class="content-group">
-  				<legend class="text-bold">Creat Quiz</legend>
+  				<legend class="text-bold">Create Quiz</legend>
           <div class="form-group">
             <label class="control-label col-lg-3">Quiz Category<span class="text-danger">*</span></label>
             <div class="col-lg-9">
