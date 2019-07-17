@@ -83,8 +83,8 @@
                 </div>
               </div>
               <div class="col-md-3">
-                {{-- <button id="delete" style="margin-top:-8px;color:#fff" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</button> --}}
-                <a style="margin-top:-8px;color:#fff" href="{{route('question.destroy',$value->id)}}" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</a>
+                <button id="delete-specific-question" value="{{$value->id}}" style="margin-top:-8px;color:#fff" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</button>
+                <!-- <a style="margin-top:-8px;color:#fff" href="{{route('question.destroy',$value->id)}}" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</a> -->
                 <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-pencil6 position-left"></i>Edit</a>
               </div>
       			</p>
@@ -160,8 +160,8 @@
 <script>
 var tableQuiz;
   $(document).ready(function(){
-    $('#delete').on( 'click', function () {
-          var idQuestion = $('input[name=id-question]').val();
+    $('#delete-specific-question').on( 'click', function () {
+          var idQuestion = $(this).val();
           console.log(idQuestion);
           swal({
           // title: "Are you sure?",
@@ -179,6 +179,7 @@ var tableQuiz;
                 swal("Poof! Your imaginary file has been deleted!", {
                   icon: "success",
                 });
+                location.reload();
               }
             });
           } else {
