@@ -37,22 +37,6 @@
   			<fieldset class="content-group">
   				<legend class="text-bold">Creat Quiz Type</legend>
           <div class="form-group">
-            <label class="control-label col-lg-3">Quiz Category<span class="text-danger">*</span></label>
-            <div class="col-lg-9">
-              <select class="select-search" name="quiz_category">
-                  {{-- <option value="">Choose Quiz</option> --}}
-                  @foreach($category as $value => $key)
-                      <option value="{{$key->id}}" {{collect(old('quiz_category'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
-                  @endforeach
-              </select>
-                @if ($errors->has('name'))
-                <label style="padding-top:7px;color:#F44336;">
-                    <strong><i class="fa fa-times-circle"></i> {{ $errors->first('name') }}</strong>
-                </label>
-                @endif
-            </div>
-          </div>
-          <div class="form-group">
             <label class="control-label col-lg-3">Type Name <span class="text-danger">*</span></label>
             <div class="col-lg-9">
               <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">

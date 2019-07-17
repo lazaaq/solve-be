@@ -38,28 +38,12 @@
   			<fieldset class="content-group">
   				<legend class="text-bold">Edit Quiz</legend>
           <div class="form-group">
-            <label class="control-label col-lg-3">Quiz Category<span class="text-danger">*</span></label>
-            <div class="col-lg-9">
-              <select id="category" class="select-search" name="quiz_category">
-                  {{-- <option value="">Choose Quiz</option> --}}
-                  @foreach($category as $value => $key)
-                      <option value="{{$key->id}}" {{$data->quiztype->quiz_category_id == $key->id ? 'selected':''}}>{{$key->name}}</option>
-                  @endforeach
-              </select>
-                @if ($errors->has('quiz_category'))
-                <label style="padding-top:7px;color:#F44336;">
-                    <strong><i class="fa fa-times-circle"></i> {{ $errors->first('quiz_category') }}</strong>
-                </label>
-                @endif
-            </div>
-          </div>
-          <div class="form-group">
             <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
             <div class="col-lg-9">
               <select id="type" class="select-search" name="quiz_type">
                   {{-- <option value="">Choose Quiz</option> --}}
                   @foreach($quiztype as $value => $key)
-                      <option value="{{$key->id}}" class="{{$key->quiz_category_id}}" {{$data->quiz_type_id == $key->id ? 'selected':''}}>{{$key->name}}</option>
+                      <option value="{{$key->id}}" {{$data->quiz_type_id == $key->id ? 'selected':''}}>{{$key->name}}</option>
                   @endforeach
               </select>
                 @if ($errors->has('name'))
@@ -137,10 +121,6 @@
 <!-- /content area -->
 @endsection
 @push('after_script')
-  <script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
-  <script>
-    $(document).ready(function(){
-      $("#type").chained("#category");
-    });
-  </script>
+
+
 @endpush

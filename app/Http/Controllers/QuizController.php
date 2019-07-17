@@ -7,7 +7,6 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use File;
-use App\QuizCategory;
 use App\QuizType;
 use App\Quiz;
 use App\Question;
@@ -35,9 +34,6 @@ class QuizController extends Controller
     ->addColumn('quiz_type', function($row){
       return $row->quizType->name;
     })
-    ->addColumn('quiz_category', function($row){
-      return $row->quizType->quizCategory->name;
-    })
     ->make(true);
   }
 
@@ -59,9 +55,8 @@ class QuizController extends Controller
    */
   public function create()
   {
-    $category = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
-    return view('quiz.create', compact('quiztype','category'));
+    return view('quiz.create', compact('quiztype'));
   }
 
   /**
@@ -122,9 +117,8 @@ class QuizController extends Controller
   public function edit($id)
   {
     $data = Quiz::find($id);
-    $category = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
-    return view('quiz.edit', compact('data','quiztype','category'));
+    return view('quiz.edit', compact('data','quiztype'));
   }
 
   /**
@@ -200,7 +194,7 @@ class QuizController extends Controller
 
     $file = $request->file('excel');
     $tes = Excel::import(new QuestionImport($id), $file);
-    
+
     $question = Question::where('quiz_id',$id)->count();
     $data->sum_question = $data->sum_question + $question;
     $data->save();

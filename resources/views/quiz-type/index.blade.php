@@ -36,7 +36,6 @@
   			<thead>
       		<tr>
              <th>Id</th>
-             <th>Category</th>
              <th>Name</th>
              <th>Description</th>
              <th class="col-md-2">Action</th>
@@ -71,7 +70,6 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
-            { data: 'quiz_category', name:'quiz_category', visible:true},
             { data: 'name', name:'name', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'action', name:'action', visible:true},
