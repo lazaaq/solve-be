@@ -40,6 +40,11 @@
   					<label class="control-label col-lg-3">File</label>
   					<div class="col-lg-9">
   						<input type="file" name="excel" class="form-control">
+                @if ($errors->has('excel'))
+                <label style="padding-top:7px;color:#F44336;">
+                    <strong><i class="fa fa-times-circle"></i> {{ $errors->first('excel') }}</strong>
+                </label>
+                @endif
               <br>
               <a href="{{route('quiz.downloadTemplate')}}" class="btn btn-primary" id=""><i class="icon-download"></i> Template Import</a>
   					</div>
@@ -47,7 +52,7 @@
   			</fieldset>
         <div>
           <div class="col-md-4">
-            <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
+            <a href="{{route('quiz.show',$data->id)}}" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
           </div>
           <div class="col-md-8 text-right">
             <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
