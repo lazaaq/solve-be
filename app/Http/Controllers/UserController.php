@@ -273,7 +273,9 @@ class UserController extends Controller
         $users->picture = route('user.picture',$users->id);
       }
       $countPlayed= QuizCollager::where('collager_id', Auth::user()->collager->id)->get()->count();
-      $users->countPlayed = $countPlayed;
+      $highScore= QuizCollager::where('collager_id', Auth::user()->collager->id)->get()->max('total_score');
+      $users->count_played = $countPlayed;
+      $users->high_score = $highScore;
       return response()->json([
         'status'=>'success',
         'user' => $users

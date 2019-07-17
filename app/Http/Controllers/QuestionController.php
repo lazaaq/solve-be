@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Arr;
 use DataTables;
 use App\QuizType;
 use App\Quiz;
@@ -306,10 +307,11 @@ class QuestionController extends Controller
             'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
           ];
         }
+        $data = Arr::random($collection, 5);
 
         return response()->json([
             'status' => 'success',
-            'result'   => $collection
+            'result'   => $data
         ]);
     }
 

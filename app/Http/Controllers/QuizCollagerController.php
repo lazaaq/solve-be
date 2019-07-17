@@ -142,6 +142,40 @@ class QuizCollagerController extends Controller
     ]);
   }
 
+  public function api_leaderbordQuizPodium($id){
+    $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
+                          ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+                          ->orderBy('total_score','DESC')
+                          ->limit(3)
+                          ->get();
+    foreach ($data as $key => $value) {
+      if($value->picture == 'avatar.png'){
+        $value->picture = asset('img/'.$value->picture.'');
+      }else {
+        $value->picture = route('user.picture',$value->user_id);
+      }
+    }
+    return response()->json([
+      'status'=>'success',
+      'result'=>$data
+    ]);
+  }
+
+  public function api_leaderbordQuizNotPodium($id){
+    $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
+                          ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+                          ->orderBy('total_score','DESC')
+                          ->limit(12)
+                          ->skip(3)
+                          ->get();
+    return response()->json([
+      'status'=>'success',
+      'result'=>$data
+    ]);
+  }
+
 }
 
 ?>
