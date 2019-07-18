@@ -158,10 +158,13 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+     public function destroy($id)
+     {
+       $data = Banner::find($id);
+       Storage::delete('public/images/banner/'.$data->picture);
+       $data->delete();
+       return redirect()->route('banner.index');
+     }
 
     public function picture($id)
     {
