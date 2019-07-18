@@ -5097,7 +5097,7 @@ ul.dropdown-menu .dropdown-content-heading:first-child {
 }
 .thumbnail > img,
 .thumbnail a > img {
-  width: 100%;
+  /* width: 100%; */
 }
 a.thumbnail:hover,
 a.thumbnail:focus,
