@@ -268,11 +268,11 @@ class UserController extends Controller
   public function api_index()
   {
       $users = User::with('collager')->where('id', Auth::user()->id)->first();
-      if($users->picture == 'avatar.png'){
-        $users->picture = asset('img/'.$users->picture.'');
-      }else {
-        $users->picture = route('user.picture',$users->id);
-      }
+      // if($users->picture == 'avatar.png'){
+      //   $users->picture = asset('img/'.$users->picture.'');
+      // }else {
+      //   $users->picture = route('user.picture',$users->id);
+      // }
       $countPlayed= QuizCollager::where('collager_id', Auth::user()->collager->id)->get()->count();
       $highScore= QuizCollager::where('collager_id', Auth::user()->collager->id)->get()->max('total_score');
       $users->count_played = $countPlayed;

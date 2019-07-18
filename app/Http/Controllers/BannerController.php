@@ -28,12 +28,12 @@ class BannerController extends Controller
             return $btn;
         })
         ->addColumn('isViewed', function($row){
-            // if ($row->isView = 0) {
-            //   $row->isView = "ON";
-            // }else {
-            //   $row->$isView = "OFF";
-            // }
-            return $row->isView;
+            if ($row->isView == '1') {
+              $btn = '<button id="change-is-view" title="Change to invisible view" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i></button>';
+            }else {
+              $btn = '<button id="change-is-view" title="Change to visible" class="btn border-default btn-xs text-default btn-flat btn-icon"><i class="fa fa-toggle-off"></i></button>';
+            }
+            return $btn;
         })
         ->addColumn('pictures', function($row){
           $row->picture = route('banner.picture',$row->id);
@@ -163,6 +163,17 @@ class BannerController extends Controller
        $data = Banner::find($id);
        Storage::delete('public/images/banner/'.$data->picture);
        $data->delete();
+     }
+
+     public function changeIsView($id)
+     {
+       $data = Banner::find($id);
+       if ($data->isView == '1') {
+         $data->isView = '0';
+       }else {
+         $data->isView = '1';
+       }
+       $data->save();
        return redirect()->route('banner.index');
      }
 
@@ -170,5 +181,15 @@ class BannerController extends Controller
     {
       $data = Banner::find($id);
       return Image::make(Storage::get('public/images/banner/'.$data->picture))->response();
+    }
+
+    /*START OF API*/
+
+    public function api_index(){
+      $data = Banner::where('isView', '1')->get();
+      return response()->json([
+        'status'=>'success',
+        'result'=>$data
+      ]);
     }
 }

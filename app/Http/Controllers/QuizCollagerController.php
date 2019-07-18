@@ -107,13 +107,13 @@ class QuizCollagerController extends Controller
                           ->leftJoin('quiz_types', 'quizs.quiz_type_id', 'quiz_types.id')
                           ->select('quiz_collagers.*', 'quizs.title', 'quizs.pic_url as quiz_pic_url', 'quiz_types.name as quiz_type')
                           ->get();
-    foreach ($data as $key => $value) {
-      if($value->quiz_pic_url == 'blank.jpg'){
-        $value->quiz_pic_url = asset('img/'.$value->quiz_pic_url.'');
-      }else {
-        $value->quiz_pic_url = route('quiz.picture',$value->id);
-      }
-    }
+    // foreach ($data as $key => $value) {
+    //   if($value->quiz_pic_url == 'blank.jpg'){
+    //     $value->quiz_pic_url = asset('img/'.$value->quiz_pic_url.'');
+    //   }else {
+    //     $value->quiz_pic_url = route('quiz.picture',$value->id);
+    //   }
+    // }
     return response()->json([
       'status'=>'success',
       'result'=>$data
@@ -129,13 +129,13 @@ class QuizCollagerController extends Controller
                           ->selectRaw('collagers.user_id, collagers.id as collagers_id, users.username, users.picture, sum(quiz_collagers.total_score) as score')
                           ->get()
                           ->sortByDesc('score');
-    foreach ($data as $key => $value) {
-      if($value->picture == 'avatar.png'){
-        $value->picture = asset('img/'.$value->picture.'');
-      }else {
-        $value->picture = route('user.picture',$value->user_id);
-      }
-    }
+    // foreach ($data as $key => $value) {
+    //   if($value->picture == 'avatar.png'){
+    //     $value->picture = asset('img/'.$value->picture.'');
+    //   }else {
+    //     $value->picture = route('user.picture',$value->user_id);
+    //   }
+    // }
     return response()->json([
       'status'=>'success',
       'result'=>$data
@@ -150,13 +150,13 @@ class QuizCollagerController extends Controller
                           ->orderBy('total_score','DESC')
                           ->limit(3)
                           ->get();
-    foreach ($data as $key => $value) {
-      if($value->picture == 'avatar.png'){
-        $value->picture = asset('img/'.$value->picture.'');
-      }else {
-        $value->picture = route('user.picture',$value->user_id);
-      }
-    }
+    // foreach ($data as $key => $value) {
+    //   if($value->picture == 'avatar.png'){
+    //     $value->picture = asset('img/'.$value->picture.'');
+    //   }else {
+    //     $value->picture = route('user.picture',$value->user_id);
+    //   }
+    // }
     return response()->json([
       'status'=>'success',
       'result'=>$data

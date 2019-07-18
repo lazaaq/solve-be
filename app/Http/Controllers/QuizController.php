@@ -25,7 +25,7 @@ class QuizController extends Controller
     return datatables()->of($data)
     ->addColumn('action', function($row){
       $btn = '<a href="'.route('quiz.show',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
-      $btn = $btn.'<a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = $btn.'  <a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
       // $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
@@ -221,13 +221,13 @@ class QuizController extends Controller
         'message'=>'Not found quiz data.'
       ]);
     }
-    foreach ($data as $key => $value) {
-      if($value->pic_url == 'blank.jpg'){
-        $value->pic_url = asset('img/'.$value->pic_url.'');
-      }else {
-        $value->pic_url = route('quiz.picture',$value->id);
-      }
-    }
+    // foreach ($data as $key => $value) {
+    //   if($value->pic_url == 'blank.jpg'){
+    //     $value->pic_url = asset('img/'.$value->pic_url.'');
+    //   }else {
+    //     $value->pic_url = route('quiz.picture',$value->id);
+    //   }
+    // }
     return response()->json([
       'status'=>'success',
       'result'=>$data

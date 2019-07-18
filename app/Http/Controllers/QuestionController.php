@@ -274,20 +274,20 @@ class QuestionController extends Controller
               'message'   => 'Quiz not found'
           ]);
         }
-        foreach ($quiz as $key => $value) {
-          if(!empty($value->pic_url)){
-            $value->pic_url = route('question.picture',$value->id);
-          }
-        }
+        // foreach ($quiz as $key => $value) {
+        //   if(!empty($value->pic_url)){
+        //     $value->pic_url = route('question.picture',$value->id);
+        //   }
+        // }
         $option  = [];
         foreach ($quiz as $key => $item) {
             $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
         }
-        foreach ($option[0] as $key => $value) {
-          if(!empty($value->pic_url)){
-            $value->pic_url = route('answer.picture',$value->id);
-          }
-        }
+        // foreach ($option[0] as $key => $value) {
+        //   if(!empty($value->pic_url)){
+        //     $value->pic_url = route('answer.picture',$value->id);
+        //   }
+        // }
         $collection = [];
         foreach ($quiz as $i => $item) {
           $collection[$i] = [

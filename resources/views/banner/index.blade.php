@@ -79,7 +79,7 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
-      $('#table-banner tbody').on( 'click', 'button', function () {
+      $('#table-banner tbody').on( 'click', '#delete', function () {
         var data = tableQuizType.row( $(this).parents('tr') ).data();
         swal({
           // title: "Are you sure?",
@@ -96,6 +96,33 @@
               success: function(result){
                 tableQuizType.ajax.reload();
                 swal("Poof! Your imaginary file has been deleted!", {
+                  icon: "success",
+                });
+              }
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+      });
+
+      $('#table-banner tbody').on( 'click', '#change-is-view', function () {
+        var data = tableQuizType.row( $(this).parents('tr') ).data();
+        swal({
+          // title: "Are you sure?",
+          text: "Are you sure to change is view data?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
+              method: 'get',
+              success: function(result){
+                tableQuizType.ajax.reload();
+                swal("Poof! Your imaginary file has been updated!", {
                   icon: "success",
                 });
               }

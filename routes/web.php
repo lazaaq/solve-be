@@ -41,14 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('quiztype/delete/{id}', 'QuizTypeController@destroy')->name('quiztype.destroy');
      Route::get('quiz/delete/{id}', 'QuizController@destroy')->name('quiz.destroy');
      Route::get('question/delete/{id}', 'QuestionController@destroy')->name('question.destroy');
-     Route::get('banner/delete/{id}', 'BannerController@destroy')->name('question.destroy');
 
-     Route::get('storage/user/{id}', 'UserController@picture')->name('user.picture');
-     Route::get('storage/quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
-     Route::get('storage/quiz/{id}', 'QuizController@picture')->name('quiz.picture');
-     Route::get('storage/question/{id}', 'QuestionController@picture')->name('question.picture');
-     Route::get('storage/answer/{id}', 'AnswerController@picture')->name('answer.picture');
-     Route::get('storage/banner/{id}', 'BannerController@picture')->name('banner.picture');
+     Route::get('banner/delete/{id}', 'BannerController@destroy')->name('banner.destroy');
+     Route::get('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
+
 
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
@@ -57,4 +53,12 @@ Route::group(['middleware' => 'auth'], function () {
      Route::get('/data-user', 'UserController@getData');
      Route::get('/data-banner', 'BannerController@getData');
    });
+});
+Route::group(['prefix' => '/storage'], function () {
+  Route::get('user/{id}', 'UserController@picture')->name('user.picture');
+  Route::get('quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
+  Route::get('quiz/{id}', 'QuizController@picture')->name('quiz.picture');
+  Route::get('question/{id}', 'QuestionController@picture')->name('question.picture');
+  Route::get('answer/{id}', 'AnswerController@picture')->name('answer.picture');
+  Route::get('banner/{id}', 'BannerController@picture')->name('banner.picture');
 });
