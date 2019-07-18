@@ -97,7 +97,8 @@ class UserController extends Controller
    */
   public function show($id)
   {
-    return view('user.profile');
+    $data = User::with('roles')->find($id);
+    return view('user.profile',compact('data'));
   }
 
   /**

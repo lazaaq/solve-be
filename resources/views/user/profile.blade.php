@@ -7,7 +7,7 @@
     <div class="thumbnail">
         <img class="img-circle" width="10%" src="{{asset('img/kabuto.jpg')}}" alt="" style="padding-top:15px">
         <div class="caption text-center">
-            <h6 class="text-semibold no-margin">Hanna Dorman <small class="display-block">UX/UI designer</small></h6> 
+            <h6 class="text-semibold no-margin">Hanna Dorman <small class="display-block">{{ucfirst($data->roles[0]['name'])}}</small></h6> 
         </div>
     </div>
     <!-- /user thumbnail -->
@@ -29,11 +29,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>Name</label>
-                            <input type="text" value="Eugene" class="form-control">
+                            <input type="text" value="{{$data->name}}" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label>Username</label>
-                            <input type="text" value="Eugene" class="form-control">
+                            <input type="text" value="{{$data->username}}" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>Email</label>
-                            <input type="text" readonly="readonly" value="eugene@kopyov.com" class="form-control">
+                            <input type="text" value="{{$data->email}}" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label class="display-block">Upload profile image</label>
@@ -74,20 +74,6 @@
 
         <div class="panel-body">
             <form action="#">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Username</label>
-                            <input type="text" value="Kopyov" readonly="readonly" class="form-control">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label>Current password</label>
-                            <input type="password" value="password" readonly="readonly" class="form-control">
-                        </div>
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
