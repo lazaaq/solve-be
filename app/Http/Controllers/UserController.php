@@ -163,6 +163,56 @@ class UserController extends Controller
     return redirect()->route('user.index');
   }
 
+  public function updateProfil(Request $request, $id)
+  {
+    $this->validate(request(),
+      [
+        'name' => 'required',
+        'username' => 'required|unique:users,username,'.$id,
+        'email' => 'required|unique:users,email,'.$id,
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
+      ]
+    );
+
+    $user = User::find($id);
+
+    if(!empty($request->picture)){
+      $file = $request->file('picture');
+      $extension = strtolower($file->getClientOriginalExtension());
+      $filename = uniqid() . '.' . $extension;
+      \Storage::delete('public/images/user/' . $user->picture);
+      \Storage::put('public/images/user/' . $filename, \File::get($file));
+    } else {
+      $filename = $user->picture;
+    }
+
+    $user->name = $request->name;
+    $user->username = $request->username;
+    $user->email = $request->email;
+    if ($request->password) {
+      $user->password = \Hash::make($request->password);
+    }
+    $user->picture = $filename;
+    $user->save();
+    return redirect()->route('user.show',$id);
+  }
+
+  public function updatePassword(Request $request, $id)
+  {
+    $this->validate(request(),
+      [
+        'password' => 'confirmed'
+      ]
+    );
+    
+    $user = User::find($id);
+    if ($request->password) {
+      $user->password = \Hash::make($request->password);
+    }
+    $user->save();
+    return redirect()->route('user.show',$id);
+  }
+
   /**
    * Remove the specified resource from storage.
    *
