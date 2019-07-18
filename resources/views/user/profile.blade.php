@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>Name</label>
-                            <input type="text" name="name" value="{{$data->name}}" class="form-control">
+                            <input type="text" readonly="readonly" name="name" value="{{$data->name}}" class="form-control">
                             @if ($errors->has('name'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{ $errors->first('name') }}</strong>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-md-6">
                             <label>Username</label>
-                            <input type="text" name="username" value="{{$data->username}}" class="form-control">
+                            <input type="text" readonly="readonly" name="username" value="{{$data->username}}" class="form-control">
                             @if ($errors->has('username'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{ $errors->first('username') }}</strong>
@@ -58,7 +58,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>Email</label>
-                            <input type="email" name="email" value="{{$data->email}}" class="form-control">
+                            <input type="email" readonly="readonly" name="email" value="{{$data->email}}" class="form-control">
                             @if ($errors->has('email'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{ $errors->first('email') }}</strong>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="display-block">Upload profile image</label>
-                            <input type="file" name="picture" class="file-styled">
+                            <input type="file" disabled name="picture" class="file-styled">
                             @if ($errors->has('picture'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{ $errors->first('picture') }}</strong>
@@ -78,9 +78,13 @@
                     </div>
                 </div>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Save <i class="icon-arrow-right14 position-right"></i></button>
+                    <button id="back-profil" style="display:none" onclick="backProfile(); return false;" class="btn btn-default"><i class="icon-arrow-left13 position-left"></i> Back</button>
+                    <button id="save-profil" style="display:none" type="submit" class="btn btn-primary">Save <i class="icon-arrow-right14 position-right"></i></button>
                 </div>
             </form>
+                <div class="text-right">
+                    <button id="edit-profil" onclick="editProfile()" class="btn btn-primary">Edit <i class="icon-arrow-right14 position-right"></i></button>
+                </div>
         </div>
     </div>
     <!-- /profile info -->
@@ -106,7 +110,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label>New password</label>
-                            <input type="password" name="password" placeholder="Enter new password" class="form-control">
+                            <input type="password" readonly="readonly" name="password" placeholder="Enter new password" class="form-control">
                             @if ($errors->has('password'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password') }}</strong>
@@ -116,7 +120,7 @@
 
                         <div class="col-md-6">
                             <label>Repeat password</label>
-                            <input type="password" name="password_confirmation" placeholder="Repeat new password" class="form-control">
+                            <input type="password" readonly="readonly" name="password_confirmation" placeholder="Repeat new password" class="form-control">
                             @if ($errors->has('password_confirmation'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i>{{ $errors->first('password_confirmation') }}</strong>
@@ -127,12 +131,52 @@
                 </div>
 
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Save <i class="icon-arrow-right14 position-right"></i></button>
+                    <button id="back-password" style="display:none" onclick="backPassword(); return false;" class="btn btn-default"><i class="icon-arrow-left13 position-left"></i> Back</button>
+                    <button id="save-password" style="display:none" type="submit" class="btn btn-primary">Save <i class="icon-arrow-right14 position-right"></i></button>
                 </div>
             </form>
+                <div class="text-right">
+                    <button id="edit-password" onclick="editPassword()" class="btn btn-primary">Edit <i class="icon-arrow-right14 position-right"></i></button>
+                </div>
         </div>
     </div>
     <!-- /account settings -->
 </div>
 <!-- /content area -->
 @endsection
+@push('after_script')
+<script>
+    function editProfile() {
+        $('#save-profil').show();
+        $('#back-profil').show();
+        $("input[name='name']").prop('readonly', false);
+        $("input[name='username']").prop('readonly', false);
+        $("input[name='email']").prop('readonly', false);
+        $("input[name='picture']").prop('disabled', false);
+        $('#edit-profil').hide();
+    }
+    function backProfile() {
+        $('#save-profil').hide();
+        $('#back-profil').hide();
+        $("input[name='name']").prop('readonly', true);
+        $("input[name='username']").prop('readonly', true);
+        $("input[name='email']").prop('readonly', true);
+        $("input[name='picture']").prop('disabled', true);
+        $('#edit-profil').show();
+    }
+    function editPassword() {
+        $('#save-password').show();
+        $('#back-password').show();
+        $("input[name='password']").prop('readonly', false);
+        $("input[name='password_confirmation']").prop('readonly', false);
+        $('#edit-password').hide();
+    }
+    function backPassword() {
+        $('#save-password').hide();
+        $('#back-password').hide();
+        $("input[name='password']").prop('readonly', true);
+        $("input[name='password_confirmation']").prop('readonly', true);
+        $('#edit-password').show();
+    }
+</script>
+@endpush

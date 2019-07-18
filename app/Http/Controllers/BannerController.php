@@ -28,12 +28,12 @@ class BannerController extends Controller
             return $btn;
         })
         ->addColumn('isViewed', function($row){
-            // if ($row->isView = 0) {
-            //   $row->isView = "ON";
-            // }else {
-            //   $row->$isView = "OFF";
-            // }
-            return $row->isView;
+            if ($row->isView == 0) {
+              return "ON";
+            }else {
+              return "OFF";
+            }
+            // return $row->isView;
         })
         ->addColumn('pictures', function($row){
           $row->picture = route('banner.picture',$row->id);
