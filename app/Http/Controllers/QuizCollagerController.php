@@ -145,6 +145,7 @@ class QuizCollagerController extends Controller
   public function api_leaderbordQuizPodium($id){
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->where('quiz_collagers.quiz_id', $id)
                           ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(3)
@@ -165,6 +166,7 @@ class QuizCollagerController extends Controller
   public function api_leaderbordQuizNotPodium($id){
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->where('quiz_collagers.quiz_id', $id)
                           ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(12)

@@ -18,6 +18,7 @@ class CreateBannersTable extends Migration
             $table->string('picture');
             $table->string('description')->nullable();
             $table->enum('isView', ['1', '0']);
+            $table->string('linkTo')->nullable();
             $table->timestamps();
         });
     }
