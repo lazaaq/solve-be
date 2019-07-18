@@ -120,7 +120,7 @@ class QuizCollagerController extends Controller
     ]);
   }
 
-  public function api_leaderbord(){
+  public function api_leaderboard(){
     $data = DB::table('quiz_collagers')->leftJoin('quizs', 'quiz_collagers.quiz_id', 'quizs.id')
                           ->leftJoin('quiz_types', 'quizs.quiz_type_id', 'quiz_types.id')
                           ->leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
@@ -142,7 +142,7 @@ class QuizCollagerController extends Controller
     ]);
   }
 
-  public function api_leaderbordQuizPodium($id){
+  public function api_leaderboardQuizPodium($id){
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
                           ->where('quiz_collagers.quiz_id', $id)
@@ -163,7 +163,7 @@ class QuizCollagerController extends Controller
     ]);
   }
 
-  public function api_leaderbordQuizNotPodium($id){
+  public function api_leaderboardQuizNotPodium($id){
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
                           ->where('quiz_collagers.quiz_id', $id)
