@@ -17,10 +17,9 @@
         </ul>
     </div>
 </div>
-<!-- /page header -->
-
-
-<!-- Content area -->
+<!-- modal import -->
+@include('quiz.import')
+<!-- end modal import -->
 <div class="content">
   <div class="panel panel-white">
 		<div class="panel-heading">
@@ -39,10 +38,6 @@
 
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>
-
-        <div class="col-md-4">
-          <a href="{{route('quiz.import',$quiz->id)}}" class="btn btn-primary btn-sm bg-primary"><i class="icon-upload position-left"></i>Bulk Import</a>
-        </div>
       </div>
       <div class="col-md-6">
         @if($quiz->pic_url == 'blank.jpg')
@@ -61,6 +56,7 @@
 	<div class="panel panel-white">
     <div class="panel-heading">
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New</button>
+      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#modal_form_horizontal"><i class="icon-upload position-left"></i> Import</button>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
@@ -133,9 +129,13 @@
 <div id="addQuestionModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
       <div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal">&times;</button>
+  			</div>
+        <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
           <div class="modal-body text-center">
               <i class="fa fa-4x fa-plus-square-o"></i>
-              <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
+                {{ csrf_field() }}
                 <h6>How many questions do you want to make?</h6>
                 <input type="number" name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
                   @if ($errors->has('total_add'))
@@ -143,12 +143,18 @@
                       <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
                   </label>
                   @endif
-                <button type="submit" class="btn btn-primary btn-sm pull-right bg-primary-800">Go! <i class="icon-arrow-right14 position-right"></i></button>
-              .</form>
           </div>
+          <div class="modal-footer">
+  					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+  					<button type="submit" class="btn btn-primary">Submit form</button>
+  				</div>
+        </form>
       </div>
   </div>
 </div>
+<!-- Horizontal form modal -->
+
+<!-- /horizontal form modal -->
 @endsection
 @push('after_script')
 <script type="text/javascript">
@@ -159,7 +165,7 @@
 <script>
 var tableQuiz;
   $(document).ready(function(){
-    
+
     $('button#delete-specific-question').on('click', function () {
           var idQuestion = $(this).val();
           console.log(idQuestion);

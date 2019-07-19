@@ -108,29 +108,53 @@
 
       $('#table-banner tbody').on( 'click', '#change-is-view', function () {
         var data = tableQuizType.row( $(this).parents('tr') ).data();
-        swal({
-          // title: "Are you sure?",
-          text: "Are you sure to change is view data?",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            $.ajax({
-              url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
-              method: 'get',
-              success: function(result){
-                tableQuizType.ajax.reload();
-                swal("Poof! Your imaginary file has been updated!", {
-                  icon: "success",
-                });
-              }
-            });
-          } else {
-            swal("Your imaginary file is safe!");
-          }
-        });
+        if (data['isView'] == '1') {
+          swal(
+            {
+              // title: "Are you sure?",
+              text: "Are you sure to disable banner?",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            }
+          ).then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
+                method: 'get',
+                success: function(result){
+                  tableQuizType.ajax.reload();
+                  swal("Poof! Your imaginary file has been updated!", {
+                    icon: "success",
+                  });
+                }
+              });
+            }
+          });
+        } else {
+          swal(
+            {
+              text: "Are you sure to enable banner?",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            }
+          ).then((willDelete) => {
+            if (willDelete) {
+              $.ajax({
+                url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
+                method: 'get',
+                success: function(result){
+                  tableQuizType.ajax.reload();
+                  swal("Poof! Your imaginary file has been updated!", {
+                    icon: "success",
+                  });
+                }
+              });
+            }
+          });
+        }
+
       });
     });
   </script>
