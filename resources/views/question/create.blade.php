@@ -23,10 +23,19 @@
 <!-- Content area -->
 <div class="content">
   <div class="panel panel-white">
-		<div class="panel-heading">
-			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> QUIZ INFO</h6>
+    <div class="panel-heading">
+      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#modal_form_horizontal"><i class="icon-upload position-left"></i> Import Question</button>
+			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
 		<div class="panel-body">
+      <div class="col-md-2">
+        @if($quiz->pic_url == 'blank.jpg')
+          <img class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="Change the quiz type picture" width="100%">
+        @else
+          <img class="img-responsive" src="{{route('quiz.picture',$quiz->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100%">
+        @endif
+        <br>
+      </div>
 			<div class="col-md-6">
         <label class="text-bold col-md-4">Quis Type</label>
         <label class="col-md-8">: {{$quiz->quizType['name']}}</label>
@@ -40,23 +49,14 @@
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>
 
-        <div class="col-md-4">
-          <a href="{{route('quiz.import',$quiz->id)}}" class="btn btn-primary btn-sm bg-primary"><i class="icon-upload position-left"></i>Bulk Import</a>
-        </div>
-      </div>
-      <div class="col-md-6">
-        @if($quiz->pic_url == 'blank.jpg')
-        <img class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-        @else
-        <img class="img-responsive" src="{{route('quiz.picture',$quiz->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-        @endif
-        <br>
+
       </div>
 		</div>
 	</div>
 </div>
 
-<div class="content">
+@if ($quiz->sum_question > 0)
+  <div class="content">
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div class="panel-body">
@@ -123,7 +123,7 @@
               </div>
 						</div>
             @endfor
-							
+
             <div class="col-md-12">
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>
@@ -159,7 +159,11 @@
 	<!-- /state saving -->
   </div>
 </div>
+@endif
 <!-- /content area -->
+<!-- START modal import -->
+@include('quiz.import')
+<!-- END modal import -->
 @endsection
 @push('after_script')
   <script>

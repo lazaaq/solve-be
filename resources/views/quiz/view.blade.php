@@ -17,9 +17,6 @@
         </ul>
     </div>
 </div>
-<!-- modal import -->
-@include('quiz.import')
-<!-- end modal import -->
 <div class="content">
   <div class="panel panel-white">
 		<div class="panel-heading">
@@ -56,7 +53,7 @@
 	<div class="panel panel-white">
     <div class="panel-heading">
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New</button>
-      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#modal_form_horizontal"><i class="icon-upload position-left"></i> Import</button>
+      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#modal_form_horizontal"><i class="icon-upload position-left"></i> Import Question</button>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
@@ -125,36 +122,37 @@
 	<!-- /state saving -->
   </div>
 </div>
-<!-- Modal -->
+<!-- START Modal Add Question -->
 <div id="addQuestionModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
-      <div class="modal-content">
-  			<div class="modal-header">
-  				<button type="button" class="close" data-dismiss="modal">&times;</button>
-  			</div>
-        <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
-          <div class="modal-body text-center">
-              <i class="fa fa-4x fa-plus-square-o"></i>
-                {{ csrf_field() }}
-                <h6>How many questions do you want to make?</h6>
-                <input type="number" name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
-                  @if ($errors->has('total_add'))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
-                  </label>
-                  @endif
-          </div>
-          <div class="modal-footer">
-  					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-  					<button type="submit" class="btn btn-primary">Submit form</button>
-  				</div>
-        </form>
-      </div>
+    <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+      <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
+        <div class="modal-body text-center">
+          <i class="fa fa-4x fa-plus-square-o"></i>
+          {{ csrf_field() }}
+          <h6>How many questions do you want to make?</h6>
+          <input type="number" name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
+            @if ($errors->has('total_add'))
+            <label style="padding-top:7px;color:#F44336;">
+                <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
+            </label>
+            @endif
+        </div>
+        <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Submit form</button>
+				</div>
+      </form>
+    </div>
   </div>
 </div>
-<!-- Horizontal form modal -->
-
-<!-- /horizontal form modal -->
+<!-- END Modal Add Question -->
+<!-- START modal import -->
+@include('quiz.import')
+<!-- END modal import -->
 @endsection
 @push('after_script')
 <script type="text/javascript">
