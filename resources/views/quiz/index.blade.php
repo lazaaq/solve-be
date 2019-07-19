@@ -40,6 +40,7 @@
              <th>Title</th>
              <th>Description</th>
              <th>Total Question</th>
+             <th>Visible Question</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -76,6 +77,7 @@
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'sum_question', name:'sum_question', visible:true},
+            { data: 'tot_visible', name:'tot_visible', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });

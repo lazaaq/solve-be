@@ -72,6 +72,7 @@ class QuizController extends Controller
           'title' => 'required|max:50|unique:quizs',
           'description' => 'required|max:191',
           'total_question' => 'required',
+          'total_visible_question' => 'required',
           'picture' => 'max:2048|mimes:png,jpg,jpeg',
         ]
       );
@@ -90,6 +91,7 @@ class QuizController extends Controller
               'title' => request('title'),
               'description'=>request('description'),
               'sum_question'=>request('total_question'),
+              'tot_visible'=>request('total_visible_question'),
               'pic_url'=>$filename
         ]
       );
@@ -135,6 +137,7 @@ class QuizController extends Controller
         'quiz_type' => 'required',
         'title' => 'required|max:20|unique:quizs,title,'.$data->id.',id',
         'description' => 'required|max:191',
+        'total_visible_question' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
       ]
     );
@@ -151,6 +154,7 @@ class QuizController extends Controller
     $data->quiz_type_id=$request->quiz_type;
     $data->title=$request->title;
     $data->description=$request->description;
+    $data->tot_visible=$request->total_visible_question;
     $data->pic_url=$filename;
     $data->save();
     return redirect()->route('quiz.index');

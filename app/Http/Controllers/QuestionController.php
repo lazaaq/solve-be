@@ -267,7 +267,7 @@ class QuestionController extends Controller
     {
         $quiz = Quiz::where('id', $id)->first();
         if(!empty($quiz)){
-            $quiz = Question::where('quiz_id', $quiz->id)->get();
+            $question = Question::where('quiz_id', $quiz->id)->get();
         } else {
           return response()->json([
               'status' => 'failed',
@@ -280,7 +280,7 @@ class QuestionController extends Controller
         //   }
         // }
         $option  = [];
-        foreach ($quiz as $key => $item) {
+        foreach ($question as $key => $item) {
             $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
         }
         // foreach ($option[0] as $key => $value) {
@@ -289,7 +289,7 @@ class QuestionController extends Controller
         //   }
         // }
         $collection = [];
-        foreach ($quiz as $i => $item) {
+        foreach ($question as $i => $item) {
           $collection[$i] = [
             'id' => $item['id'],
             'question' => $item['question'],
@@ -307,7 +307,7 @@ class QuestionController extends Controller
             'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
           ];
         }
-        $data = Arr::random($collection, 5);
+        $data = Arr::random($collection, $quiz->tot_visible);
 
         return response()->json([
             'status' => 'success',

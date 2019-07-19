@@ -76,6 +76,17 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="control-label col-lg-3">Total Visible Question <span class="text-danger">*</span></label>
+            <div class="col-lg-9">
+              <input type="number" min="0" max="{{$data->sum_question}}" name="total_visible_question" class="form-control" value="{{old('total_visible_question') ? old('total_visible_question'):$data->tot_visible}}" placeholder="">
+                @if ($errors->has('total_visible_question'))
+                <label style="padding-top:7px;color:#F44336;">
+                    <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_visible_question') }}</strong>
+                </label>
+                @endif
+            </div>
+          </div>
+          <div class="form-group">
             <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
             <div class="col-lg-9">
               <textarea type="text" name="description" rows="3" class="form-control"  placeholder="">{{old('description') ? old('description'):$data->description}}</textarea>
