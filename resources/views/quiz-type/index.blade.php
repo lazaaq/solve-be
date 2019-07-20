@@ -31,7 +31,8 @@
 			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
 		{{-- </div> --}}
     <div style="padding:20px">
-      <a href="{{route('quiztype.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+      {{-- <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800" data-toggle="modal" data-target="#modal-create"><i class="icon-add position-left"></i> Create New</button> --}}
+      <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i> Create New</button>
     	<table class="table" id="table-quiz-type" class="display" style="width:100%">
   			<thead>
       		<tr>
@@ -48,14 +49,18 @@
 	</div>
 	<!-- /state saving -->
 </div>
+@include('quiz-type.create')
 <!-- /content area -->
 @endsection
 @push('after_script')
   <script>
   var tableQuizType;
     $(document).ready(function(){
-  		/* tabel user */
-      tableQuizType = $('#table-quiz-type').DataTable({
+        $("#btn-create").on('click', function(){
+            $('#modal-create').modal('show');
+        });
+    		/* tabel user */
+        tableQuizType = $('#table-quiz-type').DataTable({
         processing	: true,
         language: {
                     search: "_INPUT_",

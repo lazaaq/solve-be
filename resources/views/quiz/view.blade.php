@@ -23,6 +23,14 @@
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Quiz Info</h6>
 		</div>
 		<div class="panel-body">
+      <div class="col-md-2">
+        @if($quiz->pic_url == 'blank.jpg')
+          <img class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="Change the quiz type picture" width="100%">
+        @else
+          <img class="img-responsive" src="{{route('quiz.picture',$quiz->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100%">
+        @endif
+        <br>
+      </div>
 			<div class="col-md-6">
         <label class="text-bold col-md-4">Quis Type</label>
         <label class="col-md-8">: {{$quiz->quizType['name']}}</label>
@@ -36,14 +44,6 @@
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>
       </div>
-      <div class="col-md-6">
-        @if($quiz->pic_url == 'blank.jpg')
-        <img class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-        @else
-        <img class="img-responsive" src="{{route('quiz.picture',$quiz->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-        @endif
-        <br>
-      </div>
 		</div>
 	</div>
 </div>
@@ -53,7 +53,7 @@
 	<div class="panel panel-white">
     <div class="panel-heading">
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New</button>
-      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#modal_form_horizontal"><i class="icon-upload position-left"></i> Import Question</button>
+      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">

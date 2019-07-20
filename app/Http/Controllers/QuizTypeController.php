@@ -72,7 +72,7 @@ class QuizTypeController extends Controller
             'pic_url'=>$filename
       ]
     );
-    return redirect(route('quiztype.index'));
+    // return redirect(route('quiztype.index'));
   }
 
   /**

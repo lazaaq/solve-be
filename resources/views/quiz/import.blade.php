@@ -1,4 +1,4 @@
-<div id="modal_form_horizontal" class="modal fade">
+<div id="import" class="modal fade">
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
 			<div class="modal-header">
