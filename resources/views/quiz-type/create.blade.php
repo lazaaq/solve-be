@@ -113,40 +113,26 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal form-validate-jquery" id="quiz-type-store" method="post" enctype="multipart/form-data" files=true>
+        		<form class="form-horizontal" id="quiz-type-store" method="post" enctype="multipart/form-data" files=true>
+              @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Creat Quiz Type</legend>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Type Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="" required>
-                      @if ($errors->has('name'))
-                      <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i> {{ $errors->first('name') }}</strong>
-                      </label>
-                      @endif
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <textarea type="text" name="description" rows="3" class="form-control"  placeholder="" required>{{ old('description') }}</textarea>
-                      @if ($errors->has('description'))
-                      <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('description') }}</strong>
-                      </label>
-                      @endif
                   </div>
                 </div>
                 <div class="form-group">
         					<label class="control-label col-lg-3">Picture</label>
         					<div class="col-lg-9">
         						<input type="file" name="picture" class="form-control">
-                    @if ($errors->has('picture'))
-                    <label style="padding-top:7px;color:#F44336;">
-                    <strong><i class="fa fa-times-circle"></i>{{ $errors->first('picture') }}</strong>
-                    </label>
-                    @endif
         					</div>
         				</div>
         			</fieldset>
@@ -175,47 +161,39 @@
 /* get form data before submit */
 $(document).ready(function(){
     /* save data */
-    $('#btn-save-konsul').on( 'click', function () {
-        var record ={'_token': '{{ csrf_token() }}',
-                     'name'        : $('input[name=name]').val(),
-                     'description' : $('textarea[name=description]').val(),
-                     'picture'     : $('input[name=picture]').val(),
-                    };
+    $('#quiz-type-store').on('submit', function (e) {
+      e.preventDefault();
         $.ajax({
             'type': 'POST',
             'url' : "{{ route('quiztype.store') }}",
-            'data': record,
+            'data': new FormData(this),
+            'processData': false,
+            'contentType': false,
             'dataType': 'JSON',
-            'success': function(response){
-              swal({
+            'success': function(data){
+              if(data.success){
+                $('#modal-create').modal('hide');
+                console.log(data);
+                swal({
                 // title: "Are you sure?",
                 text: "Success",
                 icon: "success",
                 buttons: true,
                 dangerMode: false,
               });
-              $('#modal-create').modal('hide');
               tableQuizType.ajax.reload();
+
+              }else{
+                html = '<label style="padding-top:7px;color:#F44336;">';
+                for(var count = 0; count < data.errors.length; count++)
+                {
+                html +=  '<strong><i class="fa fa-times-circle"></i>' + data.errors[count] + '</strong>'
+                }
+                html += '</label';
+              }
             },
-            'error': function(response){
-              var errorText = '';
-              console.log(response)
-              $.each(response.responseJSON.errors, function(key, value) {
-                  errorText += value+'<br>'
-              });
-              console.log(response.status+':'+response.responseJSON.message);
-              console.log(errorText);
-            }
+            
         });
-        // $('#modal-create').modal('hide');
-        // tableQuizType.ajax.reload();
-        // swal({
-        //   title: "Good!",
-        //   text: "Success create data.",
-        //   icon: "success",
-        //   buttons: true,
-        //   dangerMode: false,
-        // });
     });
 });
 

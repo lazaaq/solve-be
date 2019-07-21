@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use App\QuizType;
 use File;
+use Validator;
 
 class QuizTypeController extends Controller
 {
@@ -49,30 +50,38 @@ class QuizTypeController extends Controller
    */
   public function store(Request $request)
   {
-    $this->validate(request(),
-      [
-        'name' => 'required|max:20|unique:quiz_types',
-        'description' => 'required|max:191',
-        'picture' => 'max:2048|mimes:png,jpg,jpeg',
-      ]
-    );
-    if(!empty($request->picture)){
-         $file = $request->file('picture');
-         $extension = strtolower($file->getClientOriginalExtension());
-         $filename = $request->name . '.' . $extension;
-         Storage::put('public/images/quiztype/' . $filename, File::get($file));
-       }else{
-         $filename='blank.jpg';
-       }
-       // dd($filename);
-    QuizType::create(
-      [
-            'name' => request('name'),
-            'description'=>request('description'),
-            'pic_url'=>$filename
-      ]
-    );
-    // return redirect(route('quiztype.index'));
+
+    $rules = [
+      'name' => 'required|max:20|unique:quiz_types,name',
+      'description' => 'required|max:191',
+      'picture' => 'max:2048|mimes:png,jpg,jpeg',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      return response()->json(['errors' => $validator->errors()->all()]);
+    }else{
+      if(!empty($request->picture)){
+        $file = $request->file('picture');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename = $request->name . '.' . $extension;
+        Storage::put('public/images/quiztype/' . $filename, File::get($file));
+      }else{
+        $filename='blank.jpg';
+      }
+
+      QuizType::create(
+        [
+              'name' => request('name'),
+              'description'=>request('description'),
+              'pic_url'=>$filename
+        ]
+      );
+
+      return response()->json(['success'=>'Data added successfully']);
+    }
+
+    
   }
 
   /**
