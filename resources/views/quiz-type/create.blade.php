@@ -113,7 +113,7 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal" id="quiz-type-store" method="post" enctype="multipart/form-data" files=true>
+        		<form class="form-horizontal form-validate-jquery" id="quiz-type-store" method="post" enctype="multipart/form-data" files=true>
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Creat Quiz Type</legend>
@@ -184,6 +184,7 @@ $(document).ready(function(){
               tableQuizType.ajax.reload();
 
               }else{
+                console.log(data);
                 html = '<label style="padding-top:7px;color:#F44336;">';
                 for(var count = 0; count < data.errors.length; count++)
                 {
