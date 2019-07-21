@@ -103,7 +103,6 @@
 </div> --}}
 <!-- /page header -->
 
-<!-- Content area -->
 <div id="modal-create" class="modal fade">
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
@@ -120,13 +119,13 @@
                 <div class="form-group">
                   <label class="control-label col-lg-3">Type Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="" required>
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <textarea type="text" name="description" rows="3" class="form-control"  placeholder="" required>{{ old('description') }}</textarea>
+                    <textarea type="text" name="description" rows="3" class="form-control"  placeholder="">{{ old('description') }}</textarea>
                   </div>
                 </div>
                 <div class="form-group">
@@ -138,18 +137,15 @@
         			</fieldset>
               <div>
                 <div class="col-md-4">
-                  {{-- <a href="{{route('quiztype.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a> --}}
                   <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-arrow-left13"></i> Close</button>
                 </div>
                 <div class="col-md-8 text-right">
                   <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
-          				{{-- <button type="submit" class="btn btn-primary bg-primary-800">Submit <i class="icon-arrow-right14 position-right"></i></button> --}}
-                  <button type="submit" id="btn-save-konsul" class="btn btn-primary">Simpan</button>
+                  <button type="submit" id="btn-submit" class="btn btn-primary">Save</button>
                 </div>
         			</div>
         		</form>
         	</div>
-      	<!-- /state saving -->
         </div>
       </div>
     </div>
@@ -158,7 +154,6 @@
 <!-- /content area -->
 @push('after_script')
 <script type="text/javascript">
-/* get form data before submit */
 $(document).ready(function(){
     /* save data */
     $('#quiz-type-store').on('submit', function (e) {
@@ -171,29 +166,19 @@ $(document).ready(function(){
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
-              if(data.success){
+							console.log(data);
+							if(data.success){
                 $('#modal-create').modal('hide');
-                console.log(data);
-                swal({
-                // title: "Are you sure?",
-                text: "Success",
-                icon: "success",
-                buttons: true,
-                dangerMode: false,
-              });
-              tableQuizType.ajax.reload();
-
+								toastr.success('Successfully added data!', 'Success', {timeOut: 5000});
+								tableQuizType.ajax.reload();
               }else{
-                console.log(data);
-                html = '<label style="padding-top:7px;color:#F44336;">';
-                for(var count = 0; count < data.errors.length; count++)
-                {
-                html +=  '<strong><i class="fa fa-times-circle"></i>' + data.errors[count] + '</strong>'
+								console.log(data);
+	              for(var count = 0; count < data.errors.length; count++){
+	              	toastr.error(data.errors[count], 'Error', {timeOut: 5000});
                 }
-                html += '</label';
               }
             },
-            
+
         });
     });
 });

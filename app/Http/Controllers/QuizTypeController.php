@@ -16,7 +16,8 @@ class QuizTypeController extends Controller
   {
     $data = QuizType::all()->sortBy('name');
     return datatables()->of($data)->addColumn('action', function($row){
-      $btn = '<a href="'.route('quiztype.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      // $btn = '<a href="'.route('quiztype.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
       return $btn;
     })
@@ -50,7 +51,7 @@ class QuizTypeController extends Controller
    */
   public function store(Request $request)
   {
-
+    // return $request;
     $rules = [
       'name' => 'required|max:20|unique:quiz_types,name',
       'description' => 'required|max:191',
@@ -81,7 +82,7 @@ class QuizTypeController extends Controller
       return response()->json(['success'=>'Data added successfully']);
     }
 
-    
+
   }
 
   /**
@@ -92,6 +93,8 @@ class QuizTypeController extends Controller
    */
   public function show($id)
   {
+      $data = QuizType::find($id);
+      return response()->json(['status' => 'ok','data'=>$data],200);
   }
 
   /**
@@ -103,7 +106,8 @@ class QuizTypeController extends Controller
   public function edit($id)
   {
     $data = QuizType::find($id);
-    return view('quiz-type.edit', compact('data'));
+    return response()->json(['status' => 'ok','data'=>$data],200);
+    // return view('quiz-type.edit', compact('data'));
   }
 
   public function picture($id)
@@ -120,30 +124,33 @@ class QuizTypeController extends Controller
    */
   public function update(Request $request, $id)
   {
-    // dd($id);
+    // return $request;
     $data= QuizType::find($id);
-    $this->validate(request(),
-      [
-        'name' => 'required|max:20|unique:quiz_types,name,'.$data->id.',id',
-        'description' => 'required|max:191',
-        'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
-      ]
-    );
-    if(!empty($request->picture)){
-         $file = $request->file('picture');
-         $extension = strtolower($file->getClientOriginalExtension());
-         $filename = $request->name . '.' . $extension;
-         Storage::delete('public/images/quiztype/' . $data->pic_url);
-         Storage::put('public/images/quiztype/' . $filename, File::get($file));
+    $rules = [
+      'name_edit' => 'required|max:20|unique:quiz_types,name',
+      'description_edit' => 'required|max:191',
+      'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      return response()->json(['errors' => $validator->errors()->all()]);
     }else{
-         $filename=$data->pic_url;
+      if(!empty($request->picture)){
+        $file = $request->file('picture_edit');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename = $request->name . '.' . $extension;
+        Storage::put('public/images/quiztype/' . $filename, File::get($file));
+      }else{
+        $filename='blank.jpg';
+      }
     }
 
-    $data->name=$request->name;
-    $data->description=$request->description;
+    $data->name=$request->name_edit;
+    $data->description=$request->description_edit;
     $data->pic_url=$filename;
     $data->save();
-    return redirect()->route('quiztype.index');
+    return response()->json(['success'=>'Data updated successfully']);
   }
 
   /**

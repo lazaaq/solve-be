@@ -16,6 +16,7 @@
 
 	<link href="{{ asset('DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <link href="{{ asset('DataTables/Select-1.2.6/css/select.bootstrap4.min.css') }}" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
 
 	<link href="{{asset('css/icons/fontawesome/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<!-- /global stylesheets -->
@@ -67,6 +68,7 @@
 
 	<script type="text/javascript" src="{{asset('js/pages/components_buttons.js')}}"></script>
 
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	{{-- <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script> --}}
 
@@ -186,6 +188,6 @@
 
 	</div>
 	<!-- /page container -->
-	@include('sweetalert::alert')
+	{{-- @include('sweetalert::alert') --}}
 </body>
 </html>

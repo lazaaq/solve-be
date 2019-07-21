@@ -50,6 +50,7 @@
 	<!-- /state saving -->
 </div>
 @include('quiz-type.create')
+@include('quiz-type.edit')
 <!-- /content area -->
 @endsection
 @push('after_script')
@@ -57,9 +58,12 @@
   var tableQuizType;
     $(document).ready(function(){
         $("#btn-create").on('click', function(){
+            $('input[name=name]').val('');
+            $('input[name=picture]').val('');
+            $('textarea[name=description]').val('');
             $('#modal-create').modal('show');
         });
-    		/* tabel user */
+    		/* START OF DATATABLE */
         tableQuizType = $('#table-quiz-type').DataTable({
         processing	: true,
         language: {
@@ -80,7 +84,26 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
-      $('#table-quiz-type tbody').on( 'click', 'button', function () {
+      /* END  OF DATATABLE */
+
+      /* START OF GET DATA FOR FORM EDIT */
+      $("#table-quiz-type tbody").on('click','#btn-edit', function(){
+          $("#quiz-type-edit :input").val('');
+          $('#modal-edit').modal('show');
+          var data = tableQuizType.row( $(this).parents('tr') ).data();
+          var id = data['id'];
+          var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
+          $.getJSON( urlData, function(data){
+            console.log(data);
+            $('input[name=name_edit]').val(data['data']['name']);
+            $('input[name=id_edit]').val(data['data']['id']);
+            $('textarea[name=description_edit]').val(data['data']['description']);
+          });
+      });
+      /*END OF GET DATA FOR FORM EDIT*/
+
+      /*START OF DELETE DATA*/
+      $('#table-quiz-type tbody').on( 'click', '#delete', function () {
         var data = tableQuizType.row( $(this).parents('tr') ).data();
         swal({
           // title: "Are you sure?",
@@ -96,16 +119,16 @@
               method: 'get',
               success: function(result){
                 tableQuizType.ajax.reload();
-                swal("Poof! Your imaginary file has been deleted!", {
-                  icon: "success",
-                });
+                toastr.success('Successfully deleted data!', 'Success Alert', {timeOut: 5000});
+                // swal("Poof! Your imaginary file has been deleted!", {
+                //   icon: "success",
+                // });
               }
             });
-          } else {
-            swal("Your imaginary file is safe!");
           }
         });
       });
+      /*END OF DELETE DATA*/
     });
   </script>
 @endpush
