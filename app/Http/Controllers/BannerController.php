@@ -67,6 +67,7 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
+      // return $request;
       $rules = [
         'description' => 'required|max:191',
         'picture' => 'required|max:2048|mimes:png,jpg,jpeg',

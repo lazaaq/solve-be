@@ -131,18 +131,18 @@
                   <label class="control-label col-lg-3">Is Viewed<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <label class="radio-inline col-md-3">
-                      <input checked type="radio" name="is_view" {{ collect(old('is_view'))->contains(1) ? 'checked' : '' }} value="1" class="styled">
+                      <input checked type="radio" name="is_view" value="TAMPIL" class="styled is_view">
                       View
                     </label>
                     <label class="radio-inline col-md-3">
-                      <input type="radio" name="is_view" {{ collect(old('is_view'))->contains(0) ? 'checked' : '' }} value="0" class="styled">
+                      <input type="radio" name="is_view" value="TIDAK TAMPIL" class="styled is_view">
                       Not View
                   </div>
                 </div>
                 <div class="form-group">
         					<label class="control-label col-lg-3">Picture</label>
         					<div class="col-lg-9">
-        						<input type="file" name="picture" class="form-control">
+        						<input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
         					</div>
         				</div>
         			</fieldset>

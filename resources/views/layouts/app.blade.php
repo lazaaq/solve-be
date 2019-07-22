@@ -72,6 +72,11 @@
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	{{-- <script src="{{asset('vendor/sweetalert/sweetalert.all.js')}}"></script> --}}
 
+	<!-- Input upload picture -->
+	<script type="text/javascript" src="{{asset('js/plugins/uploaders/fileinput.min.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/pages/uploader_bootstrap.js')}}"></script>
+	<!-- /Input upload picture -->
+
 	@stack('after_script')
 
 </head>
