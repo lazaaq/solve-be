@@ -23,7 +23,7 @@ class BannerController extends Controller
      return datatables()->of($data)
         ->addColumn('action', function($row){
             // $btn = '<a href="'.route('banner.show',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
-            $btn = '<a href="'.route('banner.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+            $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
             $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
             // $btn = $btn.'  <a href="'.route('banner.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
             return $btn;
@@ -120,7 +120,8 @@ class BannerController extends Controller
     public function edit($id)
     {
         $data=Banner::find($id);
-        return view('banner.edit', compact('data'));
+        return response()->json(['status' => 'ok','data'=>$data],200);
+        // return view('banner.edit', compact('data'));
     }
 
     /**
@@ -133,29 +134,33 @@ class BannerController extends Controller
      public function update(Request $request, $id)
      {
        $data= Banner::find($id);
-       $this->validate(request(),
-         [
-           'description' => 'required|max:191',
-           'picture' => 'max:2048|mimes:png,jpg,jpeg',
-           'link_to' => 'required|max:191',
-           'is_view' => 'required',
-         ]
-       );
-       if(!empty($request->picture)){
-            $file = $request->file('picture');
-            $extension = strtolower($file->getClientOriginalExtension());
-            $filename = uniqid() . '.' . $extension;
-            Storage::delete('public/images/banner/' . $data->picture);
-            Storage::put('public/images/banner/' . $filename, File::get($file));
+       $rules = [
+         'description_edit' => 'required|max:191',
+         'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
+         'link_to_edit' => 'required|max:191',
+         'is_view_edit' => 'required',
+       ];
+       $validator = Validator::make($request->all(), $rules);
+       if ($validator->fails()) {
+         return response()->json(['errors' => $validator->errors()->all()]);
        }else{
-            $filename=$data->picture;
+         if(!empty($request->picture_edit)){
+              $file = $request->file('picture_edit');
+              $extension = strtolower($file->getClientOriginalExtension());
+              $filename = uniqid() . '.' . $extension;
+              Storage::delete('public/images/banner/' . $data->picture);
+              Storage::put('public/images/banner/' . $filename, File::get($file));
+         }else{
+              $filename=$data->picture;
+         }
        }
-       $data->description=$request->description;
-       $data->linkTo=$request->link_to;
-       $data->isView=$request->is_view;
+       $data->description=$request->description_edit;
+       $data->linkTo=$request->link_to_edit;
+       $data->isView=$request->is_view_edit;
        $data->picture=$filename;
        $data->save();
-       return redirect()->route('banner.index');
+       return response()->json(['success'=>'Data updated successfully']);
+       // return redirect()->route('banner.index');
      }
 
     /**

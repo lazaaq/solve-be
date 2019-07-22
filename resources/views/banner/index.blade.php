@@ -53,7 +53,7 @@
 </div>
 <!-- /content area -->
 @include('banner.create')
-{{-- @include('banner.edit') --}}
+@include('banner.edit')
 
 @endsection
 @push('after_script')
@@ -67,7 +67,7 @@
           $('input[name=picture]').val('');
           $('#modal-create').modal('show');
       });
-  		/* tabel user */
+  		/* START OF DATATABLE */
       tableBanner = $('#table-banner').DataTable({
         processing	: true,
         language: {
@@ -106,17 +106,42 @@
               method: 'get',
               success: function(result){
                 tableBanner.ajax.reload();
-                swal("Poof! Your imaginary file has been deleted!", {
-                  icon: "success",
-                });
+                toastr.success('Successfully deleted data!', 'Success', {timeOut: 5000});
+                // swal("Poof! Your imaginary file has been deleted!", {
+                //   icon: "success",
+                // });
               }
             });
-          } else {
-            swal("Your imaginary file is safe!");
           }
         });
       });
+      /* END OF DATATABLE */
 
+      /* START OF GET DATA FOR FORM EDIT */
+      $("#table-banner tbody").on('click','#btn-edit', function(){
+          $("#banner-edit :input").val('');
+          $('#modal-edit').modal('show');
+          var data = tableBanner.row( $(this).parents('tr') ).data();
+          var id = data['id'];
+          var token = $('input[name=_token]').val();
+          var urlData = " {{ url('admin/banner') }}"+"/"+id+"/edit";
+          $.getJSON( urlData, function(data){
+          /*START GET PICTURE*/
+            $('#img-edit').empty();
+            var img = $('<img id="img-banner" class="img-responsive" src="{{ url('storage/banner/') }}/'+id+'" alt="" title="" height="50"><br>');
+            $('#img-edit').append(img);
+          /*END GET PICTURE*/
+            $('input[name=_method]').val('PUT');
+            $('input[name=_token]').val(token);
+            $('input[name=id_edit]').val(data['data']['id']);
+            $('input[name=link_to_edit]').val(data['data']['linkTo']);
+            $('input[name=is_view_edit][value='+data['data']['isView']+']').prop('checked', true).trigger('change');
+            $('textarea[name=description_edit]').val(data['data']['description']);
+          });
+      });
+      /*END OF GET DATA FOR FORM EDIT*/
+
+      /* START OF CHANGE IS VIEW DATA */
       $('#table-banner tbody').on( 'click', '#change-is-view', function () {
         var data = tableBanner.row( $(this).parents('tr') ).data();
         if (data['isView'] == '1') {
@@ -135,9 +160,7 @@
                 method: 'get',
                 success: function(result){
                   tableBanner.ajax.reload();
-                  swal("Poof! Your imaginary file has been updated!", {
-                    icon: "success",
-                  });
+                  toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
                 }
               });
             }
@@ -157,16 +180,14 @@
                 method: 'get',
                 success: function(result){
                   tableBanner.ajax.reload();
-                  swal("Poof! Your imaginary file has been updated!", {
-                    icon: "success",
-                  });
+                  toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
                 }
               });
             }
           });
         }
-
       });
+      /* END OF CHANGE IS VIEW DATA*/
     });
   </script>
 @endpush

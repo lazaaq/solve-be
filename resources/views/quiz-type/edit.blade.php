@@ -1,4 +1,3 @@
-
 <!-- Content area -->
 <div id="modal-edit" class="modal fade">
 	<div class="modal-dialog modal-md">
@@ -29,9 +28,12 @@
                 </div>
                 <div class="form-group">
         					<label class="control-label col-lg-3">Picture</label>
-                  <div class="col-lg-9">                   
-                    <input type="file" name="picture_edit" class="form-control">
-                	</div>
+                  <div id="img-edit" class="col-lg-9"></div>
+									<label class="control-label col-lg-3"></label>
+									<div class="col-lg-9">
+										<input type="file" name="picture_edit" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+										{{-- <input type="file" name="picture_edit" class="form-control"> --}}
+									</div>
         				</div>
         			</fieldset>
               <div>
