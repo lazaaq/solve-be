@@ -45,7 +45,8 @@
             @if(!empty($data->pic_url))
             <img style="padding:10px" class="img-responsive" src="{{route('question.picture',$data->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
             @endif
-            <input type="file" name="picture" class="form-control">
+            <input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+            {{-- <input type="file" name="picture" class="form-control"> --}}
             @if ($errors->has('picture'))
               <label style="padding-top:7px;color:#F44336;">
                   <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture')}}</strong>
@@ -90,7 +91,8 @@
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control">
+                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+                        {{-- <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control"> --}}
                         <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $value->content }}" placeholder="">
                         @if ($errors->has('choice.'.$key))
                         <label style="padding-top:7px;color:#F44336;">
@@ -108,7 +110,8 @@
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control">
+                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+                        {{-- <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control"> --}}
                         @if ($errors->has('picture_choice.'.$key))
                           <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$key)}}</strong>

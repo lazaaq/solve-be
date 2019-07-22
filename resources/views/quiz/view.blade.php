@@ -20,7 +20,11 @@
 <div class="content">
   <div class="panel panel-white">
 		<div class="panel-heading">
-			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Quiz Info</h6>
+    @if ($quiz->sum_question == 0)
+      <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create Question</button>
+      <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
+    @endif
+    	<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Quiz Info</h6>
 		</div>
 		<div class="panel-body">
       <div class="col-md-2">
@@ -41,6 +45,9 @@
         <label class="text-bold col-md-4">Total Question</label>
         <label class="col-md-8">: {{$quiz->sum_question}}</label>
 
+        <label class="text-bold col-md-4">Total Visible Question</label>
+        <label class="col-md-8">: {{$quiz->tot_visible}}</label>
+
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>
       </div>
@@ -48,11 +55,12 @@
 	</div>
 </div>
 
-<div class="content">
+@if ($quiz->sum_question > 0)
+  <div class="content">
   <!-- State saving -->
 	<div class="panel panel-white">
     <div class="panel-heading">
-      <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New</button>
+      <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New Question</button>
       <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
@@ -122,6 +130,7 @@
 	<!-- /state saving -->
   </div>
 </div>
+@endif
 <!-- START Modal Add Question -->
 <div id="addQuestionModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -143,7 +152,7 @@
         </div>
         <div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Submit form</button>
+					<button type="submit" class="btn btn-primary">Go!</button>
 				</div>
       </form>
     </div>

@@ -14,8 +14,8 @@ class CreateQuizsTable extends Migration {
 			$table->string('title', 40);
 			$table->string('description');
 			$table->string('pic_url')->nullable();
-			$table->integer('sum_question');
-			$table->integer('tot_visible');
+			$table->integer('sum_question')->default(0);
+			$table->integer('tot_visible')->default(0);
 			$table->timestamps();
 			$table->softDeletes();
 		});
