@@ -12,6 +12,7 @@ use App\Quiz;
 use App\Question;
 use DataTables;
 use DB;
+use Validator;
 use Excel;
 use App\Imports\QuestionImport;
 
@@ -44,8 +45,8 @@ class QuizController extends Controller
    */
   public function index()
   {
-
-    return view('quiz.index');
+    $quiztype = QuizType::all()->sortBy('name');
+    return view('quiz.index', compact('quiztype'));
   }
 
   /**
@@ -66,36 +67,40 @@ class QuizController extends Controller
    */
   public function store(Request $request)
   {
-      $this->validate(request(),
-        [
-          'quiz_type' => 'required',
-          'title' => 'required|max:50|unique:quizs',
-          'description' => 'required|max:191',
-          'total_question' => 'required',
-          'total_visible_question' => 'required',
-          'picture' => 'max:2048|mimes:png,jpg,jpeg',
-        ]
-      );
-      if(!empty($request->picture)){
-           $file = $request->file('picture');
-           $extension = strtolower($file->getClientOriginalExtension());
-           $filename = $request->title . '.' . $extension;
-           Storage::put('public/images/quiz/' . $filename, File::get($file));
-         }else{
-           $filename='blank.jpg';
-         }
-         // dd($filename);
-      $data = Quiz::create(
-        [
-              'quiz_type_id' => request('quiz_type'),
-              'title' => request('title'),
-              'description'=>request('description'),
-              'sum_question'=>request('total_question'),
-              'tot_visible'=>request('total_visible_question'),
-              'pic_url'=>$filename
-        ]
-      );
-      return redirect('admin/quiz/question/'.$data->id);
+      $rules = [
+        'quiz_type' => 'required',
+        'title' => 'required|max:50|unique:quizs',
+        'description' => 'required|max:191',
+        // 'total_question' => 'required',
+        'total_visible_question' => 'required',
+        'picture' => 'max:2048|mimes:png,jpg,jpeg',
+      ];
+      $validator = Validator::make($request->all(), $rules);
+      if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()->all()]);
+      }else{
+        if(!empty($request->picture)){
+             $file = $request->file('picture');
+             $extension = strtolower($file->getClientOriginalExtension());
+             $filename = $request->title . '.' . $extension;
+             Storage::put('public/images/quiz/' . $filename, File::get($file));
+           }else{
+             $filename='blank.jpg';
+           }
+           // dd($filename);
+        $data = Quiz::create(
+          [
+                'quiz_type_id' => request('quiz_type'),
+                'title' => request('title'),
+                'description'=>request('description'),
+                // 'sum_question'=>request('total_question'),
+                'tot_visible'=>request('total_visible_question'),
+                'pic_url'=>$filename
+          ]
+        );
+        return response()->json(['success'=>'Data added successfully','data'=>$data]);
+        // return redirect('admin/quiz/question/'.$data->id);
+      }
   }
 
   /**
