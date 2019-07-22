@@ -92,9 +92,12 @@
           $('#modal-edit').modal('show');
           var data = tableQuizType.row( $(this).parents('tr') ).data();
           var id = data['id'];
+          var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
           $.getJSON( urlData, function(data){
             console.log(data);
+            $('input[name=_method]').val('PUT');
+            $('input[name=_token]').val(token);
             $('input[name=name_edit]').val(data['data']['name']);
             $('input[name=id_edit]').val(data['data']['id']);
             $('textarea[name=description_edit]').val(data['data']['description']);

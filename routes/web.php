@@ -27,7 +27,6 @@ Route::group(['middleware' => 'auth'], function () {
      Route::resource('lecture', 'LectureController');
      Route::resource('collager', 'CollagerController');
      Route::resource('quizcollager', 'QuizCollagerController');
-     Route::resource('time', 'TimeController');
      Route::resource('quiz', 'QuizController')->except('destroy');
      Route::resource('banner', 'BannerController')->except('destroy');
 

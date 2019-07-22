@@ -127,7 +127,7 @@ class QuizTypeController extends Controller
     // return $request;
     $data= QuizType::find($id);
     $rules = [
-      'name_edit' => 'required|max:20|unique:quiz_types,name',
+      'name_edit' => 'required|max:20|unique:quiz_types,name,'.$id,
       'description_edit' => 'required|max:191',
       'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
     ];
@@ -136,10 +136,10 @@ class QuizTypeController extends Controller
     if ($validator->fails()) {
       return response()->json(['errors' => $validator->errors()->all()]);
     }else{
-      if(!empty($request->picture)){
+      if(!empty($request->picture_edit)){
         $file = $request->file('picture_edit');
         $extension = strtolower($file->getClientOriginalExtension());
-        $filename = $request->name . '.' . $extension;
+        $filename = $request->name_edit . '.' . $extension;
         Storage::put('public/images/quiztype/' . $filename, File::get($file));
       }else{
         $filename='blank.jpg';
