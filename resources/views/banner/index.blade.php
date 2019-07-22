@@ -31,7 +31,8 @@
 			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
 		{{-- </div> --}}
     <div style="padding:20px">
-      <a href="{{route('banner.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+      <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i> Create New</button>
+      {{-- <a href="{{route('banner.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a> --}}
     	<table class="table" id="table-banner" class="display" style="width:100%">
   			<thead>
       		<tr>
@@ -51,13 +52,23 @@
 	<!-- /state saving -->
 </div>
 <!-- /content area -->
+@include('banner.create')
+{{-- @include('banner.edit') --}}
+
 @endsection
 @push('after_script')
   <script>
-  var tableQuizType;
+  var tableBanner;
     $(document).ready(function(){
+      $("#btn-create").on('click', function(){
+          $('textarea[name=description]').val('');
+          $('input[name=link_to]').val('');
+          $('input[name=is_view]').val('');
+          $('input[name=picture]').val('');
+          $('#modal-create').modal('show');
+      });
   		/* tabel user */
-      tableQuizType = $('#table-banner').DataTable({
+      tableBanner = $('#table-banner').DataTable({
         processing	: true,
         language: {
                     search: "_INPUT_",
@@ -80,7 +91,7 @@
         ],
       });
       $('#table-banner tbody').on( 'click', '#delete', function () {
-        var data = tableQuizType.row( $(this).parents('tr') ).data();
+        var data = tableBanner.row( $(this).parents('tr') ).data();
         swal({
           // title: "Are you sure?",
           text: "Are you sure to delete data?",
@@ -94,7 +105,7 @@
               url: "{{ url('admin/banner/delete') }}"+"/"+data['id'],
               method: 'get',
               success: function(result){
-                tableQuizType.ajax.reload();
+                tableBanner.ajax.reload();
                 swal("Poof! Your imaginary file has been deleted!", {
                   icon: "success",
                 });
@@ -107,7 +118,7 @@
       });
 
       $('#table-banner tbody').on( 'click', '#change-is-view', function () {
-        var data = tableQuizType.row( $(this).parents('tr') ).data();
+        var data = tableBanner.row( $(this).parents('tr') ).data();
         if (data['isView'] == '1') {
           swal(
             {
@@ -123,7 +134,7 @@
                 url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
                 method: 'get',
                 success: function(result){
-                  tableQuizType.ajax.reload();
+                  tableBanner.ajax.reload();
                   swal("Poof! Your imaginary file has been updated!", {
                     icon: "success",
                   });
@@ -145,7 +156,7 @@
                 url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
                 method: 'get',
                 success: function(result){
-                  tableQuizType.ajax.reload();
+                  tableBanner.ajax.reload();
                   swal("Poof! Your imaginary file has been updated!", {
                     icon: "success",
                   });

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use File;
 use App\Banner;
+use Validator;
 
 class BannerController extends Controller
 {
@@ -66,32 +67,36 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
-      $this->validate(request(),
-        [
-          'description' => 'required|max:191',
-          'picture' => 'required|max:2048|mimes:png,jpg,jpeg',
-          'link_to' => 'required|max:191',
-          'is_view' => 'required',
-        ]
-      );
-      if(!empty($request->picture)){
-           $file = $request->file('picture');
-           $extension = strtolower($file->getClientOriginalExtension());
-           $filename = uniqid() . '.' . $extension;
-           Storage::put('public/images/banner/' . $filename, File::get($file));
-         }else{
-           $filename='';
-         }
-         // dd($filename);
-      Banner::create(
-        [
-              'description'=>request('description'),
-              'picture'=>$filename,
-              'linkTo' => request('link_to'),
-              'isView' => request('is_view'),
-        ]
-      );
-      return redirect(route('banner.index'));
+      $rules = [
+        'description' => 'required|max:191',
+        'picture' => 'required|max:2048|mimes:png,jpg,jpeg',
+        'link_to' => 'unique:banners,linkTo|required|max:191',
+        'is_view' => 'required',
+      ];
+
+      $validator = Validator::make($request->all(), $rules);
+      if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()->all()]);
+      }else{
+        if(!empty($request->picture)){
+             $file = $request->file('picture');
+             $extension = strtolower($file->getClientOriginalExtension());
+             $filename = uniqid() . '.' . $extension;
+             Storage::put('public/images/banner/' . $filename, File::get($file));
+           }else{
+             $filename='';
+           }
+
+         $data = Banner::create(
+           [
+                 'description'=>request('description'),
+                 'picture'=>$filename,
+                 'linkTo' => request('link_to'),
+                 'isView' => request('is_view'),
+           ]
+         );
+        return response()->json(['success'=>'Data added successfully','data'=>$data]);
+      }
     }
 
     /**
