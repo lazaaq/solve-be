@@ -11,7 +11,7 @@
         <img class="img-circle" src="{{route('user.picture',$data->id)}}" alt="Avatar" title="Change the avatar" width="100" height="50" style="padding-top:15px;">
         @endif
         <div class="caption text-center">
-            <h6 class="text-semibold no-margin">{{$data->name}} <small class="display-block">{{ucfirst($data->roles[0]['name'])}}</small></h6> 
+            <h6 class="text-semibold no-margin">{{$data->name}} <small class="display-block">{{ucfirst($data->roles[0]['name'])}}</small></h6>
         </div>
     </div>
     <!-- /user thumbnail -->
@@ -67,7 +67,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="display-block">Upload profile image</label>
-                            <input type="file" disabled name="picture" class="file-styled">
+                            <input disabled type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+                            {{-- <input type="file" disabled name="picture" class="file-styled"> --}}
                             @if ($errors->has('picture'))
                             <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{ $errors->first('picture') }}</strong>

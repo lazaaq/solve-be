@@ -77,7 +77,8 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="control-label col-lg-3">Picture</label>
-                <input type="file" name="picture[{{$i}}]" class="form-control">
+                <input type="file" name="picture[{{$i}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+                {{-- <input type="file" name="picture[{{$i}}]" class="form-control"> --}}
                 @if ($errors->has('picture.'.$i))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture.'.$i)}}</strong>

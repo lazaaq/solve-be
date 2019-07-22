@@ -235,7 +235,8 @@
                     <img class="img-responsive" src="{{route('quiztype.picture',$data->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
                     @endif
                     <br> --}}
-                    <input type="file" name="picture_edit" class="form-control">
+										<input type="file" name="picture_edit" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+                    {{-- <input type="file" name="picture_edit" class="form-control"> --}}
                 	</div>
         				</div>
         			</fieldset>

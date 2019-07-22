@@ -106,7 +106,8 @@
               <img class="img-responsive" src="{{route('quiz.picture',$data->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
               @endif
               <br>
-              <input type="file" name="picture" class="form-control">
+              <input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+              {{-- <input type="file" name="picture" class="form-control"> --}}
               @if ($errors->has('picture'))
               <label style="padding-top:7px;color:#F44336;">
               <strong><i class="fa fa-times-circle"></i>{{ $errors->first('picture') }}</strong>

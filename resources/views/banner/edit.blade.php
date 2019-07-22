@@ -74,7 +74,8 @@
   					<div class="col-lg-9">
               <img class="img-responsive" src="{{route('banner.picture',$data->id)}}" alt="Banner" title="Banner" width="100%">
               <br>
-              <input type="file" name="picture" class="form-control">
+              <input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+              {{-- <input type="file" name="picture" class="form-control"> --}}
               @if ($errors->has('picture'))
               <label style="padding-top:7px;color:#F44336;">
               <strong><i class="fa fa-times-circle"></i>{{ $errors->first('picture') }}</strong>
