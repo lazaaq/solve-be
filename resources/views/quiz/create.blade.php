@@ -131,7 +131,7 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal form-validate-jquery" id="quiz-store" method="post" enctype="multipart/form-data" files=true>
+        		<form class="form-horizontal" id="quiz-store" method="post" enctype="multipart/form-data" files=true>
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Create Quiz</legend>

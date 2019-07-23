@@ -72,7 +72,7 @@ class BannerController extends Controller
         'description' => 'required|max:191',
         'picture' => 'required|max:2048|mimes:png,jpg,jpeg',
         'link_to' => 'unique:banners,linkTo|required|max:191',
-        'is_view' => 'required',
+        'isView' => 'required',
       ];
 
       $validator = Validator::make($request->all(), $rules);
@@ -93,7 +93,7 @@ class BannerController extends Controller
                  'description'=>request('description'),
                  'picture'=>$filename,
                  'linkTo' => request('link_to'),
-                 'isView' => request('is_view'),
+                 'isView' => request('isView'),
            ]
          );
         return response()->json(['success'=>'Data added successfully','data'=>$data]);
@@ -133,12 +133,13 @@ class BannerController extends Controller
      */
      public function update(Request $request, $id)
      {
+       return $request;
        $data= Banner::find($id);
        $rules = [
          'description_edit' => 'required|max:191',
          'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
          'link_to_edit' => 'required|max:191',
-         'is_view_edit' => 'required',
+         'isView' => 'required',
        ];
        $validator = Validator::make($request->all(), $rules);
        if ($validator->fails()) {
@@ -156,7 +157,7 @@ class BannerController extends Controller
        }
        $data->description=$request->description_edit;
        $data->linkTo=$request->link_to_edit;
-       $data->isView=$request->is_view_edit;
+       $data->isView=$request->isView;
        $data->picture=$filename;
        $data->save();
        return response()->json(['success'=>'Data updated successfully']);

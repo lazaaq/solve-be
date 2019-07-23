@@ -131,11 +131,12 @@
             var img = $('<img id="img-banner" class="img-responsive" src="{{ url('storage/banner/') }}/'+id+'" alt="" title="" height="50"><br>');
             $('#img-edit').append(img);
           /*END GET PICTURE*/
+          console.log(data['data']['isView']);
             $('input[name=_method]').val('PUT');
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
             $('input[name=link_to_edit]').val(data['data']['linkTo']);
-            $('input[name=is_view_edit][value='+data['data']['isView']+']').prop('checked', true).trigger('change');
+            $('input[name=isViewEdit][value='+data['data']['isView']+']').prop('checked', true).trigger('change');
             $('textarea[name=description_edit]').val(data['data']['description']);
           });
       });
