@@ -218,11 +218,11 @@ class QuizController extends Controller
       $messages_error[$key.'.question.required'] = "Question field number ".($key+1)." is empty.";
       $messages_error[$key.'.question.distinct'] = "Question field number ".($key+1)." has duplicate value.";
       $messages_error[$key.'.question.required'] = "Question field number ".($key+1)." has already been taken.";
-      $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty";
-      $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty";
-      $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty";
-      $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty";
-      $messages_error[$key.'.option_e.required'] = "Option E field number ".($key+1)." is empty";
+      $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty.";
+      $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
+      $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
+      $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty.";
+      $messages_error[$key.'.option_e.required'] = "Option E field number ".($key+1)." is empty.";
     }
 
     $validator = Validator::make($import_data_filter,[
