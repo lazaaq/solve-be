@@ -17,6 +17,17 @@
         </ul>
     </div>
 </div>
+@if ($errors->messages())
+  <div class="alert alert-danger">
+      <ul>
+          @foreach ($errors->messages() as $key => $error)
+            @foreach ($error as $key => $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          @endforeach
+      </ul>
+  </div>
+@endif
 <div class="content">
   <div class="panel panel-white">
 		<div class="panel-heading">

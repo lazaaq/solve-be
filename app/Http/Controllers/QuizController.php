@@ -202,12 +202,60 @@ class QuizController extends Controller
     $data = Quiz::find($id);
 
     $file = $request->file('excel');
-    $tes = Excel::import(new QuestionImport($id), $file);
+    $import = Excel::load($file, function($reader) {
+      $reader->skipRows(5);
+    })->get();
+
+    $import_data_filter = array_filter($import->toArray());
+
+    $messages_error = ['*.question.required' => ':attribute field is required.'];
+    $validator = Validator::make($import_data_filter,[
+      '*.question' => 'required|distinct|unique:questions,question',
+      '*.option_a' => 'required',
+      '*.option_b' => 'required',
+      '*.option_c' => 'required',
+      '*.option_d' => 'required',
+      '*.option_e' => 'required'
+    ],$messages_error);
+
+    $get_error = [];
+    foreach ($validator->errors()->messages() as $key => $value) {
+      $get_error[] = substr($key, 0, 1);
+    }
+    $error = array_unique($get_error);
+
+    $question = [];
+    $answers = [];
+    $option = ['A', 'B', 'C', 'D', 'E'];
+
+    foreach ($import as $key => $row) {
+      if (in_array($key, $error)) {
+        continue;
+      }     
+        $question[$key] = [
+            'quiz_id'       => $id,
+            'question'      => $row->question,
+        ];
+        
+        $content = [$row->option_a,$row->option_b,$row->option_c,$row->option_d,$row->option_e];
+
+        for ($i=0; $i < 5 ; $i++) { 
+            $answers[$key][$i] = [
+                'option'  => $option[$i],
+                'content' => $content[$i],
+                'isTrue'  => $row->true_answer == $option[$i] ? 1 : 0,
+            ];
+        }    
+    }
+
+    foreach ($question as $key => $q) {
+        Question::create($q)->answer()->createMany($answers[$key]);
+    }
 
     $question = Question::where('quiz_id',$id)->count();
     $data->sum_question = $data->sum_question + $question;
     $data->save();
-    return redirect()->route('quiz.show',$id);
+    return redirect()->route('quiz.show',$id)->withErrors($validator);
   }
 
   public function downloadTemplate()
