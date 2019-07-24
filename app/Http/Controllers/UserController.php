@@ -11,6 +11,7 @@ use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
 use Hash;
+Use App\LIb\Helper;
 
 
 class UserController extends Controller
@@ -204,7 +205,7 @@ class UserController extends Controller
         'password' => 'confirmed'
       ]
     );
-    
+
     $user = User::find($id);
     if ($request->password) {
       $user->password = \Hash::make($request->password);
@@ -368,7 +369,6 @@ class UserController extends Controller
           'password_confirmation' => 'required',
         ]);
       $data->save();
-      $data->foto= asset('images/'.$data->foto.'');
       return response()->json([
         'status'=>'success',
         'user'=>$data
@@ -380,6 +380,20 @@ class UserController extends Controller
         'message'=>'Incorrect current password.'
       ]);
     }
+  }
+
+  public function api_uploadAvatar(Request $request)
+  {
+    $data= User::find(Auth::user()->id);
+    $path = base_path().'/storage/app/public/images/user/';
+    $photo = Helper::uploadPhoto($request->picture,$path);
+    \Storage::delete('public/images/user/' . $data->picture);
+    $data->picture = $photo['image_name'];
+    $data->save();
+    return response()->json([
+      'status'=>'success',
+      'user'=>$data
+    ]);
   }
 }
 

@@ -54,7 +54,7 @@
 </div>
 <!-- /content area -->
 @include('quiz.create')
-
+@include('quiz.edit')
 
 @endsection
 @push('after_script')
@@ -62,13 +62,9 @@
   var tableQuiz;
     $(document).ready(function(){
       $("#btn-create").on('click', function(){
-          // $('textarea[name=description]').val('');
-          // $('input[name=link_to]').val('');
-          // $('input[name=is_view]').val('');
-          // $('input[name=picture]').val('');
           $('#modal-create').modal('show');
       });
-  		/* tabel user */
+  		/* START OF DATATABLE */
       tableQuiz = $('#table-quiz').DataTable({
         processing	: true,
         language: {
@@ -92,6 +88,39 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
+      /*END OF DATATABLE*/
+
+      /* START OF GET DATA FOR FORM EDIT */
+      $("#table-quiz tbody").on('click','#btn-edit', function(){
+          $("#quiz-edit :input").val('');
+          $('#modal-edit').modal('show');
+          var data = tableQuiz.row( $(this).parents('tr') ).data();
+          var id = data['id'];
+          var token = $('input[name=_token]').val();
+          var urlData = " {{ url('admin/quiz') }}"+"/"+id+"/edit";
+          $.getJSON( urlData, function(data){
+          /*START GET PICTURE*/
+            $('#img-edit').empty();
+            var img = $('<img id="img-quiztype" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
+            if (data['data']['pic_url'] != "blank.jpg") {
+              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz/') }}/'+id+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+            }
+            $('#img-edit').append(img);
+          /*END GET PICTURE*/
+            // $('input[name=picture_edit]').val('');
+            $('input[name=_method]').val('PUT');
+            $('input[name=_token]').val(token);
+            $('input[name=id_edit]').val(data['data']['id']);
+            $('input[name=title_edit]').val(data['data']['title']);
+            $('textarea[name=description_edit]').val(data['data']['description']);
+            $('input[name=total_visible_question_edit]').val(data['data']['tot_visible']);
+            $('input[name=total_question_edit]').val(data['data']['sum_question']);
+            $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
+          });
+      });
+      /*END OF GET DATA FOR FORM EDIT*/
+
+      /* START OF DELETE DATA */
       $('#table-quiz tbody').on( 'click', 'button', function () {
           var data = tableQuiz.row( $(this).parents('tr') ).data();
             swal({
@@ -118,6 +147,7 @@
             }
           });
         });
+        /* END OF DELETE DATA */
     });
   </script>
 @endpush

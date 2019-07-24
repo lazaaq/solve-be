@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/detail', 'UserController@api_index');
   Route::put('/update', 'UserController@api_update');
   Route::put('/update-password', 'UserController@api_updatePassword');
+  Route::put('/upload-avatar', 'UserController@api_uploadAvatar');
 
   Route::get('/quiztype','QuizTypeController@api_index');
   Route::get('/quiz/{quiztype_id}','QuizController@api_index');

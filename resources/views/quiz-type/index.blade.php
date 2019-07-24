@@ -49,7 +49,7 @@
     $(document).ready(function(){
         $("#btn-create").on('click', function(){
             $('input[name=name]').val('');
-            $('input[name=picture]').val('');
+            // $('input[name=picture]').val('');
             $('textarea[name=description]').val('');
             $('#modal-create').modal('show');
         });

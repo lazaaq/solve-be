@@ -8,7 +8,7 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal form-validate-jquery" id="quiz-type-edit" method="post" enctype="multipart/form-data" files=true>
+        		<form class="form-horizontal" id="quiz-type-edit" method="post" enctype="multipart/form-data" files=true>
 							@method('PUT')
               @csrf
               <fieldset class="content-group">
