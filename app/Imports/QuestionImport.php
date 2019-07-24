@@ -32,13 +32,12 @@ class QuestionImport implements ToCollection, WithHeadingRow
         $question = [];
         $answers = [];
         $option = ['A', 'B', 'C', 'D', 'E'];
-        
-        foreach ($rows as $key => $row) {
-            if($row['QUESTION'] == NULL || $row['OPTION A'] == NULL || $row['OPTION B'] == NULL || $row['OPTION C'] == NULL || $row['OPTION D'] == NULL || $row['OPTION E'] == NULL || $row['TRUE ANSWER'] == NULL)
-            {
-                break;
-            }
 
+        foreach ($rows as $key => $row) {
+            if ($key === 0 || $key === 1  || $key === 2 || $key === 3 || $key === 4) {
+                continue;
+            }
+            
             $question[$key] = [
                 'quiz_id'       => $this->quiz_id,
                 'question'      => $row['QUESTION'],
@@ -60,4 +59,5 @@ class QuestionImport implements ToCollection, WithHeadingRow
             Question::create($q)->answer()->createMany($answers[$key]);
         }
     }
+
 }
