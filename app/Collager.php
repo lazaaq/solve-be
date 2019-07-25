@@ -23,7 +23,7 @@ class Collager extends Model
 
     public function quizCollager()
     {
-        return $this->hasOne('App\QuizCollager', 'collager_id', 'id');
+        return $this->hasMany('App\QuizCollager', 'collager_id', 'id');
     }
 
 }

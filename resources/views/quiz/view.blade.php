@@ -65,7 +65,7 @@
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
-      @foreach ($quiz->question as $key => $value)
+      @foreach ($question as $key => $value)
         <input type="hidden" name="id-question" value="{{$value->id}}">
         <div class="panel panel-white">
       		<div class="panel-body">
@@ -125,7 +125,15 @@
       		</div>
       	</div>
       @endforeach
-      <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
+      <div class="col-md-6">
+        <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
+      </div>
+      <div class="col-md-6">
+        <div class="pull-right">
+          {{ $question->links() }}
+        </div>
+      </div>
+
   	</div>
 	<!-- /state saving -->
   </div>
@@ -159,6 +167,7 @@
   </div>
 </div>
 <!-- END Modal Add Question -->
+
 <!-- START modal import -->
 @include('quiz.import')
 <!-- END modal import -->
