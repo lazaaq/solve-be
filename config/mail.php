@@ -84,9 +84,12 @@ return [
     |
     */
 
-    'username' => env('rukoreanhouse@gmail.com'),
+    // 'username' => env('rukoreanhouse@gmail.com'),
+    //
+    // 'password' => env('devpass1234'),
+    'username' => env('MAIL_USERNAME','rukoreanhouse@gmail.com'),
 
-    'password' => env('devpass1234'),
+    'password' => env('MAIL_PASSWORD','devpass1234'),
 
     /*
     |--------------------------------------------------------------------------
