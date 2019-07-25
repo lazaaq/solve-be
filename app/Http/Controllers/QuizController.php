@@ -219,7 +219,7 @@ class QuizController extends Controller
     foreach ($import_data_filter as $key => $value) {
       $messages_error[$key.'.question.required'] = "Question field number ".($key+1)." is empty.";
       $messages_error[$key.'.question.distinct'] = "Question field number ".($key+1)." has duplicate value.";
-      $messages_error[$key.'.question.required'] = "Question field number ".($key+1)." has already been taken.";
+      $messages_error[$key.'.question.unique'] = "Question field number ".($key+1)." has already been taken.";
       $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty.";
       $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
       $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
@@ -249,23 +249,23 @@ class QuizController extends Controller
     foreach ($import as $key => $row) {
       if (in_array($key, $error)) {
         continue;
-      }     
+      }
         $question[$key] = [
             'quiz_id'       => $id,
             'question'      => $row->question,
         ];
-        
+
         $content = [$row->option_a,$row->option_b,$row->option_c,$row->option_d,$row->option_e];
 
-        for ($i=0; $i < 5 ; $i++) { 
+        for ($i=0; $i < 5 ; $i++) {
             $answers[$key][$i] = [
                 'option'  => $option[$i],
                 'content' => $content[$i],
                 'isTrue'  => $row->true_answer == $option[$i] ? 1 : 0,
             ];
-        }    
+        }
     }
-    $totalQuestionSuccess = count($question); 
+    $totalQuestionSuccess = count($question);
 
     foreach ($question as $key => $q) {
         Question::create($q)->answer()->createMany($answers[$key]);
