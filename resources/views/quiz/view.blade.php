@@ -7,7 +7,22 @@
             <h4><i class=""></i> <span class="text-semibold">Quiz</span></h4>
         </div>
     </div>
-
+    @if ($errors->messages())
+      <div class="alert alert-danger">
+          <ul>
+              @foreach ($errors->messages() as $key => $error)
+                @foreach ($error as $key => $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              @endforeach
+          </ul>
+      </div>
+    @endif
+    @if (session('totalQuestion')) 
+      <div class="alert alert-info">
+        {{session('totalQuestionSuccess')}} / {{session('totalQuestion')}} question has been imported. 
+      </div>
+    @endif
     <div class="breadcrumb-line breadcrumb-line-component">
         <ul class="breadcrumb">
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
@@ -17,17 +32,7 @@
         </ul>
     </div>
 </div>
-@if ($errors->messages())
-  <div class="alert alert-danger">
-      <ul>
-          @foreach ($errors->messages() as $key => $error)
-            @foreach ($error as $key => $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          @endforeach
-      </ul>
-  </div>
-@endif
+
 <div class="content">
   <div class="panel panel-white">
 		<div class="panel-heading">

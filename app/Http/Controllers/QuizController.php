@@ -212,7 +212,7 @@ class QuizController extends Controller
     })->get();
 
     $import_data_filter = array_filter($import->toArray());
-
+    $totalQuestion = count($import_data_filter);
     $messages_error = [];
     foreach ($import_data_filter as $key => $value) {
       $messages_error[$key.'.question.required'] = "Question field number ".($key+1)." is empty.";
@@ -263,15 +263,16 @@ class QuizController extends Controller
             ];
         }    
     }
+    $totalQuestionSuccess = count($question); 
 
     foreach ($question as $key => $q) {
         Question::create($q)->answer()->createMany($answers[$key]);
     }
 
-    $question = Question::where('quiz_id',$id)->count();
-    $data->sum_question = $data->sum_question + $question;
+    $sumquestion = Question::where('quiz_id',$id)->count();
+    $data->sum_question = $data->sum_question + $sumquestion;
     $data->save();
-    return redirect()->route('quiz.show',$id)->withErrors($validator);
+    return redirect()->route('quiz.show',$id)->withErrors($validator)->with('totalQuestion',$totalQuestion)->with('totalQuestionSuccess',$totalQuestionSuccess);
   }
 
   public function downloadTemplate()
