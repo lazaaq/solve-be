@@ -27,10 +27,14 @@
 
       <h3 class="no-margin">{{$totalGamePlayed}}</h3>
       Game Played
-      @if ($totalGamePlayed < $totalGamePlayedBefore)
-        <div class="text-muted text-size-small">-{{$totalGamePlayed/$totalGamePlayedBefore*100}}% compared to the previous day</div>
+      @if ($totalGamePlayed == 0 || $totalGamePlayedBefore == 0)
+        <div class="text-muted text-size-small">0% compared to the previous day</div>
       @else
-        <div class="text-muted text-size-small">+{{$totalGamePlayed/$totalGamePlayedBefore*100}}% compared to the previous day</div>
+        @if ($totalGamePlayed < $totalGamePlayedBefore)
+          <div class="text-muted text-size-small">-{{$totalGamePlayed/$totalGamePlayedBefore*100}}% compared to the previous day</div>
+        @else
+          <div class="text-muted text-size-small">+{{$totalGamePlayed/$totalGamePlayedBefore*100}}% compared to the previous day</div>
+        @endif
       @endif
     </div>
 

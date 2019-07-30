@@ -11,7 +11,7 @@ use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
 use Hash;
-Use App\LIb\Helper;
+Use App\Lib\Helper;
 
 
 class UserController extends Controller
