@@ -118,8 +118,14 @@
               url: "{{ url('admin/quiztype/delete') }}"+"/"+data['id'],
               method: 'get',
               success: function(result){
-                tableQuizType.ajax.reload();
-                toastr.success('Successfully deleted data!', 'Success Alert', {timeOut: 5000});
+                console.log('HALO');
+                if(result.status === 'failed'){
+                    toastr.error(result.message, 'Error', {timeOut: 5000});
+                }
+                else {
+                  tableQuizType.ajax.reload();
+                  toastr.success('Successfully deleted data!', 'Success Alert', {timeOut: 5000});
+                }
               }
             });
           }

@@ -161,10 +161,16 @@ class QuizTypeController extends Controller
   public function destroy($id)
   {
     $data = QuizType::find($id);
-    Storage::delete('public/images/quiztype/'.$data->pic_url);
-    $data->delete();
-
-    return redirect()->route('quiztype.index');
+    if (!empty($data->quiz)) {
+      return response()->json([
+        'status'=>'failed',
+        'message'=>'Data is being used by another table.',
+      ]);
+    }
+    else {
+      Storage::delete('public/images/quiztype/'.$data->pic_url);
+      $data->delete();
+    }
   }
 
   /*START OF API*/
