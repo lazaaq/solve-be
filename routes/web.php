@@ -20,10 +20,10 @@ Route::get('/clear-cache', function() {
 Auth::routes();
 // Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
     Route::get('/', 'Auth\LoginController@showLoginForm');
 
    //admin
+   Route::group(['middleware' => 'auth'], function () {
    Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
      Route::resource('question', 'QuestionController');
