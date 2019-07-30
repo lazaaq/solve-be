@@ -17,6 +17,7 @@ Auth::routes();
     Route::get('/', 'Auth\LoginController@showLoginForm');
 
    //admin
+   Route::group(['middleware' => 'auth'], function () {
    Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
      Route::resource('dashboard', 'DashboardController');
      Route::resource('question', 'QuestionController');
@@ -54,6 +55,7 @@ Auth::routes();
      Route::get('/data-user', 'UserController@getData');
      Route::get('/data-banner', 'BannerController@getData');
    });
+});
 Route::group(['prefix' => '/storage'], function () {
   Route::get('user/{id}', 'UserController@picture')->name('user.picture');
   Route::get('quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
