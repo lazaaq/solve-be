@@ -16,7 +16,7 @@
       <div class="panel-body">
         <ul class="media-list">
           <li class="media-header">Quiz Type : {{$value->quizType['name']}}</li>
-          @foreach ($value->quizCollager->sortByDesc('total_score') as $key2 => $value2)
+          @foreach ($value->quizCollager->sortByDesc('total_score')->take(5) as $key2 => $value2)
           <li class="media">
             <div class="media-left media-middle">
               <a href="#">
