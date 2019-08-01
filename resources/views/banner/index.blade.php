@@ -133,6 +133,8 @@
           /*END GET PICTURE*/
           console.log(data['data']['isView']);
             $('input[name=_method]').val('PUT');
+            $('#view').val('1');
+        		$('#notView').val('0');
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
             $('input[name=link_to_edit]').val(data['data']['linkTo']);

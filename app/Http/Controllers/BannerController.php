@@ -139,7 +139,7 @@ class BannerController extends Controller
          'description_edit' => 'required|max:191',
          'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
          'link_to_edit' => 'required|max:191',
-         'isView' => 'required',
+         'isViewEdit' => 'required',
        ];
        $validator = Validator::make($request->all(), $rules);
        if ($validator->fails()) {
@@ -157,7 +157,7 @@ class BannerController extends Controller
        }
        $data->description=$request->description_edit;
        $data->linkTo=$request->link_to_edit;
-       $data->isView=$request->isView;
+       $data->isView=$request->isViewEdit;
        $data->picture=$filename;
        $data->save();
        return response()->json(['success'=>'Data updated successfully']);

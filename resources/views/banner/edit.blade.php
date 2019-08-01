@@ -30,11 +30,11 @@
                   <label class="control-label col-lg-3">Is Viewed<span class="text-danger">*</span></label>
 									<div class="col-lg-9">
                     <label class="radio-inline col-md-3">
-                      <input type="radio" name="isViewEdit" value="1" class="styled">
+                      <input type="radio" name="isViewEdit" id="view" value="1" class="styled">
                       View
                     </label>
                     <label class="radio-inline col-md-3">
-                      <input type="radio" name="isViewEdit" value="0" class="styled">
+                      <input type="radio" name="isViewEdit" id="notView" value="0" class="styled">
                       Not View
                   </div>
                 </div>
@@ -73,8 +73,8 @@ $(document).ready(function(){
 		$('#banner-edit').on('submit', function (e) {
       e.preventDefault();
 			id = $('input[name=id_edit]').val();
-			isView = $('input[name=isViewEdit]:checked').val();
-			console.log(isView);
+			console.log($("input:radio[name=isViewEdit]:checked").val());
+			// isView = ;
         $.ajax({
 						'type': 'post',
 						'url' : "{{ url('admin/banner') }}"+"/"+id,
