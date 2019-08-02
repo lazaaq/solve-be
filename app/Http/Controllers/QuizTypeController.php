@@ -182,8 +182,8 @@ class QuizTypeController extends Controller
 
   /*START OF API*/
 
-  function api_index(){
-    $data = QuizType::orderBy('name')->get();
+  function api_index($id){
+    $data = QuizType::where('quiz_category_id', $id)->orderBy('name')->get();
     // foreach ($data as $key => $value) {
     //   if($value->pic_url == 'blank.jpg'){
     //     $value->pic_url = asset('img/'.$value->pic_url.'');

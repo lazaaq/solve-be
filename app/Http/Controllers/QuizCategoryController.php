@@ -130,4 +130,15 @@ class QuizCategoryController extends Controller
     return response()->json($data);
   }
 
+
+  /* START OF API */
+
+  function api_index(){
+    $data = QuizCategory::orderBy('name')->get();
+    return response()->json([
+      'status'=>'success',
+      'result'=>$data
+    ]);
+  }
+
 }
