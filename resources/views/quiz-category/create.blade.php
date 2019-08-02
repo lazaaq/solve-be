@@ -150,7 +150,6 @@ $(document).ready(function(){
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
-							console.log(data);
 							if(data.success){
                 $('#modal-create').modal('hide');
 								toastr.success('Successfully added data!', 'Success', {timeOut: 5000});

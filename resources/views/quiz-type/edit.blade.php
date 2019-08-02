@@ -65,12 +65,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
     /* START OF SAVE DATA */
-    id = $('input[name=id_edit]').val();
 		$('#quiz-type-edit').on('submit', function (e) {
       e.preventDefault();
         $.ajax({
 						'type': 'post',
-						'url' : "{{ url('admin/quiztype') }}"+"/"+id,
+						'url' : "{{ url('admin/quiztype') }}"+"/"+$('input[name=id_edit]').val(),
 						'data': new FormData(this),
             'processData': false,
             'contentType': false,

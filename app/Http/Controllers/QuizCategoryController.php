@@ -78,16 +78,16 @@ class QuizCategoryController extends Controller
     // dd($id);
     $data= QuizCategory::find($id);
     $rules = [
-      'name' => 'required|max:150|unique:quiz_categorys,name,'.$data->id.',id',
-      'description' => 'required|max:191',
+      'name_edit' => 'required|max:150|unique:quiz_categorys,name,'.$data->id.',id',
+      'description_edit' => 'required|max:191',
       'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
     ];
     $validator = Validator::make($request->all(), $rules);
     if ($validator->fails()) {
       return response()->json(['errors' => $validator->errors()->all()]);
     }else{
-      if(!empty($request->picture)){
-           $file = $request->file('picture');
+      if(!empty($request->picture_edit)){
+           $file = $request->file('picture_edit');
            $extension = strtolower($file->getClientOriginalExtension());
            $filename = $request->name . '.' . $extension;
            Storage::delete('public/images/quizcategory/' . $data->pic_url);
@@ -95,8 +95,8 @@ class QuizCategoryController extends Controller
       }else{
            $filename=$data->pic_url;
       }
-      $data->name=$request->name;
-      $data->description=$request->description;
+      $data->name=$request->name_edit;
+      $data->description=$request->description_edit;
       $data->pic_url=$filename;
       $data->save();
       return response()->json(['success'=>'Data updated successfully']);
