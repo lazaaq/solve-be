@@ -28,6 +28,7 @@
   			<thead>
       		<tr>
              <th>Id</th>
+             <th>Category</th>
              <th>Name</th>
              <th>Description</th>
              <th class="col-md-2">Action</th>
@@ -69,6 +70,7 @@
           },
           columns: [
               { data: 'id', name:'id', visible:false},
+              { data: 'quiz_category', name:'quiz_category', visible:true},
               { data: 'name', name:'name', visible:true},
               { data: 'description', name:'description', visible:true},
               { data: 'action', name:'action', visible:true},
@@ -84,6 +86,16 @@
           var id = data['id'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
+          $.ajax({
+              type: 'GET',
+              dataType: 'json',
+              url: "{{ url('select/data-quiz-category') }}"+"/"+id,
+          }).then(function (data) {
+              // create the option and append to Select2
+              var option = new Option(data.name, data.id, true, true);
+              $('#quiz_category_edit').append(option).trigger('change');
+          });
+          
           $.getJSON( urlData, function(data){
           /*START GET PICTURE*/
             $('#img-edit').empty();

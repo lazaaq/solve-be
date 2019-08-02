@@ -13,6 +13,7 @@
             </li>
             <li class="navigation-header"><span>Master Data</span> <i class="icon-menu" title="Main pages"></i></li>
             <li><a href="{{route('user.index')}}"><i class="icon-user"></i> <span>User</span></a></li>
+            <li><a href="{{route('quizcategory.index')}}"><i class="icon-home4"></i> <span>Category</span></a></li>
             <li><a href="{{route('quiztype.index')}}"><i class="icon-home4"></i> <span>Type</span></a></li>
             <li><a href="{{route('quiz.index')}}"><i class="icon-home4"></i> <span>Quiz</span></a></li>
             <li><a href="{{route('banner.index')}}"><i class="icon-home4"></i> <span>Banner</span></a></li>

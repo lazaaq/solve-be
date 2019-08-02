@@ -14,6 +14,13 @@
               <fieldset class="content-group">
         				<legend class="text-bold">Edit Quiz Type</legend>
                 <div class="form-group">
+                  <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                  <select id="quiz_category_edit" class="select-search" name="quiz_category_edit">
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="control-label col-lg-3">Type Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <input type="hidden" name="id_edit" class="form-control" value="" placeholder="">
@@ -58,9 +65,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
     /* START OF SAVE DATA */
+    id = $('input[name=id_edit]').val();
 		$('#quiz-type-edit').on('submit', function (e) {
       e.preventDefault();
-			id = $('input[name=id_edit]').val();
         $.ajax({
 						'type': 'post',
 						'url' : "{{ url('admin/quiztype') }}"+"/"+id,
@@ -82,6 +89,24 @@ $(document).ready(function(){
             },
 
         });
+    });
+
+    $('#quiz_category_edit').select2({
+      ajax : {
+        url :  "{{ url('select/data-quiz-category') }}",
+        dataType: 'json',
+        data: function(params){
+            return {
+                term: params.term,
+            };
+        },
+        processResults: function(data){
+            return {
+                results: data
+            };
+        },
+        cache : true,
+      },
     });
 });
 
