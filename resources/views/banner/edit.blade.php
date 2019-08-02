@@ -30,19 +30,11 @@
                   <label class="control-label col-lg-3">Is Viewed<span class="text-danger">*</span></label>
 									<div class="col-lg-9">
                     <label class="radio-inline col-md-3">
-<<<<<<< HEAD
-                      <input type="radio" name="isViewEdit" id="view" value="1" class="styled">
-                      View
-                    </label>
-                    <label class="radio-inline col-md-3">
-                      <input type="radio" name="isViewEdit" id="notView" value="0" class="styled">
-=======
                       <input type="radio" id="view" name="isViewEdit" value="1" class="styled">
                       View
                     </label>
                     <label class="radio-inline col-md-3">
                       <input type="radio" id="notView" name="isViewEdit" value="0" class="styled">
->>>>>>> b261edcf78b6e09b5839079203a79be7221509b7
                       Not View
                     </label>
                   </div>
@@ -81,10 +73,9 @@ $(document).ready(function(){
     /* START OF SAVE DATA */
 		$('#banner-edit').on('submit', function (e) {
       e.preventDefault();
-			id = $('input[name=id_edit]').val();
         $.ajax({
 						'type': 'post',
-						'url' : "{{ url('admin/banner') }}"+"/"+id,
+						'url' : "{{ url('admin/banner') }}"+"/"+$('input[name=id_edit]').val(),
 						'data': new FormData(this),
             'processData': false,
             'contentType': false,

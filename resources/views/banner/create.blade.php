@@ -27,11 +27,11 @@
                   <label class="control-label col-lg-3">Is Viewed<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <label class="radio-inline col-md-3">
-                      <input checked type="radio" name="isView" value="1" class="styled">
+                      <input checked type="radio" id="viewCreate" name="isView" value="1" class="styled">
                       View
                     </label>
                     <label class="radio-inline col-md-3">
-                      <input type="radio" name="isView" value="0" class="styled">
+                      <input type="radio" id="notViewCreate" name="isView" value="0" class="styled">
                       Not View
                   </div>
                 </div>

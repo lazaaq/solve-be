@@ -66,6 +66,8 @@
           $('input[name=isView]').val('');
           $('input[name=picture]').val('');
           $('#modal-create').modal('show');
+          $('#viewCreate').val('1');
+          $('#notViewCreate').val('0');
       });
   		/* START OF DATATABLE */
       tableBanner = $('#table-banner').DataTable({
@@ -134,8 +136,6 @@
             $('#img-edit').append(img);
           /*END GET PICTURE*/
             $('input[name=_method]').val('PUT');
-            $('#view').val('1');
-        		$('#notView').val('0');
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
             $('input[name=link_to_edit]').val(data['data']['linkTo']);
