@@ -141,9 +141,11 @@
             $('input[name=link_to_edit]').val(data['data']['linkTo']);
             if(data['data']['isView'] == '1'){
               $('#uniform-view span').addClass("checked");
+              $('#view').prop("checked", true).trigger("click")
               $('#uniform-notView span').removeClass("checked");
             }else{
               $('#uniform-notView span').addClass("checked");
+              $('#notView').prop("checked", true).trigger("click")
               $('#uniform-view span').removeClass("checked");
             }
             $('textarea[name=description_edit]').val(data['data']['description']);
