@@ -133,7 +133,7 @@ class BannerController extends Controller
      */
      public function update(Request $request, $id)
      {
-       return $request;
+       //return $request->description_edit;
        $data= Banner::find($id);
        $rules = [
          'description_edit' => 'required|max:191',

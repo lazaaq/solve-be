@@ -10,7 +10,14 @@
         		<form class="form-horizontal" id="quiz-type-store" method="post" enctype="multipart/form-data" files=true>
               @csrf
               <fieldset class="content-group">
-        				<legend class="text-bold">Creat Quiz Type</legend>
+        				<legend class="text-bold">Create Quiz Type</legend>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                  <select id="quiz_category" class="select-search" name="quiz_category">
+                  </select>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Type Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
@@ -77,6 +84,25 @@ $(document).ready(function(){
 
         });
     });
+
+    $('#quiz_category').select2({
+      ajax : {
+        url :  "{{ url('select/data-quiz-category') }}",
+        dataType: 'json',
+        data: function(params){
+            return {
+                term: params.term,
+            };
+        },
+        processResults: function(data){
+            return {
+                results: data
+            };
+        },
+        cache : true,
+      },
+    });
+
 });
 
 </script>

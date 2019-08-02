@@ -63,7 +63,7 @@
       $("#btn-create").on('click', function(){
           $('textarea[name=description]').val('');
           $('input[name=link_to]').val('');
-          $('input[name=is_view]').val('');
+          $('input[name=isView]').val('');
           $('input[name=picture]').val('');
           $('#modal-create').modal('show');
       });
@@ -121,6 +121,8 @@
       $("#table-banner tbody").on('click','#btn-edit', function(){
           $("#banner-edit :input").val('');
           $('#modal-edit').modal('show');
+          $('#view').val('1');
+          $('#notView').val('0');
           var data = tableBanner.row( $(this).parents('tr') ).data();
           var id = data['id'];
           var token = $('input[name=_token]').val();
@@ -131,14 +133,19 @@
             var img = $('<img id="img-banner" class="img-responsive" src="{{ url('storage/banner/') }}/'+id+'" alt="" title="" height="50"><br>');
             $('#img-edit').append(img);
           /*END GET PICTURE*/
-          console.log(data['data']['isView']);
             $('input[name=_method]').val('PUT');
             $('#view').val('1');
         		$('#notView').val('0');
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
             $('input[name=link_to_edit]').val(data['data']['linkTo']);
-            $('input[name=isViewEdit][value='+data['data']['isView']+']').prop('checked', true).trigger('change');
+            if(data['data']['isView'] == '1'){
+              $('#uniform-view span').addClass("checked");
+              $('#uniform-notView span').removeClass("checked");
+            }else{
+              $('#uniform-notView span').addClass("checked");
+              $('#uniform-view span').removeClass("checked");
+            }
             $('textarea[name=description_edit]').val(data['data']['description']);
           });
       });

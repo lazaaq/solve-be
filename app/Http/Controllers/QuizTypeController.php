@@ -21,6 +21,9 @@ class QuizTypeController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('quiz_category', function($row){
+      return $row->quizCategory->name;
+    })
     ->make(true);
   }
   /**
@@ -52,7 +55,8 @@ class QuizTypeController extends Controller
   {
     // return $request;
     $rules = [
-      'name' => 'required|max:20|unique:quiz_types,name',
+      'quiz_category' => 'required',
+      'name' => 'required|max:150|unique:quiz_types,name',
       'description' => 'required|max:191',
       'picture' => 'max:2048|mimes:png,jpg,jpeg',
     ];
@@ -73,6 +77,7 @@ class QuizTypeController extends Controller
       QuizType::create(
         [
               'name' => request('name'),
+              'quiz_category_id' => request('quiz_category'),
               'description'=>request('description'),
               'pic_url'=>$filename
         ]
@@ -126,7 +131,8 @@ class QuizTypeController extends Controller
     // return $request;
     $data= QuizType::find($id);
     $rules = [
-      'name_edit' => 'required|max:20|unique:quiz_types,name,'.$id,
+      'quiz_category_edit' => 'required',
+      'name_edit' => 'required|max:150|unique:quiz_types,name,'.$id,
       'description_edit' => 'required|max:191',
       'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
     ];
@@ -146,6 +152,7 @@ class QuizTypeController extends Controller
     }
 
     $data->name=$request->name_edit;
+    $data->quiz_category_id=$request->quiz_category_edit;
     $data->description=$request->description_edit;
     $data->pic_url=$filename;
     $data->save();
