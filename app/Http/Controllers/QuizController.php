@@ -70,7 +70,7 @@ class QuizController extends Controller
   {
       $rules = [
         'quiz_type' => 'required',
-        'title' => 'required|max:50|unique:quizs',
+        'title' => 'required|max:150|unique:quizs',
         'description' => 'required|max:191',
         // 'total_question' => 'required',
         'total_visible_question' => 'required',
@@ -143,7 +143,7 @@ class QuizController extends Controller
     $data= Quiz::find($id);
     $rules = [
       'quiz_type_edit' => 'required',
-      'title_edit' => 'required|max:20|unique:quizs,title,'.$data->id.',id',
+      'title_edit' => 'required|max:150|unique:quizs,title,'.$data->id.',id',
       'description_edit' => 'required|max:191',
       'total_visible_question_edit' => 'required',
       'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',

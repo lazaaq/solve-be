@@ -52,7 +52,7 @@ class QuizTypeController extends Controller
   {
     // return $request;
     $rules = [
-      'name' => 'required|max:20|unique:quiz_types,name',
+      'name' => 'required|max:150|unique:quiz_types,name',
       'description' => 'required|max:191',
       'picture' => 'max:2048|mimes:png,jpg,jpeg',
     ];
@@ -126,7 +126,7 @@ class QuizTypeController extends Controller
     // return $request;
     $data= QuizType::find($id);
     $rules = [
-      'name_edit' => 'required|max:20|unique:quiz_types,name,'.$id,
+      'name_edit' => 'required|max:150|unique:quiz_types,name,'.$id,
       'description_edit' => 'required|max:191',
       'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
     ];

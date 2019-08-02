@@ -11,7 +11,7 @@ class CreateQuizsTable extends Migration {
 			$table->increments('id');
 			$table->integer('quiz_type_id');
 			// $table->integer('time_id');
-			$table->string('title', 40);
+			$table->string('title', 150);
 			$table->string('description');
 			$table->string('pic_url')->nullable();
 			$table->integer('sum_question')->default(0);
