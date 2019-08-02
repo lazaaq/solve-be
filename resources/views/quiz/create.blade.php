@@ -114,6 +114,7 @@
 
 
 @push('after_script')
+<script type="text/javascript" src="{{asset('js/pages/uploader_bootstrap.js')}}"></script>
 
 @endpush --}}
 
@@ -135,12 +136,22 @@
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Create Quiz</legend>
+								<div class="form-group">
+                  <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+										<select id="category" class="select-search" name="quiz_category">
+                        @foreach($quizcategory as $value => $key)
+                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <select id="type" class="select-search" name="quiz_type">
-                        @foreach($quiztype as $value => $key)
-                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                        @foreach($quiztype as $value1 => $key1)
+                            <option value="{{$key1->id}}" {{collect(old('quiz_type'))->contains($key1->id) ? 'selected':''}} class="{{$key1->quiz_category_id}}">{{$key1->name}}</option>
                         @endforeach
                     </select>
                       @if ($errors->has('quiz_type'))
@@ -220,8 +231,10 @@
 </div>
 <!-- /content area -->
 @push('after_script')
+<script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+		$("#type").chained("#category");
     /* save data */
     $('#quiz-store').on('submit', function (e) {
       e.preventDefault();

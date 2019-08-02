@@ -143,13 +143,23 @@
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Edit Quiz</legend>
+								<div class="form-group">
+                  <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+										<select id="category-edit" class="select-search" name="quiz_category_edit">
+                        @foreach($quizcategory as $value => $key)
+                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
 										<input type="hidden" name="id_edit" class="form-control" value="" placeholder="">
-                    <select id="quiz_type_edit" class="select-search" name="quiz_type_edit">
+                    <select id="type-edit" class="select-search" name="quiz_type_edit">
                         @foreach($quiztype as $value => $key)
-                            <option value="{{$key->id}}">{{$key->name}}</option>
+                            <option value="{{$key->id}}" class="{{$key->quiz_category_id}}">{{$key->name}}</option>
                         @endforeach
                     </select>
                   </div>
@@ -208,6 +218,7 @@
 @push('after_script')
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#type-edit").chained("#category-edit");
     /* START OF SAVE DATA */
 		$('#quiz-edit').on('submit', function (e) {
       e.preventDefault();

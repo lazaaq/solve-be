@@ -16,6 +16,6 @@ class QuizCategory extends Model
 
     public function quizType()
     {
-        return $this->hasOne('App\QuizType', 'quiz_category_id', 'id');
+        return $this->hasMany('App\QuizType', 'quiz_category_id', 'id');
     }
 }

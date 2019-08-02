@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use File;
+use App\QuizCategory;
 use App\QuizType;
 use App\Quiz;
 use App\Question;
@@ -46,8 +47,9 @@ class QuizController extends Controller
    */
   public function index()
   {
+    $quizcategory = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
-    return view('quiz.index', compact('quiztype'));
+    return view('quiz.index', compact('quiztype','quizcategory'));
   }
 
   /**
@@ -126,8 +128,7 @@ class QuizController extends Controller
    */
   public function edit($id)
   {
-    $data = Quiz::find($id);
-    $quiztype = QuizType::all()->sortBy('name');
+    $data = Quiz::where('id', $id)->with('QuizType')->first();
     return response()->json(['status' => 'ok','data'=>$data],200);
     // return view('quiz.edit', compact('data','quiztype'));
   }

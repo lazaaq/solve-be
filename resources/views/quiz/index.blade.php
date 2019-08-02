@@ -116,6 +116,8 @@
             $('input[name=total_visible_question_edit]').val(data['data']['tot_visible']);
             $('input[name=total_question_edit]').val(data['data']['sum_question']);
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
+            $('select[name=quiz_category_edit]').val(data['data']['quiz_type']['quiz_category_id']).trigger('change');
+            // $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
           });
       });
       /*END OF GET DATA FOR FORM EDIT*/

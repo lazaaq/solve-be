@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use App\QuizCategory;
+use Validator;
 use File;
 
 class QuizCategoryController extends Controller
@@ -16,7 +17,7 @@ class QuizCategoryController extends Controller
     $data = QuizCategory::all()->sortBy('name');
     return datatables()->of($data)
     ->addColumn('action', function($row){
-      $btn = '<a href="'.route('quizcategory.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+      $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
       return $btn;
     })
@@ -35,64 +36,72 @@ class QuizCategoryController extends Controller
 
   public function store(Request $request)
   {
-    $this->validate(request(),
-      [
-        'name' => 'required|max:150|unique:quiz_categorys',
-        'description' => 'required|max:191',
-        'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
-      ]
-    );
-    if(!empty($request->picture)){
-         $file = $request->file('picture');
-         $extension = strtolower($file->getClientOriginalExtension());
-         $filename = $request->name . '.' . $extension;
-         Storage::put('public/images/quizcategory/' . $filename, File::get($file));
+    $rules = [
+      'name' => 'required|max:150|unique:quiz_categorys',
+      'description' => 'required|max:191',
+      'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
+    ];
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      return response()->json(['errors' => $validator->errors()->all()]);
+    }
+    else{
+      if(!empty($request->picture)){
+           $file = $request->file('picture');
+           $extension = strtolower($file->getClientOriginalExtension());
+           $filename = $request->name . '.' . $extension;
+           Storage::put('public/images/quizcategory/' . $filename, File::get($file));
        }else{
-         $filename='blank.jpg';
+          $filename='blank.jpg';
        }
        // dd($filename);
-    QuizCategory::create(
-      [
-            'name' => request('name'),
-            'description'=>request('description'),
-            'pic_url'=>$filename
-      ]
-    );
-    return redirect(route('quizcategory.index'));
+      QuizCategory::create(
+        [
+              'name' => request('name'),
+              'description'=>request('description'),
+              'pic_url'=>$filename
+        ]
+      );
+      return response()->json(['success'=>'Data added successfully']);
+      // return redirect(route('quizcategory.index'));
+    }
   }
-
   public function edit($id)
   {
     $data = QuizCategory::find($id);
-    return view('quiz-category.edit', compact('data'));
+    return response()->json(['status' => 'ok','data'=>$data],200);
+    // return view('quiz-category.edit', compact('data'));
   }
 
   public function update(Request $request, $id)
   {
     // dd($id);
     $data= QuizCategory::find($id);
-    $this->validate(request(),
-      [
-        'name' => 'required|max:150|unique:quiz_categorys,name,'.$data->id.',id',
-        'description' => 'required|max:191',
-        'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
-      ]
-    );
-    if(!empty($request->picture)){
-         $file = $request->file('picture');
-         $extension = strtolower($file->getClientOriginalExtension());
-         $filename = $request->name . '.' . $extension;
-         Storage::delete('public/images/quizcategory/' . $data->pic_url);
-         Storage::put('public/images/quizcategory/' . $filename, File::get($file));
+    $rules = [
+      'name' => 'required|max:150|unique:quiz_categorys,name,'.$data->id.',id',
+      'description' => 'required|max:191',
+      'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
+    ];
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      return response()->json(['errors' => $validator->errors()->all()]);
     }else{
-         $filename=$data->pic_url;
+      if(!empty($request->picture)){
+           $file = $request->file('picture');
+           $extension = strtolower($file->getClientOriginalExtension());
+           $filename = $request->name . '.' . $extension;
+           Storage::delete('public/images/quizcategory/' . $data->pic_url);
+           Storage::put('public/images/quizcategory/' . $filename, File::get($file));
+      }else{
+           $filename=$data->pic_url;
+      }
+      $data->name=$request->name;
+      $data->description=$request->description;
+      $data->pic_url=$filename;
+      $data->save();
+      return response()->json(['success'=>'Data updated successfully']);
+      // return redirect()->route('quizcategory.index');
     }
-
-    $data->name=$request->name;
-    $data->description=$request->description;
-    $data->pic_url=$filename;
-    $data->save();
-    return redirect()->route('quizcategory.index');
   }
 
   public function destroy($id)

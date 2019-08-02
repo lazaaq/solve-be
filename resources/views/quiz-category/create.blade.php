@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 @section('content')
 <!-- Page header -->
 <div class="page-header">
@@ -24,13 +24,6 @@
 <div class="content">
   <!-- State saving -->
 	<div class="panel panel-flat">
-		{{-- <div class="panel-heading">
-			<h5 class="panel-title">State saving</h5>
-		</div> --}}
-
-		{{-- <div class="panel-body"> --}}
-			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
-		{{-- </div> --}}
     <div class="panel-body">
   		<form class="form-horizontal form-validate-jquery" action="{{route('quizcategory.store')}}" method="post" enctype="multipart/form-data" files=true>
         {{ csrf_field() }}
@@ -91,4 +84,89 @@
   <script>
 
   </script>
+@endpush --}}
+
+<div id="modal-create" class="modal fade">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+      	<div class="panel panel-flat">
+          <div class="panel-body">
+        		<form class="form-horizontal" id="quiz-category-store" method="post" enctype="multipart/form-data" files=true>
+              @csrf
+              <fieldset class="content-group">
+        				<legend class="text-bold">Create Quiz Category</legend>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <textarea type="text" name="description" rows="3" class="form-control"  placeholder="">{{ old('description') }}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+        					<label class="control-label col-lg-3">Picture</label>
+        					<div class="col-lg-9">
+										<input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+        						{{-- <input type="file" name="picture" class="form-control"> --}}
+        					</div>
+        				</div>
+        			</fieldset>
+              <div>
+                <div class="col-md-4">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-arrow-left13"></i> Close</button>
+                </div>
+                <div class="col-md-8 text-right">
+                  <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
+                  <button type="submit" id="btn-submit" class="btn btn-primary">Save</button>
+                </div>
+        			</div>
+        		</form>
+        	</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /content area -->
+@push('after_script')
+<script type="text/javascript">
+$(document).ready(function(){
+    /* save data */
+    $('#quiz-category-store').on('submit', function (e) {
+      e.preventDefault();
+        $.ajax({
+            'type': 'POST',
+            'url' : "{{ route('quizcategory.store') }}",
+            'data': new FormData(this),
+            'processData': false,
+            'contentType': false,
+            'dataType': 'JSON',
+            'success': function(data){
+							console.log(data);
+							if(data.success){
+                $('#modal-create').modal('hide');
+								toastr.success('Successfully added data!', 'Success', {timeOut: 5000});
+								tableQuizCategory.ajax.reload();
+              }else{
+								console.log(data);
+	              for(var count = 0; count < data.errors.length; count++){
+	              	toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                }
+              }
+            },
+
+        });
+    });
+
+});
+
+</script>
 @endpush

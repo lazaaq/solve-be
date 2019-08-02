@@ -31,7 +31,8 @@
 			{{-- DataTables has the option of being able to <code>save the state</code> of a table: its paging position, ordering state etc., so that is can be restored when the user reloads a page, or comes back to the page after visiting a sub-page. This state saving ability is enabled by the <code>stateSave</code> option. The <code>duration</code> for which the saved state is valid can be set using the <code>stateDuration</code> initialisation parameter (2 hours by default). --}}
 		{{-- </div> --}}
     <div style="padding:20px">
-      <a href="{{route('quizcategory.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+      <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i> Create New</button>
+      {{-- <a href="{{route('quizcategory.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a> --}}
     	<table class="table" id="table-quiz-category" class="display" style="width:100%">
   			<thead>
       		<tr>
@@ -49,11 +50,22 @@
 	<!-- /state saving -->
 </div>
 <!-- /content area -->
+
+@include('quiz-category.create')
+@include('quiz-category.edit')
 @endsection
 @push('after_script')
   <script>
   var tableQuizCategory;
     $(document).ready(function(){
+      /* Trigger modal create*/
+      $("#btn-create").on('click', function(){
+          $('input[name=name]').val('');
+          // $('input[name=picture]').val('');
+          $('textarea[name=description]').val('');
+          $('#modal-create').modal('show');
+      });
+      /* End of Trigger modal create*/
   		/* tabel user */
       tableQuizCategory = $('#table-quiz-category').DataTable({
         processing	: true,
@@ -75,6 +87,34 @@
             { data: 'action', name:'action', visible:true},
         ],
       });
+
+      /* START OF GET DATA FOR FORM EDIT */
+      $("#table-quiz-category tbody").on('click','#btn-edit', function(){
+          $("#quiz-category-edit :input").val('');
+          $('#modal-edit').modal('show');
+          var data = tableQuizCategory.row( $(this).parents('tr') ).data();
+          var id = data['id'];
+          var token = $('input[name=_token]').val();
+          var urlData = " {{ url('admin/quizcategory') }}"+"/"+id+"/edit";
+          $.getJSON( urlData, function(data){
+          /*START GET PICTURE*/
+            $('#img-edit').empty();
+            var img = $('<img id="img-quizcategory" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
+            if (data['data']['pic_url'] != "blank.jpg") {
+              var img = $('<img id="img-quizcategory" class="img-responsive" src="{{ url('storage/quiz_category/') }}/'+id+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+            }
+            $('#img-edit').append(img);
+          /*END GET PICTURE*/
+            $('input[name=_method]').val('PUT');
+            $('input[name=_token]').val(token);
+            $('input[name=name_edit]').val(data['data']['name']);
+            $('input[name=id_edit]').val(data['data']['id']);
+            $('textarea[name=description_edit]').val(data['data']['description']);
+          });
+      });
+      /*END OF GET DATA FOR FORM EDIT*/
+
+      /*START OF DELETE DATA*/
       $('#table-quiz-category tbody').on( 'click', 'button', function () {
         var data = tableQuizCategory.row( $(this).parents('tr') ).data();
         swal({
@@ -101,6 +141,8 @@
           }
         });
       });
+      /*END OF DELETE DATA*/
+
     });
   </script>
 @endpush
