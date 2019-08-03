@@ -62,6 +62,7 @@
   var tableQuiz;
     $(document).ready(function(){
       $("#btn-create").on('click', function(){
+          $('.fileinput-remove-button').click();
           $('#modal-create').modal('show');
       });
   		/* START OF DATATABLE */
@@ -92,6 +93,7 @@
 
       /* START OF GET DATA FOR FORM EDIT */
       $("#table-quiz tbody").on('click','#btn-edit', function(){
+          $('.fileinput-remove-button').click();
           $("#quiz-edit :input").val('');
           $('#modal-edit').modal('show');
           var data = tableQuiz.row( $(this).parents('tr') ).data();

@@ -61,8 +61,8 @@
       /* Trigger modal create*/
       $("#btn-create").on('click', function(){
           $('input[name=name]').val('');
-          // $('input[name=picture]').val('');
           $('textarea[name=description]').val('');
+          $('.fileinput-remove-button').click();
           $('#modal-create').modal('show');
       });
       /* End of Trigger modal create*/
@@ -90,6 +90,7 @@
 
       /* START OF GET DATA FOR FORM EDIT */
       $("#table-quiz-category tbody").on('click','#btn-edit', function(){
+          $('.fileinput-remove-button').click();
           $("#quiz-category-edit :input").val('');
           $('#modal-edit').modal('show');
           var data = tableQuizCategory.row( $(this).parents('tr') ).data();

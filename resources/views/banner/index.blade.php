@@ -61,6 +61,7 @@
   var tableBanner;
     $(document).ready(function(){
       $("#btn-create").on('click', function(){
+          $('.fileinput-remove-button').click();
           $('textarea[name=description]').val('');
           $('input[name=link_to]').val('');
           $('input[name=isView]').val('');
@@ -121,6 +122,7 @@
 
       /* START OF GET DATA FOR FORM EDIT */
       $("#table-banner tbody").on('click','#btn-edit', function(){
+          $('.fileinput-remove-button').click();
           $("#banner-edit :input").val('');
           $('#modal-edit').modal('show');
           $('#view').val('1');

@@ -49,8 +49,8 @@
   var tableQuizType;
     $(document).ready(function(){
         $("#btn-create").on('click', function(){
+            $('.fileinput-remove-button').click();
             $('input[name=name]').val('');
-            // $('input[name=picture]').val('');
             $('textarea[name=description]').val('');
             $('#modal-create').modal('show');
         });
@@ -80,6 +80,7 @@
 
       /* START OF GET DATA FOR FORM EDIT */
       $("#table-quiz-type tbody").on('click','#btn-edit', function(){
+          $('.fileinput-remove-button').click();
           $("#quiz-type-edit :input").val('');
           $('#modal-edit').modal('show');
           var data = tableQuizType.row( $(this).parents('tr') ).data();
@@ -95,7 +96,7 @@
               var option = new Option(data.name, data.id, true, true);
               $('#quiz_category_edit').append(option).trigger('change');
           });
-          
+
           $.getJSON( urlData, function(data){
           /*START GET PICTURE*/
             $('#img-edit').empty();
