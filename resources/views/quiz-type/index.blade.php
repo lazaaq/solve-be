@@ -85,12 +85,13 @@
           $('#modal-edit').modal('show');
           var data = tableQuizType.row( $(this).parents('tr') ).data();
           var id = data['id'];
+          var category_id = data['quiz_category'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
           $.ajax({
               type: 'GET',
               dataType: 'json',
-              url: "{{ url('select/data-quiz-category') }}"+"/"+id,
+              url: "{{ url('select/data-quiz-category') }}"+"/"+category_id,
           }).then(function (data) {
               // create the option and append to Select2
               var option = new Option(data.name, data.id, true, true);

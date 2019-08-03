@@ -135,7 +135,7 @@ class QuizCategoryController extends Controller
 
   public function getPreSelect(Request $request, $id)
   {
-    $data = QuizCategory::select('id','name')->where('id',$id)->first();
+    $data = QuizCategory::select('id','name')->where('name',$id)->first();
     return response()->json($data);
   }
 
