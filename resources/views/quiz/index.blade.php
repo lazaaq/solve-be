@@ -100,12 +100,13 @@
           var id = data['id'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quiz') }}"+"/"+id+"/edit";
+          var d = new Date();
           $.getJSON( urlData, function(data){
           /*START GET PICTURE*/
             $('#img-edit').empty();
             var img = $('<img id="img-quiztype" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
             if (data['data']['pic_url'] != "blank.jpg") {
-              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz/') }}/'+id+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
             }
             $('#img-edit').append(img);
           /*END GET PICTURE*/
@@ -118,7 +119,7 @@
             $('input[name=total_visible_question_edit]').val(data['data']['tot_visible']);
             $('input[name=total_question_edit]').val(data['data']['sum_question']);
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
-            $('select[name=quiz_category_edit]').val(data['data']['quiz_type']['quiz_category_id']).trigger('change');
+            //$('select[name=quiz_category_edit]').val(data['data']['quiz_type']['quiz_category_id']).trigger('change');
             // $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
           });
       });

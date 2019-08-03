@@ -37,8 +37,9 @@ class BannerController extends Controller
             return $btn;
         })
         ->addColumn('pictures', function($row){
+          $time = \Carbon\Carbon::now();
           $row->picture = route('banner.picture',$row->id);
-          $picture = '<img class="img-responsive" src="'.route('banner.picture',$row->id).'" alt="Banner" title="Banner" width="100%">';
+          $picture = '<img class="img-responsive" src="'.route('banner.picture',$row->id).'?'.$time.'" alt="Banner" title="Banner" width="100%">';
           return $picture;
         })
         ->rawColumns(['action','pictures','isViewed'])

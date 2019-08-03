@@ -131,10 +131,11 @@
           var id = data['id'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/banner') }}"+"/"+id+"/edit";
+          var d = new Date();
           $.getJSON( urlData, function(data){
           /*START GET PICTURE*/
             $('#img-edit').empty();
-            var img = $('<img id="img-banner" class="img-responsive" src="{{ url('storage/banner/') }}/'+id+'" alt="" title="" height="50"><br>');
+            var img = $('<img id="img-banner" class="img-responsive" src="{{ url('storage/banner/') }}/'+id+'?'+d.getTime()+'" alt="" title="" height="50"><br>');
             $('#img-edit').append(img);
           /*END GET PICTURE*/
             $('input[name=_method]').val('PUT');

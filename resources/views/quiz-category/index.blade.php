@@ -97,12 +97,13 @@
           var id = data['id'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quizcategory') }}"+"/"+id+"/edit";
+          var d = new Date();
           $.getJSON( urlData, function(data){
           /*START GET PICTURE*/
             $('#img-edit').empty();
             var img = $('<img id="img-quizcategory" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
             if (data['data']['pic_url'] != "blank.jpg") {
-              var img = $('<img id="img-quizcategory" class="img-responsive" src="{{ url('storage/quiz_category/') }}/'+id+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+              var img = $('<img id="img-quizcategory" class="img-responsive" src="{{ url('storage/quiz_category/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
             }
             $('#img-edit').append(img);
           /*END GET PICTURE*/

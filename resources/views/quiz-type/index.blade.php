@@ -88,6 +88,7 @@
           var category_id = data['quiz_category'];
           var token = $('input[name=_token]').val();
           var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
+          var d = new Date();
           $.ajax({
               type: 'GET',
               dataType: 'json',
@@ -103,7 +104,7 @@
             $('#img-edit').empty();
             var img = $('<img id="img-quiztype" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
             if (data['data']['pic_url'] != "blank.jpg") {
-              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz_type/') }}/'+id+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz_type/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
             }
             $('#img-edit').append(img);
           /*END GET PICTURE*/
