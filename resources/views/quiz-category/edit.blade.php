@@ -67,10 +67,10 @@ $(document).ready(function(){
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
-							console.log(data);
 							if(data.success){
                 $('#modal-edit').modal('hide');
 								toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                $('.file-input').addClass('file-input-new');
 								tableQuizCategory.ajax.reload();
               }else{
                 for(var count = 0; count < data.errors.length; count++){
