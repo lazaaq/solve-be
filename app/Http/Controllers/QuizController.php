@@ -34,6 +34,9 @@ class QuizController extends Controller
       return $btn;
     })
     ->rawColumns(['action'])
+    ->addColumn('quiz_category', function($row){
+      return $row->quizType->quizCategory->name;
+    })
     ->addColumn('quiz_type', function($row){
       return $row->quizType->name;
     })
@@ -285,13 +288,15 @@ class QuizController extends Controller
   }
 
   /*START OF API*/
-
   public function api_index($id){
     $data = Quiz::where('quiz_type_id', $id)
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('title')
-                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  ->get();
+                ->select('quizs.id',// 'quiz_types.name as type',
+                'quizs.sum_question','quizs.pic_url')
+                // 
+                //   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                   ->get();
     if (empty($data[0])) {
       return response()->json([
         'status'=>'failed',
