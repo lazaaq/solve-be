@@ -242,18 +242,20 @@ class QuizController extends Controller
 
     $get_error = [];
     foreach ($validator->errors()->messages() as $key => $value) {
-      $get_error[] = substr($key, 0, 1);
+      $get_error[] = $key;
     }
     $error = array_unique($get_error);
-
+    //dd($error);
     $question = [];
     $answers = [];
     $option = ['A', 'B', 'C', 'D', 'E'];
 
+    $count_error = 0;
     foreach ($import as $key => $row) {
       if (in_array($key, $error)) {
         continue;
-      }
+        $count_error++;
+      } else {      
         $question[$key] = [
             'quiz_id'       => $id,
             'question'      => $row->question,
@@ -268,6 +270,7 @@ class QuizController extends Controller
                 'isTrue'  => $row->true_answer == $option[$i] ? 1 : 0,
             ];
         }
+      }
     }
     $totalQuestionSuccess = count($question);
 
@@ -275,8 +278,7 @@ class QuizController extends Controller
         Question::create($q)->answer()->createMany($answers[$key]);
     }
 
-    $sumquestion = Question::where('quiz_id',$id)->count();
-    $data->sum_question = $data->sum_question + $sumquestion;
+    $data->sum_question = $data->sum_question + $totalQuestionSuccess;
     $data->save();
     return redirect()->route('quiz.show',$id)->withErrors($validator)->with('totalQuestion',$totalQuestion)->with('totalQuestionSuccess',$totalQuestionSuccess);
   }
