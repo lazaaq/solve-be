@@ -218,6 +218,7 @@ class QuizController extends Controller
       $reader->skipRows(5);
     })->get();
     if (!$import) {
+      DB::rollback();
       return redirect()->route('quiz.show',$id)->with('dbTransactionError','Something wrong!');
     }
     $import_data_filter = array_filter($import->toArray());
@@ -284,6 +285,7 @@ class QuizController extends Controller
 
     $data->sum_question = $data->sum_question + $totalQuestionSuccess;
     $data->save();
+    DB::commit();
     return redirect()->route('quiz.show',$id)->withErrors($validator)->with('totalQuestion',$totalQuestion)->with('totalQuestionSuccess',$totalQuestionSuccess);
   }
 
