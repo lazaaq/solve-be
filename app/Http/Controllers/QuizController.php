@@ -211,12 +211,15 @@ class QuizController extends Controller
       ]
     );
     $data = Quiz::find($id);
+    DB::beginTransaction();
 
     $file = $request->file('excel');
     $import = Excel::load($file, function($reader) {
       $reader->skipRows(5);
     })->get();
-
+    if (!$import) {
+      return redirect()->route('quiz.show',$id)->with('dbTransactionError','Something wrong!');
+    }
     $import_data_filter = array_filter($import->toArray());
     $totalQuestion = count($import_data_filter);
     $messages_error = [];
@@ -255,7 +258,7 @@ class QuizController extends Controller
       if (in_array($key, $error)) {
         continue;
         $count_error++;
-      } else {      
+      } else {
         $question[$key] = [
             'quiz_id'       => $id,
             'question'      => $row->question,
@@ -273,6 +276,7 @@ class QuizController extends Controller
       }
     }
     $totalQuestionSuccess = count($question);
+    // dd($totalQuestionSuccess);
 
     foreach ($question as $key => $q) {
         Question::create($q)->answer()->createMany($answers[$key]);
@@ -296,7 +300,7 @@ class QuizController extends Controller
                   ->orderBy('title')
                 ->select('quizs.id',// 'quiz_types.name as type',
                 'quizs.sum_question','quizs.pic_url')
-                // 
+                //
                 //   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                    ->get();
     if (empty($data[0])) {
