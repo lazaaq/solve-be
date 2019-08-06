@@ -159,7 +159,7 @@ class QuizController extends Controller
       if(!empty($request->picture_edit)){
            $file = $request->file('picture_edit');
            $extension = strtolower($file->getClientOriginalExtension());
-           $filename = $request->name . '.' . $extension;
+           $filename = $request->title_edit . '.' . $extension;
            Storage::delete('public/images/quiz/' . $data->pic_url);
            Storage::put('public/images/quiz/' . $filename, File::get($file));
       }else{

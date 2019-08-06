@@ -89,7 +89,7 @@ class QuizCategoryController extends Controller
       if(!empty($request->picture_edit)){
            $file = $request->file('picture_edit');
            $extension = strtolower($file->getClientOriginalExtension());
-           $filename = $request->name . '.' . $extension;
+           $filename = $request->name_edit . '.' . $extension;
            Storage::delete('public/images/quizcategory/' . $data->pic_url);
            Storage::put('public/images/quizcategory/' . $filename, File::get($file));
       }else{
