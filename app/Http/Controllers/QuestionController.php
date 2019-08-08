@@ -307,24 +307,6 @@ class QuestionController extends Controller
             'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
           ];
         }
-        if (!$collection) {
-          return response()->json([
-            'status' => 'failed',
-            'message'   => 'empty question'
-          ]);
-          $data = Arr::random($collection, $quiz->tot_visible);
-          if (!$data) {
-            return response()->json([
-              'status' => 'failed',
-              'message'   => 'empty question'
-            ]);
-          }
-        } elseif (count($collection) < $quiz->tot_visible) {
-          return response()->json([
-            'status' => 'failed',
-            'message'   => 'to many number of visible question'
-          ]);
-        }
         $data = Arr::random($collection, $quiz->tot_visible);
         return response()->json([
             'status' => 'success',

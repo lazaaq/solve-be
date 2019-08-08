@@ -299,12 +299,11 @@ class QuizController extends Controller
   public function api_index($id){
     $data = Quiz::where('quiz_type_id', $id)
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
-                  ->orderBy('title')
-                ->select('quizs.id',// 'quiz_types.name as type',
-                'quizs.sum_question','quizs.pic_url')
-                //
-                //   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                   ->get();
+                  ->orderBy('quizs.id')
+                  ->select('quizs.id',// 'quiz_types.name as type',
+                    'quizs.sum_question','quizs.pic_url')
+                  // ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->get();
     if (empty($data[0])) {
       return response()->json([
         'status'=>'failed',
