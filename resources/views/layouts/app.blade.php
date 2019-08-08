@@ -85,8 +85,8 @@
 
 	<!-- Main navbar -->
 	<div class="navbar navbar-inverse bg-primary-800">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><img src="{{asset('img/logo_light.png')}}" alt=""></a>
+		<div class="navbar-header" style="text-align:center">
+			<a href="#"><img src="{{asset('img/web_transparent_fit_ruko_logo_bw.png')}}" alt="" style="height:47px"></a>
 
 			<ul class="nav navbar-nav visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
