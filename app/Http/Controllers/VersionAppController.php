@@ -134,4 +134,15 @@ class VersionAppController extends Controller
       $data = VersionApp::find($id);
       $data->delete();
     }
+
+    /*START OF API*/
+
+    public function api_index(){
+      $data = VersionApp::all()->sortByDesc('created_at')->first();
+      return response()->json([
+        'status'=>'success',
+        'result'=>$data
+      ]);
+    }
+
 }

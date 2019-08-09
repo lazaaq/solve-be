@@ -11,7 +11,7 @@
             <li><a href="{{route('quiztype.index')}}"><img src="{{asset('img/web_ic_type.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Type</span></a></li>
             <li><a href="{{route('quiz.index')}}"><img src="{{asset('img/web_ic_quiz.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Quiz</span></a></li>
             <li><a href="{{route('banner.index')}}"><img src="{{asset('img/web_ic_banner.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Banner</span></a></li>
-            <li><a href="{{route('version.index')}}"><img src="{{asset('img/web_ic_banner.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Version</span></a></li>
+            <li><a href="{{route('version.index')}}"><img src="{{asset('img/web_ic_version.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Version</span></a></li>
 
             <!-- /main -->
 
