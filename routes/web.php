@@ -36,6 +36,7 @@ Auth::routes();
      Route::resource('quizcollager', 'QuizCollagerController');
      Route::resource('quiz', 'QuizController')->except('destroy');
      Route::resource('banner', 'BannerController')->except('destroy');
+     Route::resource('version', 'VersionAppController')->except('destroy');
 
      Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
      Route::get('quiz/question/{id}/add','QuestionController@add')->name('quiz.questionAdd');
@@ -55,6 +56,7 @@ Auth::routes();
      Route::get('banner/delete/{id}', 'BannerController@destroy')->name('banner.destroy');
      Route::get('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
 
+     Route::get('version/delete/{id}', 'VersionAppController@destroy')->name('version.destroy');
 
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
@@ -63,6 +65,7 @@ Auth::routes();
      Route::get('/data-quiz', 'QuizController@getData');
      Route::get('/data-user', 'UserController@getData');
      Route::get('/data-banner', 'BannerController@getData');
+     Route::get('/data-version', 'VersionAppController@getData');
    });
 
    Route::group(['middleware' => ['role:admin'],'prefix' => '/select'], function () {
