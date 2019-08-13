@@ -43,6 +43,7 @@ Auth::routes();
      Route::get('quiz/bulk/{id}/import','QuizController@import')->name('quiz.import');
      Route::post('quiz/bulk/{id}/import','QuizController@saveImport')->name('quiz.saveImport');
      Route::get('quiz/import/download', 'QuizController@downloadTemplate')->name('quiz.downloadTemplate');
+     Route::get('quiz/export/{id}', 'QuizController@export')->name('quiz.export');
 
      Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
      Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');

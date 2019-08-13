@@ -16,7 +16,7 @@ use DB;
 use Validator;
 use Excel;
 use App\Imports\QuestionImport;
-
+use Redirect;
 
 class QuizController extends Controller
 {
@@ -293,6 +293,104 @@ class QuizController extends Controller
   {
     $path = 'template/Template Import Quiz.xlsx';
     return response()->download($path);
+  }
+
+  public function export($id)
+  {
+      $quiz = Quiz::where('id', $id)->first();
+      $question = Question::where('quiz_id', $quiz->id)->get();
+      $option  = [];
+      foreach ($question as $key => $item) {
+          $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
+      }
+      $collection = [];
+      foreach ($question as $i => $item) {
+        $collection[$i] = [
+          'id' => $item['id'],
+          'question' => $item['question'],
+          'a' => $option[$i]->get(0)->content,
+          'b' => $option[$i]->get(1)->content,
+          'c' => $option[$i]->get(2)->content,
+          'd' => $option[$i]->get(3)->content,
+          'e' => $option[$i]->get(4)->content,
+          'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
+        ];
+      }
+      return Excel::create('Export Quiz '.$quiz->title, function($excel) use ($collection)
+      {
+          $excel->sheet('Sheet1', function($sheet) use ($collection)
+          {
+              $sheet->freezeFirstRow();
+              $sheet->setStyle(array(
+                  'font' => array(
+                      'name'      =>  'Calibri',
+                      'size'      =>  12,
+                  )
+              ));
+              $sheet->setAutoSize(array(
+                  'A', 'C', 'D', 'E', 'F', 'G', 'H'
+              ));
+              $sheet->setWidth(array(
+                  'B'     =>  74,
+              ));
+
+              $sheet->cell('A1:H1', function($cell)
+              {
+                  $cell->setBackground('#ede185');
+                  $cell->setFontWeight('bold');
+              });
+              $sheet->cell('A1', function($cell)
+              {
+                  $cell->setValue('NO');
+              });
+
+              $sheet->cell('B1', function($cell)
+              {
+                  $cell->setValue('QUESTION');
+              });
+
+              $sheet->cell('C1', function($cell)
+              {
+                  $cell->setValue('OPTION A');
+              });
+              $sheet->cell('D1', function($cell)
+              {
+                  $cell->setValue('OPTION B');
+              });
+              $sheet->cell('E1', function($cell)
+              {
+                  $cell->setValue('OPTION C');
+              });
+              $sheet->cell('F1', function($cell)
+              {
+                  $cell->setValue('OPTION D');
+              });
+              $sheet->cell('G1', function($cell)
+              {
+                  $cell->setValue('OPTION E');
+              });
+              $sheet->cell('H1', function($cell)
+              {
+                  $cell->setValue('TRUE ANSWER');
+              });
+
+              if (!empty($collection))
+              {
+                  foreach ($collection as $key => $value)
+                  {
+                      $i= $key+2;
+                      $sheet->cell('A'.$i, $key+1);
+                      $sheet->cell('B'.$i, $value['question']);
+                      $sheet->cell('C'.$i, $value['a']);
+                      $sheet->cell('D'.$i, $value['b']);
+                      $sheet->cell('E'.$i, $value['c']);
+                      $sheet->cell('F'.$i, $value['d']);
+                      $sheet->cell('G'.$i, $value['e']);
+                      $sheet->cell('H'.$i, $value['isTrueOpt']);
+                  }
+              }
+          });
+      })->download('xlsx');
   }
 
   /*START OF API*/

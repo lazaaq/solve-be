@@ -143,20 +143,21 @@ class QuizCollagerController extends Controller
   }
 
   public function api_leaderboardQuizPodium($id){
+    // $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
+    //                       ->leftJoin('users', 'collagers.user_id', 'users.id')
+    //                       ->where('quiz_collagers.quiz_id', $id)
+    //                       ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+    //                       ->orderBy('total_score','DESC')
+    //                       ->limit(3)
+    //                       ->get();
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->groupBy('quiz_collagers.collager_id','users.username','users.id')
                           ->where('quiz_collagers.quiz_id', $id)
-                          ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, max(quiz_collagers.total_score) as total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(3)
                           ->get();
-    // foreach ($data as $key => $value) {
-    //   if($value->picture == 'avatar.png'){
-    //     $value->picture = asset('img/'.$value->picture.'');
-    //   }else {
-    //     $value->picture = route('user.picture',$value->user_id);
-    //   }
-    // }
     return response()->json([
       'status'=>'success',
       'result'=>$data
@@ -164,10 +165,19 @@ class QuizCollagerController extends Controller
   }
 
   public function api_leaderboardQuizNotPodium($id){
+    // $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
+    //                       ->leftJoin('users', 'collagers.user_id', 'users.id')
+    //                       ->where('quiz_collagers.quiz_id', $id)
+    //                       ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+    //                       ->orderBy('total_score','DESC')
+    //                       ->limit(12)
+    //                       ->skip(3)
+    //                       ->get();
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
+                          ->groupBy('quiz_collagers.collager_id','users.username','users.id')
                           ->where('quiz_collagers.quiz_id', $id)
-                          ->selectRaw('quiz_collagers.id as quiz_collagers_id, collagers.user_id, collagers.id as collagers_id, users.username, users.picture, quiz_collagers.total_score')
+                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, max(quiz_collagers.total_score) as total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(12)
                           ->skip(3)
