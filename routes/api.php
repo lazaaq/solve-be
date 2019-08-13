@@ -16,13 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::group(['middleware' => ['api']], function () {
-  Route::put('quiztype/{id}', 'QuizTypeController@update')->name('quiztype.update');
-});
+// Route::group(['middleware' => ['api']], function () {
+//   Route::put('quiztype/{id}', 'QuizTypeController@update')->name('quiztype.update');
+// });
 Route::group(['middleware' => ['api'],'prefix' => '/collager'], function () {
   Route::post('/register', 'UserController@api_collagerRegister');
   Route::post('/login','UserController@api_collagerLogin');
   Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
+  Route::get('/version', 'VersionAppController@api_index');
 });
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
   Route::get('/logout', 'UserController@api_logout');
