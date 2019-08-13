@@ -224,14 +224,14 @@ class QuizController extends Controller
     foreach ($import_data_filter as $key => $value) {
       if (($check = array_search('Diantara berikut ini yang bukan merupakan anggota girlband Blackpink adalah?', $value)) !== false) {
         unset($import_data_filter[$key]);
-      } 
+      }
       else {
         if (implode($value) == null) {
           unset($import_data_filter[$key]);
         }
       }
     }
-    
+
     $import_data_filter = array_values($import_data_filter);
 
     $totalQuestion = count($import_data_filter);
@@ -285,7 +285,7 @@ class QuizController extends Controller
                 'isTrue'  => $row['true_answer'] == $option[$i] ? 1 : 0,
             ];
         }
-      }  
+      }
     }
     $totalQuestionSuccess = count($question);
 
@@ -305,7 +305,6 @@ class QuizController extends Controller
     return response()->download($path);
   }
 
-<<<<<<< HEAD
   public function export($id)
   {
       $quiz = Quiz::where('id', $id)->first();
@@ -402,11 +401,6 @@ class QuizController extends Controller
               }
           });
       })->download('xlsx');
-=======
-  public function exportQuestion()
-  {
-    
->>>>>>> 25f6939ae6b587072fdba039c3becc79cda6ba5a
   }
 
   /*START OF API*/
