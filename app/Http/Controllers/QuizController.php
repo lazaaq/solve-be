@@ -214,14 +214,26 @@ class QuizController extends Controller
     DB::beginTransaction();
 
     $file = $request->file('excel');
-    $import = Excel::load($file, function($reader) {
-      $reader->skipRows(5);
-    })->get();
+    $import = Excel::load($file)->get();
     if (!$import) {
       DB::rollback();
       return redirect()->route('quiz.show',$id)->with('dbTransactionError','Something wrong!');
     }
     $import_data_filter = array_filter($import->toArray());
+
+    foreach ($import_data_filter as $key => $value) {
+      if (($check = array_search('Diantara berikut ini yang bukan merupakan anggota girlband Blackpink adalah?', $value)) !== false) {
+        unset($import_data_filter[$key]);
+      } 
+      else {
+        if (implode($value) == null) {
+          unset($import_data_filter[$key]);
+        }
+      }
+    }
+    
+    $import_data_filter = array_values($import_data_filter);
+
     $totalQuestion = count($import_data_filter);
     $messages_error = [];
     foreach ($import_data_filter as $key => $value) {
@@ -249,35 +261,33 @@ class QuizController extends Controller
       $get_error[] = $key;
     }
     $error = array_unique($get_error);
-    //dd($error);
     $question = [];
     $answers = [];
     $option = ['A', 'B', 'C', 'D', 'E'];
 
     $count_error = 0;
-    foreach ($import as $key => $row) {
+    foreach ($import_data_filter as $key => $row) {
       if (in_array($key, $error)) {
         continue;
         $count_error++;
       } else {
         $question[$key] = [
             'quiz_id'       => $id,
-            'question'      => $row->question,
+            'question'      => $row['question'],
         ];
 
-        $content = [$row->option_a,$row->option_b,$row->option_c,$row->option_d,$row->option_e];
+        $content = [$row['option_a'],$row['option_b'],$row['option_c'],$row['option_d'],$row['option_e']];
 
         for ($i=0; $i < 5 ; $i++) {
             $answers[$key][$i] = [
                 'option'  => $option[$i],
                 'content' => $content[$i],
-                'isTrue'  => $row->true_answer == $option[$i] ? 1 : 0,
+                'isTrue'  => $row['true_answer'] == $option[$i] ? 1 : 0,
             ];
         }
-      }
+      }  
     }
     $totalQuestionSuccess = count($question);
-    // dd($totalQuestionSuccess);
 
     foreach ($question as $key => $q) {
         Question::create($q)->answer()->createMany($answers[$key]);
@@ -295,6 +305,7 @@ class QuizController extends Controller
     return response()->download($path);
   }
 
+<<<<<<< HEAD
   public function export($id)
   {
       $quiz = Quiz::where('id', $id)->first();
@@ -391,6 +402,11 @@ class QuizController extends Controller
               }
           });
       })->download('xlsx');
+=======
+  public function exportQuestion()
+  {
+    
+>>>>>>> 25f6939ae6b587072fdba039c3becc79cda6ba5a
   }
 
   /*START OF API*/
