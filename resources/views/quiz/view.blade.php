@@ -85,7 +85,7 @@
     <div class="panel-heading">
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New Question</button>
       <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
-      <a href="{{route('quiz.export',$quiz->id)}}" style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right"><i class="icon-upload position-left"></i> Export Question</a>
+      <a href="{{route('quiz.export',$quiz->id)}}" style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right"><i class="icon-download position-left"></i> Export Question</a>
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">

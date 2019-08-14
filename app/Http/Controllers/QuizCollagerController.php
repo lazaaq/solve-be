@@ -152,9 +152,9 @@ class QuizCollagerController extends Controller
     //                       ->get();
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
-                          ->groupBy('quiz_collagers.collager_id','users.username','users.id')
+                          ->groupBy('quiz_collagers.collager_id','users.username','users.id','users.picture')
                           ->where('quiz_collagers.quiz_id', $id)
-                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, max(quiz_collagers.total_score) as total_score')
+                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, users.picture, max(quiz_collagers.total_score) as total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(3)
                           ->get();
@@ -175,9 +175,9 @@ class QuizCollagerController extends Controller
     //                       ->get();
     $data = QuizCollager::leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                           ->leftJoin('users', 'collagers.user_id', 'users.id')
-                          ->groupBy('quiz_collagers.collager_id','users.username','users.id')
+                          ->groupBy('quiz_collagers.collager_id','users.username','users.id','users.picture')
                           ->where('quiz_collagers.quiz_id', $id)
-                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, max(quiz_collagers.total_score) as total_score')
+                          ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, users.picture, max(quiz_collagers.total_score) as total_score')
                           ->orderBy('total_score','DESC')
                           ->limit(12)
                           ->skip(3)
