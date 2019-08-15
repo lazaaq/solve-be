@@ -45,3 +45,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
 
   Route::get('/banner','BannerController@api_index');
 });
+
+Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
+  Route::get('user/{pictureName}', 'ImageController@pictureUser');
+});
