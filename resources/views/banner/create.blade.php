@@ -65,7 +65,6 @@ $(document).ready(function(){
     /* save data */
     $('#banner-store').on('submit', function (e) {
       e.preventDefault();
-			console.log($('input[name=isView]:checked').val());
         $.ajax({
             'type': 'POST',
             'url' : "{{ route('banner.store') }}",
@@ -74,13 +73,11 @@ $(document).ready(function(){
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
-							console.log(data);
 							if(data.success){
                 $('#modal-create').modal('hide');
 								toastr.success('Successfully added data!', 'Success', {timeOut: 5000});
 								tableBanner.ajax.reload();
               }else{
-								console.log(data);
 	              for(var count = 0; count < data.errors.length; count++){
 	              	toastr.error(data.errors[count], 'Error', {timeOut: 5000});
                 }
