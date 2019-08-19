@@ -55,7 +55,7 @@ Auth::routes();
      Route::get('quizcategory/delete/{id}', 'QuizCategoryController@destroy')->name('quizcategory.destroy');
 
      Route::get('banner/delete/{id}', 'BannerController@destroy')->name('banner.destroy');
-     Route::get('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
+     Route::post('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
 
      Route::get('version/delete/{id}', 'VersionAppController@destroy')->name('version.destroy');
 

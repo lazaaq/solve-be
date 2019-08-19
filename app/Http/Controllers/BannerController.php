@@ -178,7 +178,7 @@ class BannerController extends Controller
        $data->delete();
      }
 
-     public function changeIsView($id)
+     public function changeIsView(Request $request, $id)
      {
        $data = Banner::find($id);
        if ($data->isView == '1') {
@@ -187,7 +187,7 @@ class BannerController extends Controller
          $data->isView = '1';
        }
        $data->save();
-       return redirect()->route('banner.index');
+       return response()->json(['success'=>'Data changed successfully','data'=>$data]);
      }
 
     public function picture($id)

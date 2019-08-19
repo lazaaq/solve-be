@@ -159,6 +159,9 @@
       /* START OF CHANGE IS VIEW DATA */
       $('#table-banner tbody').on( 'click', '#change-is-view', function () {
         var data = tableBanner.row( $(this).parents('tr') ).data();
+        var formData = new FormData();
+        formData.append('_token', "{{ csrf_token() }}");
+        formData.append('id', data['id']);
         if (data['isView'] == '1') {
           swal(
             {
@@ -172,11 +175,21 @@
             if (willDelete) {
               $.ajax({
                 url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
-                method: 'get',
-                success: function(result){
-                  tableBanner.ajax.reload();
-                  toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
-                }
+                method: 'post',
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+                data: formData,
+                success: function(data){
+                  if(data.success){
+                    tableBanner.ajax.reload();
+                    toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                  }else{
+                    for(var count = 0; count < data.errors.length; count++){
+                      toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                    }
+                  }
+                },
               });
             }
           });
@@ -192,11 +205,21 @@
             if (willDelete) {
               $.ajax({
                 url: "{{ url('admin/banner/change-is-view') }}"+"/"+data['id'],
-                method: 'get',
-                success: function(result){
-                  tableBanner.ajax.reload();
-                  toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
-                }
+                method: 'post',
+                processData: false,
+                contentType: false,
+                dataType: 'JSON',
+                data: formData,
+                success: function(data){
+                  if(data.success){
+                    tableBanner.ajax.reload();
+                    toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                  }else{
+                    for(var count = 0; count < data.errors.length; count++){
+                    toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                    }
+                  }
+                },
               });
             }
           });
