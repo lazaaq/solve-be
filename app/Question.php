@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = 'questions';
     public $timestamps = true;
     protected $guarded = ['created_at', 'updated_at'];

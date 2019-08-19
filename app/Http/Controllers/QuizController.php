@@ -118,9 +118,10 @@ class QuizController extends Controller
   public function show($id)
   {
     $quiz = Quiz::where('id', $id)->first();
-    $question = Question::where('quiz_id', $quiz->id)->paginate(3);
+    $question = Question::where('quiz_id', $quiz->id)->paginate(10);
+    $number = $question->firstItem();
     // $question = DB::table('questions')->where('quiz_id', $quiz->id)->paginate(3);
-    return view('quiz.view', compact('quiz','question'));
+    return view('quiz.view', compact('quiz','question','number'));
   }
 
   /**

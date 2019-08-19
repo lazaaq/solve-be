@@ -89,14 +89,23 @@
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
+      {{-- <div class="panel panel-white"> --}}
+        <div class="panel-body" style="padding:0px; margin-bottom:10px;margin-top:-10px">
+          {{-- <div class="col-md-12"> --}}
+            <div class="input-group col-md-3 pull-right">
+							<input type="text" class="form-control" placeholder="Search records">
+              <span class="input-group-addon"><i class="icon-search4"></i></span>
+						</div>
+          {{-- </div> --}}
+        </div>
+      {{-- </div> --}}
       @foreach ($question as $key => $value)
-        <input type="hidden" name="id-question" value="{{$value->id}}">
         <div class="panel panel-white">
       		<div class="panel-body">
       			<p class="panel-title">
               <div class="col-md-9">
                 <div class="col-md-1">
-                  <a><i class="icon-help position-left text-slate"></i></a>
+                  <a><i class="icon-help position-left text-slate"></i></a>{{$number++}}
                 </div>
                 @if(!empty($value->pic_url))
                 <div class="col-md-2">

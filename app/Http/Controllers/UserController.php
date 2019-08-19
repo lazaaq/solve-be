@@ -11,7 +11,7 @@ use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
 use Hash;
-Use App\Lib\Helper;
+use App\Lib\Helper;
 
 
 class UserController extends Controller
@@ -281,24 +281,33 @@ class UserController extends Controller
     if(Auth::attempt([
       'email' => request('email'),
       'password' => request('password'),
+
     ]))
     {
         $user = Auth::user();
-        $email = $request->get('email');
-        $password = $request->get('password');
+        if ($user->hasRole('user')) {
+          $email = $request->get('email');
+          $password = $request->get('password');
 
-        $success['token'] =  $user->createToken('MyApp')-> accessToken;
-        $success['email'] = $email;
-        $success['password'] = $password;
+          $success['token'] =  $user->createToken('MyApp')-> accessToken;
+          $success['email'] = $email;
+          $success['password'] = $password;
 
-        $collager = User::where('email', $success['email'])->with('collager')->first();
-        $collager->token = $success['token'];
-        // $collager->foto= asset('images/'.$collager->foto.'');
+          $collager = User::where('email', $success['email'])->with('collager')->first();
+          $collager->token = $success['token'];
+          // $collager->foto= asset('images/'.$collager->foto.'');
 
-        return response()->json([
-            'status'=>'success',
-            'user' => $collager
-        ]);
+          return response()->json([
+              'status'=>'success',
+              'user' => $collager
+          ]);
+        }
+        else {
+          $success['status'] = 'failed';
+          $success['error'] = 'Unauthorised';
+          $success['message'] = 'Your email or password incorrect!';
+          return response()->json($success,401);
+        }
     }
     else{
         $success['status'] = 'failed';
