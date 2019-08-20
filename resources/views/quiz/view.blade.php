@@ -89,84 +89,16 @@
 			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
-      {{-- <div class="panel panel-white"> --}}
         <div class="panel-body" style="padding:0px; margin-bottom:10px;margin-top:-10px">
-          {{-- <div class="col-md-12"> --}}
             <div class="input-group col-md-3 pull-right">
-							<input type="text" class="form-control" placeholder="Search records">
+							<input type="text" id="search" class="form-control" placeholder="Search records">
               <span class="input-group-addon"><i class="icon-search4"></i></span>
 						</div>
-          {{-- </div> --}}
         </div>
-      {{-- </div> --}}
-      @foreach ($question as $key => $value)
-        <div class="panel panel-white">
-      		<div class="panel-body">
-      			<p class="panel-title">
-              <div class="col-md-9">
-                <div class="col-md-1">
-                  <a><i class="icon-help position-left text-slate"></i></a>{{$number++}}
-                </div>
-                @if(!empty($value->pic_url))
-                <div class="col-md-2">
-                    <img class="img-responsive" src="{{route('question.picture',$value->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50"><br>
-                </div>
-                @endif
-                <div class="col-md-9">
-                  {{ $value->question }}
-                </div>
-              </div>
-              <div class="col-md-3">
-                <button id="delete-specific-question" value="{{$value->id}}" style="margin-top:-8px;color:#fff" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</button>
-                <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-pencil6 position-left"></i>Edit</a>
-              </div>
-      			</p>
-      		</div>
-          <hr style="margin-top:0">
-      		<div>
-      			<div class="panel-body">
-              @foreach ($value->answer as $key2 => $value2)
-              <div class="col-sm-6 form-group">
-                @if ($value2->isTrue == '1')
-                  <div class="col-md-1">
-                    <p class="pull-right"><i style="color:#4CAF50;" class="fa fa-check-circle position-left"></i></p>
-                  </div>
-                  <div class="col-md-11">
-                    @if(!empty($value2->pic_url))
-                    <div class="col-md-3">
-                      <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-                    </div>
-                    @endif
-                    <p>{{ $value2->content }}</p>
-                  </div>
-                @else
-                  <div class="col-md-1">
-                    <p class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
-                  </div>
-                  <div class="col-md-11">
-                    @if(!empty($value2->pic_url))
-                    <div class="col-md-3">
-                      <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-                    </div>
-                    @endif
-                    <p>{{ $value2->content }}</p>
-                  </div>
-                @endif
-  						</div>
-              @endforeach
-      			</div>
-      		</div>
-      	</div>
-      @endforeach
-      <div class="col-md-6">
-        <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
+      <div id="container-quiz">
+      @include('quiz.view_data')
       </div>
-      <div class="col-md-6">
-        <div class="pull-right">
-          {{ $question->links() }}
-        </div>
-      </div>
-
+      <input type="hidden" name="hidden_page" id="hidden_page" value="1" />
   	</div>
 	<!-- /state saving -->
   </div>
@@ -214,7 +146,7 @@
 <script>
 var tableQuiz;
   $(document).ready(function(){
-
+    //console.log("{{$quiz->id}}");
     $('button#delete-specific-question').on('click', function () {
           var idQuestion = $(this).val();
           console.log(idQuestion);
@@ -242,6 +174,38 @@ var tableQuiz;
           }
         });
       });
+
+      function fetch_data(page, query)
+      {
+        $.ajax({
+        url:"/search/quiz/"+"{{$quiz->id}}"+"?page="+page+"&query="+query,
+        method:'GET',
+        success:function(data)
+        {
+          $('#container-quiz').html('');
+          $('#container-quiz').html(data);
+        }
+        })
+      }
+
+      $(document).on('keyup', '#search', function(){
+        var query = $('#search').val();
+        var page = $('#hidden_page').val();
+        fetch_data(page, query);
+      });
+
+      $(document).on('click', '.pagination a', function(event){
+        event.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        $('#hidden_page').val(page);
+
+        var query = $('#search').val();
+
+        $('li').removeClass('active');
+          $(this).parent().addClass('active');
+        fetch_data(page, query);
+      });
+
   });
 </script>
 @endpush

@@ -74,6 +74,10 @@ Auth::routes();
     Route::get('/data-quiz-category/{id}', 'QuizCategoryController@getPreSelect');
   });
 
+  Route::group(['middleware' => ['role:admin'],'prefix' => '/search'], function () {
+    Route::get('/quiz/{id}', 'QuizController@search')->name('search.action');
+  });
+
 });
 Route::group(['prefix' => '/storage'], function () {
   Route::get('user/{id}', 'UserController@picture')->name('user.picture');
