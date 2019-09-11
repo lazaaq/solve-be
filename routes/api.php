@@ -48,4 +48,10 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
   Route::get('user/{pictureName}', 'ImageController@pictureUser');
+  Route::get('quiz_type/{pictureName}', 'ImageController@pictureType');
+  Route::get('quiz_category/{pictureName}', 'ImageController@pictureCategory');
+  Route::get('quiz/{pictureName}', 'ImageController@pictureQuiz');
+  Route::get('question/{pictureName}', 'ImageController@pictureQuestion');
+  Route::get('answer/{pictureName}', 'ImageController@pictureAnswer');
+  Route::get('banner/{pictureName}', 'ImageController@pictureBanner');
 });
