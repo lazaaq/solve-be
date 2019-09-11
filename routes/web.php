@@ -114,4 +114,21 @@ Route::group(['prefix' => '/storage'], function () {
     Route::get('question/{id}', 'QuestionController@picture')->name('question.picture');
     Route::get('answer/{id}', 'AnswerController@picture')->name('answer.picture');
     Route::get('banner/{id}', 'BannerController@picture')->name('banner.picture');
+
+    Route::get('quiz_type/{pictureName}', 'ImageController@pictureType');
+    Route::get('quiz_category/{pictureName}', 'ImageController@pictureCategory');
+    Route::get('quiz/{pictureName}', 'ImageController@pictureQuiz');
+    Route::get('question/{pictureName}', 'ImageController@pictureQuestion');
+    Route::get('answer/{pictureName}', 'ImageController@pictureAnswer');
+    Route::get('banner/{pictureName}', 'ImageController@pictureBanner');
+});
+
+
+Route::group(['prefix' => '/storage2'], function () {
+    Route::get('quiz_type/{pictureName}', 'ImageController@pictureType');
+    Route::get('quiz_category/{pictureName}', 'ImageController@pictureCategory');
+    Route::get('quiz/{pictureName}', 'ImageController@pictureQuiz');
+    Route::get('question/{pictureName}', 'ImageController@pictureQuestion');
+    Route::get('answer/{pictureName}', 'ImageController@pictureAnswer');
+    Route::get('banner/{pictureName}', 'ImageController@pictureBanner');
 });
