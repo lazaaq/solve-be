@@ -68,7 +68,7 @@ class QuizTypeController extends Controller
       if(!empty($request->picture)){
         $file = $request->file('picture');
         $extension = strtolower($file->getClientOriginalExtension());
-        $filename = $request->name . '.' . $extension;
+        $filename = uniqid() . '.' . $extension;
         Storage::put('public/images/quiztype/' . $filename, File::get($file));
       }else{
         $filename='blank.jpg';
@@ -144,7 +144,7 @@ class QuizTypeController extends Controller
       if(!empty($request->picture_edit)){
         $file = $request->file('picture_edit');
         $extension = strtolower($file->getClientOriginalExtension());
-        $filename = $request->name_edit . '.' . $extension;
+        $filename = uniqid() . '.' . $extension;
         Storage::put('public/images/quiztype/' . $filename, File::get($file));
       }else{
         $filename='blank.jpg';
