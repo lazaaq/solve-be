@@ -124,6 +124,19 @@ class QuizController extends Controller
     return view('quiz.view', compact('quiz','question','number'));
   }
 
+  public function search(Request $request, $id)
+  {
+    if($request->ajax())
+     {
+      $quiz = Quiz::where('id', $id)->first();
+      $query = $request->get('query');
+      $query = str_replace(" ", "%", $query);
+      $question = Question::where('quiz_id', $quiz->id)->where('question', 'like', '%'.$query.'%')->paginate(10);
+      $number = $question->firstItem();
+      return view('quiz.view_data', compact('quiz','question','number'))->render();
+     }
+  }
+
   /**
    * Show the form for editing the specified resource.
    *

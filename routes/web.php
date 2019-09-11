@@ -26,22 +26,23 @@ Auth::routes();
     })->middleware('isAdmin')->middleware('verified');;
    //admin
    Route::group(['middleware' => 'auth'], function () {
-     Route:: get ('/success-reset', function () {
-        return view('auth.passwords.success');
-     });
-     Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
-       Route::resource('dashboard', 'DashboardController');
-       Route::resource('question', 'QuestionController');
-       Route::resource('user', 'UserController')->except('destroy');
-       Route::resource('answersave', 'AnswerSaveController');
-       Route::resource('quiztype', 'QuizTypeController')->except('destroy');
-       Route::resource('quizcategory', 'QuizCategoryController')->except('destroy');
-       Route::resource('lecture', 'LectureController');
-       Route::resource('collager', 'CollagerController');
-       Route::resource('quizcollager', 'QuizCollagerController');
-       Route::resource('quiz', 'QuizController')->except('destroy');
-       Route::resource('banner', 'BannerController')->except('destroy');
-       Route::resource('version', 'VersionAppController')->except('destroy');
+   Route:: get ('/success-reset', function () {
+      return view('auth.passwords.success');
+   });
+   Route::group(['middleware' => ['role:admin'],'prefix' => '/admin'], function () {
+     Route::resource('dashboard', 'DashboardController');
+     Route::resource('history', 'HistoryController');
+     Route::resource('question', 'QuestionController');
+     Route::resource('user', 'UserController')->except('destroy');
+     Route::resource('answersave', 'AnswerSaveController');
+     Route::resource('quiztype', 'QuizTypeController')->except('destroy');
+     Route::resource('quizcategory', 'QuizCategoryController')->except('destroy');
+     Route::resource('lecture', 'LectureController');
+     Route::resource('collager', 'CollagerController');
+     Route::resource('quizcollager', 'QuizCollagerController');
+     Route::resource('quiz', 'QuizController')->except('destroy');
+     Route::resource('banner', 'BannerController')->except('destroy');
+     Route::resource('version', 'VersionAppController')->except('destroy');
 
        Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
        Route::get('quiz/question/{id}/add','QuestionController@add')->name('quiz.questionAdd');
@@ -73,12 +74,36 @@ Auth::routes();
        Route::get('/data-version', 'VersionAppController@getData');
      });
 
+<<<<<<< HEAD
      Route::group(['middleware' => ['role:admin'],'prefix' => '/select'], function () {
       Route::get('/data-quiz-category', 'QuizCategoryController@getSelect');
       Route::get('/data-quiz-category/{id}', 'QuizCategoryController@getPreSelect');
     });
+=======
+   });
+   Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
+     Route::get('/data-quiz-type', 'QuizTypeController@getData');
+     Route::get('/data-history', 'HistoryController@getData');
+     Route::get('/data-history-user/{id}', 'HistoryController@getDataHistoryUser');
+     Route::get('/data-history-chart/{id}', 'HistoryController@getDataChartUser');
+     Route::get('/data-quiz-category', 'QuizCategoryController@getData');
+     Route::get('/data-quiz', 'QuizController@getData');
+     Route::get('/data-user', 'UserController@getData');
+     Route::get('/data-banner', 'BannerController@getData');
+     Route::get('/data-version', 'VersionAppController@getData');
+   });
+>>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
 
   });
+<<<<<<< HEAD
+=======
+
+  Route::group(['middleware' => ['role:admin'],'prefix' => '/search'], function () {
+    Route::get('/quiz/{id}', 'QuizController@search')->name('search.action');
+  });
+
+});
+>>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
 Route::group(['prefix' => '/storage'], function () {
   Route::get('user/{id}', 'UserController@picture')->name('user.picture');
   Route::get('quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
