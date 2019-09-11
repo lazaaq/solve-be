@@ -74,12 +74,12 @@ Auth::routes();
        Route::get('/data-version', 'VersionAppController@getData');
      });
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
      Route::group(['middleware' => ['role:admin'],'prefix' => '/select'], function () {
       Route::get('/data-quiz-category', 'QuizCategoryController@getSelect');
       Route::get('/data-quiz-category/{id}', 'QuizCategoryController@getPreSelect');
     });
-=======
+// =======
    });
    Route::group(['middleware' => ['role:admin'],'prefix' => '/table'], function () {
      Route::get('/data-quiz-type', 'QuizTypeController@getData');
@@ -92,10 +92,10 @@ Auth::routes();
      Route::get('/data-banner', 'BannerController@getData');
      Route::get('/data-version', 'VersionAppController@getData');
    });
->>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
+// >>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
 
   });
-<<<<<<< HEAD
+// <<<<<<< HEAD
 =======
 
   Route::group(['middleware' => ['role:admin'],'prefix' => '/search'], function () {
@@ -103,7 +103,7 @@ Auth::routes();
   });
 
 });
->>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
+// >>>>>>> 768ed44d42f68b4426b940e06be16cb0ad3e986a
 Route::group(['prefix' => '/storage'], function () {
   Route::get('user/{id}', 'UserController@picture')->name('user.picture');
   Route::get('quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
