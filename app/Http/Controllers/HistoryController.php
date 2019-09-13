@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Collager;
 use App\QuizCollager;
 use DataTables;
 
@@ -33,7 +34,8 @@ class HistoryController extends Controller
 
     public function getDataHistoryUser($id)
     {
-        $data = QuizCollager::where('collager_id',$id)->get();
+        $collager_id = Collager::where('user_id',$id)->first()->id;
+        $data = QuizCollager::where('collager_id',$collager_id)->get();
         //return $data;
         return datatables()->of($data)->addColumn('action', function($row){
         $btn = '<a id="btn-detail" href="#" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
@@ -93,7 +95,8 @@ class HistoryController extends Controller
 
     public function getDataChartUser($id)
     {
-        $chart = QuizCollager::with('quiz')->where('collager_id',$id)->get();
+        $collager_id = Collager::where('user_id',$id)->first()->id;
+        $chart = QuizCollager::with('quiz')->where('collager_id',$collager_id)->get();
         $chart = $chart->groupBy('quiz.title');
         $result = [];
 
