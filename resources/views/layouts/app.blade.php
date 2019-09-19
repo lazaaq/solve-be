@@ -9,10 +9,10 @@
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/bootstrap.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/core.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/components.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/colors.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('css/core.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('css/components.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('css/colors.min.css')}}" rel="stylesheet" type="text/css">
 
 	<link href="{{ asset('DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
   <link href="{{ asset('DataTables/Select-1.2.6/css/select.bootstrap4.min.css') }}" rel="stylesheet">
@@ -28,7 +28,7 @@
 	<!-- /core JS files -->
 
 	<!-- Theme JS files -->
-	<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
+	<script type="text/javascript" src="{{asset('js/app.min.js')}}"></script>
 	<!-- /theme JS files -->
 
 	<script src="{{ asset('DataTables/jquery.dataTables.min.js') }}" ></script>
