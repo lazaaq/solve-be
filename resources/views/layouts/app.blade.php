@@ -11,7 +11,7 @@
 	<link href="{{asset('css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/core.min.css')}}" rel="stylesheet" type="text/css">
-	<link href="{{asset('css/components.min.css')}}" rel="stylesheet" type="text/css">
+	<link href="{{asset('css/components.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('css/colors.min.css')}}" rel="stylesheet" type="text/css">
 
 	<link href="{{ asset('DataTables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
