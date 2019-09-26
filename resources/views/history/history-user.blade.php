@@ -19,15 +19,13 @@
 <div class="content">
     <!-- User thumbnail -->
     <div class="thumbnail">
-        <div class="col-md-12">
-            @if($data->picture == 'avatar.png')
-            <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="Avatar" title="Change the avatar" width="40%" style="padding-top:15px;">
-            @else
-            <img class="img-circle" src="{{route('user.picture',$data->id)}}" alt="Avatar" title="Change the avatar" width="40%" style="padding-top:15px;">
-            @endif
-            <div class="caption text-center">
-                <h6 class="text-semibold no-margin">{{$data->name}} <small class="display-block">{{ucfirst($data->roles[0]['name'])}}</small></h6>
-            </div>
+        @if($data->picture == 'avatar.png')
+        <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="Avatar" title="Change the avatar" width="10%" height="50" style="padding-top:15px;">
+        @else
+        <img class="img-circle" src="{{route('user.picture',$data->id)}}" alt="Avatar" title="Change the avatar" width="10%" height="50" style="padding-top:15px;">
+        @endif
+        <div class="caption text-center">
+            <h6 class="text-semibold no-margin">{{$data->name}} <small class="display-block">{{ucfirst($data->roles[0]['name'])}}</small></h6>
         </div>
     </div>
     <!-- /user thumbnail -->
