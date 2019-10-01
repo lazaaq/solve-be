@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\QuizType;
 use File;
 use Validator;
+use Cache;
 
 class QuizTypeController extends Controller
 {
@@ -116,8 +117,11 @@ class QuizTypeController extends Controller
 
   public function picture($id)
   {
-    $picture = QuizType::find($id);
-    return Image::make(Storage::get('public/images/quiztype/'.$picture->pic_url))->response();
+    $picture = Cache::remember('imgquiztype'.$id, 24*60, function() use ($id) {
+      return QuizType::find($id)->pic_url;
+    });
+
+    return Image::make(Storage::get('public/images/quiztype/'.$picture))->response();
   }
 
   /**
@@ -156,6 +160,10 @@ class QuizTypeController extends Controller
     $data->description=$request->description_edit;
     $data->pic_url=$filename;
     $data->save();
+
+    Cache::forget('quiztype'.$id);
+    Cache::forget('imgquiztype'.$id);
+
     return response()->json(['success'=>'Data updated successfully']);
   }
 
@@ -177,13 +185,18 @@ class QuizTypeController extends Controller
     else {
       Storage::delete('public/images/quiztype/'.$data->pic_url);
       $data->delete();
+      Cache::forget('quiztype'.$id);
+      Cache::forget('imgquiztype'.$id);
     }
   }
 
   /*START OF API*/
 
   function api_index($id){
-    $data = QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
+
+    $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
+      return QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
+    });
     // foreach ($data as $key => $value) {
     //   if($value->pic_url == 'blank.jpg'){
     //     $value->pic_url = asset('img/'.$value->pic_url.'');
