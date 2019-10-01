@@ -9,6 +9,7 @@ use Intervention\Image\Facades\Image;
 use File;
 use App\Banner;
 use Validator;
+use Cache;
 
 class BannerController extends Controller
 {
@@ -161,6 +162,9 @@ class BannerController extends Controller
        $data->isView=$request->isViewEdit;
        $data->picture=$filename;
        $data->save();
+
+       Cache::forget('banner'.$id);
+
        return response()->json(['success'=>'Data updated successfully']);
        // return redirect()->route('banner.index');
      }
@@ -175,6 +179,7 @@ class BannerController extends Controller
      {
        $data = Banner::find($id);
        Storage::delete('public/images/banner/'.$data->picture);
+       Cache::forget('banner'.$id);
        $data->delete();
      }
 
@@ -192,8 +197,14 @@ class BannerController extends Controller
 
     public function picture($id)
     {
-      $data = Banner::find($id);
-      return Image::make(Storage::get('public/images/banner/'.$data->picture))->response();
+      // $data = Banner::find($id);
+      // return Image::make(Storage::get('public/images/banner/'.$data->picture))->response();
+
+      $data = Cache::remember('banner'.$id, 24*60, function() use ($id) {
+        return Banner::find($id)->picture;
+      });
+      return Image::make(Storage::get('public/images/banner/'.$data))->response();
+
     }
 
     /*START OF API*/
