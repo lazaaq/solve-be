@@ -305,6 +305,8 @@ class QuestionController extends Controller
           'e' => $option[$i]->get(4)->content,
           'pic_e' => $option[$i]->get(4)->pic_url,
           'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
+          'trueAnswer' => $option[$i]->where('isTrue', 1)->first()->content,
+          'trueAnswerPic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
         ];
       }
       $data = Arr::random($collection, $quiz->tot_visible);
