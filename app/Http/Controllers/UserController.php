@@ -24,12 +24,14 @@ class UserController extends Controller
    */
   public function index()
   {
-    return view('user.index');
+    $role = Role::orderBy('id', 'desc')->get();
+    return view('user.index', compact('role'));
   }
 
-  public function getData()
-  {
-    $data = User::orderBy('name')->get();
+  public function getData(Request $request)
+  {    
+    $filter = $request->filter;
+    $data = User::whereHas("roles", function($q) use ($filter) { $q->where("name", $filter); })->get();
     return datatables()->of($data)->addColumn('action', function($row){
           $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
           $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';

@@ -24,8 +24,20 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
-      <a href="{{route('user.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
-  		<table id="table-user" class="table">
+
+      <div>
+        <a href="{{route('user.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+  		</div>
+
+      <div style="width:110px">
+        <select class="form-control" name="filter" id="filter">
+        @foreach ($role as $r)
+          <option value="{{$r->id}}">{{$r->name}}</option>
+        @endforeach
+        </select>
+      </div>
+
+      <table id="table-user" class="table">
   			<thead>
   				<tr>
             <th>Id</th>
@@ -61,7 +73,11 @@ var tableUser;
       ajax		: {
           url: "{{ url('table/data-user') }}",
           type: "GET",
+          data: function (d) {
+          d.filter = $('#filter').find(":selected").text()
+          }
       },
+      
       columns: [
           { data: 'id', name:'id', visible:false},
           { data: 'name', name:'name', visible:true},
@@ -70,6 +86,12 @@ var tableUser;
           { data: 'action', name:'action', visible:true},
       ],
     });
+
+    $('#filter').change(function() {
+      console.log($('#filter').find(":selected").text())
+      tableUser.draw(true);
+    });
+
     $('#table-user tbody').on( 'click', 'button', function () {
         var data = tableUser.row( $(this).parents('tr') ).data();
           swal({
