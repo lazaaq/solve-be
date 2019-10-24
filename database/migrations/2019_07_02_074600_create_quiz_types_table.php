@@ -9,12 +9,13 @@ class CreateQuizTypesTable extends Migration {
 	{
 		Schema::create('quiz_types', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('quiz_category_id');
+			$table->integer('quiz_category_id')->unsigned();
 			$table->string('name', 150);
 			$table->string('description');
 			$table->string('pic_url')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
+			$table->foreign('quiz_category_id')->references('id')->on('quiz_categorys');
 		});
 	}
 

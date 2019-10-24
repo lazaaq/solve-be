@@ -15,13 +15,14 @@ class CreateAnswerTable extends Migration
     {
       Schema::create('answers', function(Blueprint $table) {
         $table->bigIncrements('id');
-        $table->integer('question_id');
+        $table->integer('question_id')->unsigned();
         $table->string('option');
         $table->string('content')->nullable();
         $table->string('pic_url')->nullable();
         $table->string('isTrue',1);
         $table->timestamps();
         $table->softDeletes();
+        $table->foreign('question_id')->references('id')->on('questions');
       });
     }
 

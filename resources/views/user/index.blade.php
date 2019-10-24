@@ -24,18 +24,23 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
+      {{-- <div class="col-md-12 row" style="padding-bottom:10px"> --}}
+        <div class="col-md-1">
+          <a href="{{route('user.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
+        </div>
+        <div class="col-md-11" style="padding-right:0px;padding-bottom:15px">
+          <div class="pull-right" width="110px">
+            <select class="form-control" name="filter" id="filter">
+              @foreach ($role as $r)
+                <option value="{{$r->id}}">{{$r->name}}</option>
+              @endforeach
+            </select>
+          </div>
+        </div>
 
-      <div>
-        <a href="{{route('user.create')}}" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i>Create New</a>
-  		</div>
+      {{-- </div> --}}
 
-      <div style="width:110px">
-        <select class="form-control" name="filter" id="filter">
-        @foreach ($role as $r)
-          <option value="{{$r->id}}">{{$r->name}}</option>
-        @endforeach
-        </select>
-      </div>
+
 
       <table id="table-user" class="table">
   			<thead>
@@ -77,7 +82,7 @@ var tableUser;
           d.filter = $('#filter').find(":selected").text()
           }
       },
-      
+
       columns: [
           { data: 'id', name:'id', visible:false},
           { data: 'name', name:'name', visible:true},

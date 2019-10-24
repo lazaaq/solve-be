@@ -9,11 +9,12 @@ class CreateQuestionsTable extends Migration {
 	{
 		Schema::create('questions', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('quiz_id');
+			$table->integer('quiz_id')->unsigned();
 			$table->string('question');
 			$table->string('pic_url')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
+			$table->foreign('quiz_id')->references('id')->on('quizs');
 		});
 	}
 

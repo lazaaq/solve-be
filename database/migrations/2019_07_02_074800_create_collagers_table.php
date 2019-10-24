@@ -9,8 +9,9 @@ class CreateCollagersTable extends Migration {
 	{
 		Schema::create('collagers', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('user_id');
+			$table->bigInteger('user_id')->unsigned();
 			$table->timestamps();
+			$table->foreign('user_id')->references('id')->on('users');
 		});
 	}
 
