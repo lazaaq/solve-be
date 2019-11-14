@@ -87,7 +87,7 @@
 	<div class="navbar navbar-inverse bg-primary-800">
 		<div class="navbar-header" style="padding-left:25px">
 			<!-- <a href="#"><img src="{{asset('img/web_transparent_fit_ruko_logo_v2_white.png')}}" alt="" style="height:47px"></a> -->
-			<h3 style="height:20px">SOLVE</h3>
+			<h5 style="height:20px">SOLVE - JST</h5>
 			<ul class="nav navbar-nav visible-xs-block">
 				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
 				<li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>

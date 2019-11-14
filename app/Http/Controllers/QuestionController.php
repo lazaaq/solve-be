@@ -269,48 +269,45 @@ class QuestionController extends Controller
   {
       $quiz = Quiz::where('id', $id)->first();
       if(!empty($quiz)){
-          $question = Question::where('quiz_id', $quiz->id)->get();
+          $question = Question::where('quiz_id', $quiz->id)->with('answer')->get();
+          // return $question;
+
       } else {
         return response()->json([
             'status' => 'failed',
             'message'   => 'Quiz not found'
         ]);
       }
-      // foreach ($quiz as $key => $value) {
-      //   if(!empty($value->pic_url)){
-      //     $value->pic_url = route('question.picture',$value->id);
-      //   }
-      // }
+
       $option  = [];
       foreach ($question as $key => $item) {
           $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
       }
-      // foreach ($option[0] as $key => $value) {
-      //   if(!empty($value->pic_url)){
-      //     $value->pic_url = route('answer.picture',$value->id);
-      //   }
-      // }
+
+      $option_char = ['a','b','c','d','e'];
+      $option_pic = ['pic_a','pic_b','pic_c','pic_d','pic_e'];
+      $array = [];
+  
       $collection = [];
       foreach ($question as $i => $item) {
+        $array_option = [];
+
+        for ($j=0; $j < count($option[$i]) ; $j++) { 
+          $array_option[] = [$option_char[$j] => $option[$i]->get($j)->content,
+                             $option_pic[$j] => $option[$i]->get($j)->pic_url,
+                             'isTrue' => $option[$i]->get($j)->isTrue];
+        }
+
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
           'pic_question' => $item['pic_url'],
-          'a' => $option[$i]->get(0)->content,
-          'pic_a' => $option[$i]->get(0)->pic_url,
-          'b' => $option[$i]->get(1)->content,
-          'pic_b' => $option[$i]->get(1)->pic_url,
-          'c' => $option[$i]->get(2)->content,
-          'pic_c' => $option[$i]->get(2)->pic_url,
-          'd' => $option[$i]->get(3)->content,
-          'pic_d' => $option[$i]->get(3)->pic_url,
-          'e' => $option[$i]->get(4)->content,
-          'pic_e' => $option[$i]->get(4)->pic_url,
-          'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
+          'option' => $array_option,
           'trueAnswer' => $option[$i]->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
         ];
       }
+
       $data = Arr::random($collection, $quiz->tot_visible);
       return response()->json([
           'status' => 'success',
