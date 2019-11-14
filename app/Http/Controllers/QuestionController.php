@@ -151,8 +151,10 @@ class QuestionController extends Controller
   {
     $data = Question::find($id);
     $quiz = Quiz::find($data->quiz_id);
+    $option = ['First','Second','Third','Fourth','Fifth'];
+    $option_value = ['A','B','C','D','E'];
     // dd($data);
-    return view('question.edit', compact('data','quiz'));
+    return view('question.edit', compact('data','quiz','option','option_value'));
   }
 
   /**

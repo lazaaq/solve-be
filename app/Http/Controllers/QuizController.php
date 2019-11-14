@@ -256,18 +256,18 @@ class QuizController extends Controller
       $messages_error[$key.'.question.unique'] = "Question field number ".($key+1)." has already been taken.";
       $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty.";
       $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
-      $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
-      $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty.";
-      $messages_error[$key.'.option_e.required'] = "Option E field number ".($key+1)." is empty.";
+      // $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
+      // $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty.";
+      // $messages_error[$key.'.option_e.required'] = "Option E field number ".($key+1)." is empty.";
     }
 
     $validator = Validator::make($import_data_filter,[
       '*.question' => 'required|distinct|unique:questions,question',
       '*.option_a' => 'required',
       '*.option_b' => 'required',
-      '*.option_c' => 'required',
-      '*.option_d' => 'required',
-      '*.option_e' => 'required'
+      // '*.option_c' => 'required',
+      // '*.option_d' => 'required',
+      // '*.option_e' => 'required'
     ],$messages_error);
 
     $get_error = [];
@@ -291,8 +291,8 @@ class QuizController extends Controller
         ];
 
         $content = [$row['option_a'],$row['option_b'],$row['option_c'],$row['option_d'],$row['option_e']];
-
-        for ($i=0; $i < 5 ; $i++) {
+        $content = array_filter($content);
+        for ($i=0; $i < count($content) ; $i++) {
             $answers[$key][$i] = [
                 'option'  => $option[$i],
                 'content' => $content[$i],

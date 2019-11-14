@@ -10,7 +10,7 @@ class CreateQuizsTable extends Migration {
 		Schema::create('quizs', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('quiz_type_id')->unsigned();
-			// $table->integer('time_id');
+			$table->string('code')->nullable();
 			$table->string('title', 150);
 			$table->string('description');
 			$table->string('pic_url')->nullable();

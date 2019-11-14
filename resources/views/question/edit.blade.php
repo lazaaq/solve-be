@@ -126,26 +126,12 @@
           </div>
           <div class="form-group">
             <label class="display-block"><b>True Answer:</b></label>
+            @for($i=0;$i<count($data->answer);$i++)
             <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[0]->isTrue == '1') checked @endif value="A" class="styled">
-              First
+              <input type="radio" name="true_answer[]" @if ($data->answer[$i]->isTrue == '1') checked @endif value="{{$option_value[$i]}}" class="styled">
+              {{$option[$i]}}
             </label>
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[1]->isTrue == '1') checked @endif value="B" class="styled">
-              Second
-            </label>
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[2]->isTrue == '1') checked @endif value="C" class="styled">
-              Third
-            </label>
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[3]->isTrue == '1') checked @endif value="D" class="styled">
-              Fourth
-            </label>
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[4]->isTrue == '1') checked @endif value="E" class="styled">
-              Fifth
-            </label>
+            @endfor
           </div>
         </fieldset>
         <div>
