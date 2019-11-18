@@ -21,4 +21,8 @@ class QuizCollager extends Model
         return $this->belongsTo('App\Collager', 'collager_id', 'id');
     }
 
+    public function answerSave()
+    {
+        return $this->hasMany('App\AnswerSave', 'quiz_collager_id', 'id');
+    }
 }
