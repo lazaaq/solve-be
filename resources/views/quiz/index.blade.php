@@ -37,6 +37,7 @@
   			<thead>
       		<tr>
              <th>id</th>
+             <th>Code</th>
              <th>Category</th>
              <th>Type</th>
              <th>Title</th>
@@ -82,6 +83,7 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
+            { data: 'code', name:'code', visible:true},
             { data: 'quiz_category', name:'quiz_category', visible:true},
             { data: 'quiz_type', name:'quiz_type', visible:true},
             { data: 'title', name:'title', visible:true},

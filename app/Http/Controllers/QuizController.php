@@ -99,6 +99,7 @@ class QuizController extends Controller
                 'quiz_type_id' => request('quiz_type'),
                 'title' => request('title'),
                 'description'=>request('description'),
+                'code' => strtoupper(substr(md5(microtime()),rand(0,26),5)),
                 // 'sum_question'=>request('total_question'),
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename
