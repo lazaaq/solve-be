@@ -62,6 +62,7 @@
           <fieldset>
 					<legend class="text-semibold"></legend>
           <input type="hidden" name="quiz_id" value="{{$quiz->id}}">
+          <input type="hidden"  id="question-index" value="{{$i}}">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -86,7 +87,27 @@
                 @endif
               </div>
             </div>
-            @for ($j=0; $j < 5; $j++)
+            <div class="col-md-12">
+              <div class="form-group">
+                <div class="col-lg-3">
+                  <label class="control-label">Number of Choice</label>
+                </div>
+                <div class="control col-lg-9" style="padding:0px">
+                  <input id="number-of-choice" type="text" width="10px" class="form-control" value="" placeholder="" min="2" max="5">
+                  <a style="margin-top:10px" id="make-choice" class="btn btn-primary stepy-finish">Make Choice <i class="icon-check position-right"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12">
+							<div class="form-group" id="choice">
+              </div>
+            </div>
+            <div class="col-sm-12">
+              <label class="display-block" id="label-true">True Answer:</label>
+							<div class="form-group" id="true-answer">
+              </div>
+            </div>
+            <!-- @for ($j=0; $j < 5; $j++)
             <div class="col-sm-12">
 							<div class="form-group">
             @switch($j)
@@ -119,9 +140,9 @@
                 @endif
               </div>
 						</div>
-            @endfor
+            @endfor -->
 
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>
                 <label class="radio-inline col-md-1">
@@ -145,7 +166,7 @@
                   Fifth
                 </label>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</fieldset>
         @endfor
@@ -160,6 +181,20 @@
 @endsection
 @push('after_script')
   <script>
-
+  $( document ).ready(function() {
+    var i = $('#question-index').val();
+    $('#label-true').hide();
+    $('#make-choice').click(function() {
+      $('#choice').empty();
+      $('#true-answer').empty();
+      $('#label-true').show();
+      var a = $('#number-of-choice').val();
+      console.log(a);
+      for (var j = 1; j <= a; j++) {
+        $('#choice').append('<input type="text" name="choice['+i+']['+j+']" class="form-control" value="" placeholder="opsi '+j+'" style="margin-top:5px">');
+        $('#true-answer').append('<label class="radio-inline"><input type="radio" name="true_answer['+i+']" value="'+j+'" class="styled">'+j+'</label>');
+      }
+    });
+  });
   </script>
 @endpush
