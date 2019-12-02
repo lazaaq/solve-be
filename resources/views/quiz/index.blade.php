@@ -37,12 +37,14 @@
   			<thead>
       		<tr>
              <th>id</th>
+             <th>Code</th>
              <th>Category</th>
              <th>Type</th>
              <th>Title</th>
              <th>Description</th>
              <th>Total Question</th>
              <th>Visible Question</th>
+             <th>Time</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -82,12 +84,14 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
+            { data: 'code', name:'code', visible:true},
             { data: 'quiz_category', name:'quiz_category', visible:true},
             { data: 'quiz_type', name:'quiz_type', visible:true},
             { data: 'title', name:'title', visible:true},
             { data: 'description', name:'description', visible:true},
             { data: 'sum_question', name:'sum_question', visible:true},
             { data: 'tot_visible', name:'tot_visible', visible:true},
+            { data: 'time', name:'time', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
@@ -120,6 +124,7 @@
             $('textarea[name=description_edit]').val(data['data']['description']);
             $('input[name=total_visible_question_edit]').val(data['data']['tot_visible']);
             $('input[name=total_question_edit]').val(data['data']['sum_question']);
+            $('input[name=time_edit]').val(data['data']['time']);
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
             //$('select[name=quiz_category_edit]').val(data['data']['quiz_type']['quiz_category_id']).trigger('change');
             // $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
