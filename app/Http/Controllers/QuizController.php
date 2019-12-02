@@ -80,6 +80,7 @@ class QuizController extends Controller
         // 'total_question' => 'required',
         'total_visible_question' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
+        'time' => 'required'
       ];
       $validator = Validator::make($request->all(), $rules);
       if ($validator->fails()) {
@@ -102,7 +103,8 @@ class QuizController extends Controller
                 'code' => strtoupper(substr(md5(microtime()),rand(0,26),5)),
                 // 'sum_question'=>request('total_question'),
                 'tot_visible'=>request('total_visible_question'),
-                'pic_url'=>$filename
+                'pic_url'=>$filename,
+                'time'=>request('time')
           ]
         );
         return response()->json(['success'=>'Data added successfully','data'=>$data]);
@@ -186,6 +188,7 @@ class QuizController extends Controller
     $data->description=$request->description_edit;
     $data->tot_visible=$request->total_visible_question_edit;
     $data->pic_url=$filename;
+    $data->time=$request->time_edit;
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
     // return redirect()->route('quiz.index');

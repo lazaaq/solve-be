@@ -44,6 +44,7 @@
              <th>Description</th>
              <th>Total Question</th>
              <th>Visible Question</th>
+             <th>Time</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -90,6 +91,7 @@
             { data: 'description', name:'description', visible:true},
             { data: 'sum_question', name:'sum_question', visible:true},
             { data: 'tot_visible', name:'tot_visible', visible:true},
+            { data: 'time', name:'time', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
@@ -122,6 +124,7 @@
             $('textarea[name=description_edit]').val(data['data']['description']);
             $('input[name=total_visible_question_edit]').val(data['data']['tot_visible']);
             $('input[name=total_question_edit]').val(data['data']['sum_question']);
+            $('input[name=time_edit]').val(data['data']['time']);
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
             //$('select[name=quiz_category_edit]').val(data['data']['quiz_type']['quiz_category_id']).trigger('change');
             // $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
