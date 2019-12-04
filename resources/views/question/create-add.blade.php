@@ -102,7 +102,7 @@
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.0')}}</strong>
                     </label>
                   @endif
-                </div>    
+                </div>
 
                 <div id="choice_2">
                   <label>Second Multiple Choice:</label>
@@ -121,7 +121,7 @@
                   @endif
                   <div class="btn-group" role="group">
                     <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>  
+                  </div>
                 </div>
               </div>
 
@@ -165,7 +165,7 @@
                   <div class="btn-group" role="group">
                     <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
                     <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>    
+                  </div>
                 </div>
               </div>
 
@@ -186,23 +186,45 @@
                   @endif
                   <div class="btn-group" role="group">
                     <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-                  </div>  
+                  </div>
                 </div>
               </div>
 
 						</div>
 
             <div class="col-md-12">
-							<div class="form-group">
+							<div class="form-group" id="option{{$i}}">
 								<label class="display-block">True Answer:</label>
-                <label class="radio-inline col-md-1">
-                  <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="1" class="styled">
-                  First
-                </label>
-                <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
-                  Second
-                </label>
+                <div id="first_{{$i}}" class="">
+                  <label class="radio-inline col-md-1">
+                    <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="1" class="styled">
+                    First
+                  </label>
+                </div>
+                <div id="second_{{$i}}" class="">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
+                    Second
+                  </label>
+                </div>
+                <div id="third_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="3" class="styled">
+                    Third
+                  </label>
+                </div>
+                <div id="fourth_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="4" class="styled">
+                    Fourth
+                  </label>
+                </div>
+                <div id="fifth_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="5" class="styled">
+                    Fifth
+                  </label>
+                </div>
 							</div>
 						</div>
 					</div>
@@ -220,33 +242,38 @@
 @push('after_script')
   <script>
     $(document).ready(function(){
-      
-      $(document).on('click', '.addButton', function(){  
+
+      $(document).on('click', '.addButton', function(){
 
         var id = $(this).val();
+        console.log(id);
         var counter = $('#choice'+id+' div').children('input[type=text]').length;
 
           switch (counter) {
             case 2:
-              var $template = $('#template_choice_3_'+id).children();                   
+              var $template = $('#template_choice_3_'+id).children();
               $clone    = $template.clone();
-              $('#choice'+id).find('.btn-group').remove(); 
+              var $template2 = $('#third_'+id);
+              $('#choice'+id).find('.btn-group').remove();
               break;
             case 3:
               var $template = $('#template_choice_4_'+id).children();
               $clone    = $template.clone();
-              $('#choice'+id).find('.btn-group').remove(); 
+              var $template2 = $('#fourth_'+id);
+              $('#choice'+id).find('.btn-group').remove();
               break;
             case 4:
               var $template = $('#template_choice_5_'+id).children();
               $clone    = $template.clone();
-              $('#choice'+id).find('.btn-group').remove(); 
+              var $template2 = $('#fifth_'+id);
+              $('#choice'+id).find('.btn-group').remove();
               break;
           }
           $('#choice'+id).append($clone);
+          $template2.removeClass('hide');
       });
 
-      $(document).on('click', '.removeButton', function(){  
+      $(document).on('click', '.removeButton', function(){
 
         var id = $(this).val();
         var counter = $('#choice'+id+' div').children('input[type=text]').length;
@@ -254,23 +281,26 @@
         switch (counter) {
           case 3:
             $('#choice'+id+' #choice_2').append('<div class="btn-group" role="group"><button type="button" value="'+id+'" class="btn btn-default addButton"><i class="fa fa-plus"></i></button></div>');
+            var $template2 = $('#third_'+id);
             break;
           case 4:
             var $template = $('#template_choice_3_'+id).children();
             $clone    = $template.clone();
             $('#choice'+id+' #choice_3').append($clone.find('.btn-group'));
+            var $template2 = $('#fourth_'+id);
             break;
           case 5:
             var $template = $('#template_choice_4_'+id).children();
             $clone    = $template.clone();
             $('#choice'+id+' #choice_4').append($clone.find('.btn-group'));
+            var $template2 = $('#fifth_'+id);
             break;
-        }   
-
+        }
         $(this).parent().parent().remove();
-        console.log($clone.find('.btn-group'));
+        $template2.addClass('hide');
+        // console.log($clone.find('.btn-group'));
 
-      }); 
+      });
 
     });
   </script>

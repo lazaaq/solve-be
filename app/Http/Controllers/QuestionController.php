@@ -46,6 +46,7 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
+    dd($request);
     $this->validate($request,
     [
       'question.*' => 'required',
@@ -287,12 +288,12 @@ class QuestionController extends Controller
       $option_char = ['a','b','c','d','e'];
       $option_pic = ['pic_a','pic_b','pic_c','pic_d','pic_e'];
       $array = [];
-  
+
       $collection = [];
       foreach ($question as $i => $item) {
         $array_option = [];
 
-        for ($j=0; $j < count($option[$i]) ; $j++) { 
+        for ($j=0; $j < count($option[$i]) ; $j++) {
           $array_option[] = [$option_char[$j] => $option[$i]->get($j)->content,
                              $option_pic[$j] => $option[$i]->get($j)->pic_url,
                              'isTrue' => $option[$i]->get($j)->isTrue];
