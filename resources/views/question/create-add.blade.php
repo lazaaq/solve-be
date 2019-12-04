@@ -123,10 +123,8 @@
                     <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group hide" id="template_choice_3_{{$i}}">
-                <div id="choice_3">
+                <div id="choice_3" class="hide">
                   <label>Third Multiple Choice:</label>
                   <input type="text" name="choice[{{$i}}][2]" class="form-control" value="{{ old('choice.'.$i.'.2') }}" placeholder="">
                   <input type="file" name="picture_choice[{{$i}}][2]" class="form-control">
@@ -145,10 +143,8 @@
                     <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                   </div>
                 </div>
-              </div>
-
-              <div class="form-group hide" id="template_choice_4_{{$i}}">
-                <div id="choice_4">
+       
+                <div id="choice_4" class="hide">
                   <label>Fourth Multiple Choice:</label>
                   <input type="text" name="choice[{{$i}}][3]" class="form-control" value="{{ old('choice.'.$i.'.3') }}" placeholder="">
                   <input type="file" name="picture_choice[{{$i}}][3]" class="form-control">
@@ -167,10 +163,8 @@
                     <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
                   </div>
                 </div>
-              </div>
 
-              <div class="form-group hide" id="template_choice_5_{{$i}}">
-                <div id="choice_5">
+                <div id="choice_5" class="hide">
                   <label>Fifth Multiple Choice:</label>
                   <input type="text" name="choice[{{$i}}][4]" class="form-control" value="{{ old('choice.'.$i.'.4') }}" placeholder="">
                   <input type="file" name="picture_choice[{{$i}}][4]" class="form-control">
@@ -189,7 +183,6 @@
                   </div>
                 </div>
               </div>
-
 						</div>
 
             <div class="col-md-12">
@@ -246,59 +239,54 @@
       $(document).on('click', '.addButton', function(){
 
         var id = $(this).val();
-        console.log(id);
-        var counter = $('#choice'+id+' div').children('input[type=text]').length;
+        var counter = $('#choice'+id+' div:not(.hide)').children('input[type=text]').length;
 
           switch (counter) {
             case 2:
-              var $template = $('#template_choice_3_'+id).children();
-              $clone    = $template.clone();
+              var $template = $('#choice'+id+' #choice_3');
               var $template2 = $('#third_'+id);
-              $('#choice'+id).find('.btn-group').remove();
+              $('#choice'+id+' #choice_2').find('.btn-group').addClass('hide');
               break;
             case 3:
-              var $template = $('#template_choice_4_'+id).children();
-              $clone    = $template.clone();
+              var $template = $('#choice'+id+' #choice_4');
               var $template2 = $('#fourth_'+id);
-              $('#choice'+id).find('.btn-group').remove();
+              $('#choice'+id+' #choice_3').find('.btn-group').addClass('hide');
               break;
             case 4:
-              var $template = $('#template_choice_5_'+id).children();
-              $clone    = $template.clone();
+              var $template = $('#choice'+id+' #choice_5');
               var $template2 = $('#fifth_'+id);
-              $('#choice'+id).find('.btn-group').remove();
+              $('#choice'+id+' #choice_4').find('.btn-group').addClass('hide');
               break;
           }
-          $('#choice'+id).append($clone);
+
+          $template.removeClass('hide');
           $template2.removeClass('hide');
       });
 
       $(document).on('click', '.removeButton', function(){
 
         var id = $(this).val();
-        var counter = $('#choice'+id+' div').children('input[type=text]').length;
+        var counter = $('#choice'+id+' div:not(.hide)').children('input[type=text]').length;
 
         switch (counter) {
           case 3:
-            $('#choice'+id+' #choice_2').append('<div class="btn-group" role="group"><button type="button" value="'+id+'" class="btn btn-default addButton"><i class="fa fa-plus"></i></button></div>');
+            var $template = $('#choice'+id+' #choice_3');
+            $('#choice'+id+' #choice_2').find('.btn-group').removeClass('hide');
             var $template2 = $('#third_'+id);
             break;
           case 4:
-            var $template = $('#template_choice_3_'+id).children();
-            $clone    = $template.clone();
-            $('#choice'+id+' #choice_3').append($clone.find('.btn-group'));
+            var $template = $('#choice'+id+' #choice_4');
+            $('#choice'+id+' #choice_3').find('.btn-group').removeClass('hide');
             var $template2 = $('#fourth_'+id);
             break;
           case 5:
-            var $template = $('#template_choice_4_'+id).children();
-            $clone    = $template.clone();
-            $('#choice'+id+' #choice_4').append($clone.find('.btn-group'));
+            var $template = $('#choice'+id+' #choice_5');
+            $('#choice'+id+' #choice_4').find('.btn-group').removeClass('hide');
             var $template2 = $('#fifth_'+id);
             break;
         }
-        $(this).parent().parent().remove();
         $template2.addClass('hide');
-        // console.log($clone.find('.btn-group'));
+        $template.addClass('hide');
 
       });
 
