@@ -56,13 +56,12 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div class="panel-body">
-      <form class="stepy-clickable form-validate-jquery" action="{{route('question.store')}}" method="post" enctype="multipart/form-data" files=true>
+      <form id="form-question" class="stepy-clickable form-validate-jquery" action="{{route('question.store')}}" method="post" enctype="multipart/form-data" files=true>
         @csrf
         @for ($i=0; $i < $total; $i++)
           <fieldset>
 					<legend class="text-semibold"></legend>
           <input type="hidden" name="quiz_id" value="{{$quiz->id}}">
-          <input type="hidden"  id="question-index" value="{{$i}}">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
@@ -87,62 +86,113 @@
                 @endif
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <div class="col-lg-3">
-                  <label class="control-label">Number of Choice</label>
-                </div>
-                <div class="control col-lg-9" style="padding:0px">
-                  <input id="number-of-choice" type="text" width="10px" class="form-control" value="" placeholder="" min="2" max="5">
-                  <a style="margin-top:10px" id="make-choice" class="btn btn-primary stepy-finish">Make Choice <i class="icon-check position-right"></i></a>
-                </div>
-              </div>
-            </div>
             <div class="col-sm-12">
-							<div class="form-group" id="choice">
-              </div>
-            </div>
-            <div class="col-sm-12">
-              <label class="display-block" id="label-true">True Answer:</label>
-							<div class="form-group" id="true-answer">
-              </div>
-            </div>
-            <!-- @for ($j=0; $j < 5; $j++)
-            <div class="col-sm-12">
-							<div class="form-group">
-            @switch($j)
-                @case(0)
+							<div class="form-group" id="choice{{$i}}">
+                <div id="choice_1">
                   <label>First Multiple Choice:</label>
-                  @break
-                @case(1)
-                  <label>Second Multiple Choice:</label>
-                  @break
-                @case(2)
-                  <label>Third Multiple Choice:</label>
-                  @break
-                @case(3)
-                  <label>Fourth Multiple Choice:</label>
-                  @break
-                @default
-                  <label>Fifth Multiple Choice:</label>
-                @endswitch
-                <input type="text" name="choice[{{$i}}][{{$j}}]" class="form-control" value="{{ old('choice.'.$i.'.'.$j) }}" placeholder="">
-                <input type="file" name="picture_choice[{{$i}}][{{$j}}]" class="form-control">
-                @if ($errors->has('choice.'.$i.'.'.$j))
+                  <input type="text" name="choice[{{$i}}][0]" class="form-control" value="{{ old('choice.'.$i.'.0') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][0]" class="form-control">
+                  @if ($errors->has('choice.'.$i.'.0'))
                   <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.'.$j)}}</strong>
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.0')}}</strong>
                   </label>
-                @endif
-                @if ($errors->has('picture_choice.'.$i.'.'.$j))
-                  <label style="padding-top:7px;color:#F44336;">
-                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.'.$j)}}</strong>
-                  </label>
-                @endif
-              </div>
-						</div>
-            @endfor -->
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.0'))
+                    <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.0')}}</strong>
+                    </label>
+                  @endif
+                </div>    
 
-            <!-- <div class="col-md-12">
+                <div id="choice_2">
+                  <label>Second Multiple Choice:</label>
+                  <input type="text" name="choice[{{$i}}][1]" class="form-control" value="{{ old('choice.'.$i.'.1') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][1]" class="form-control">
+
+                  @if ($errors->has('choice.'.$i.'.1'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.1')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.1'))
+                    <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.1')}}</strong>
+                    </label>
+                  @endif
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>  
+                </div>
+              </div>
+
+              <div class="form-group hide" id="template_choice_3_{{$i}}">
+                <div id="choice_3">
+                  <label>Third Multiple Choice:</label>
+                  <input type="text" name="choice[{{$i}}][2]" class="form-control" value="{{ old('choice.'.$i.'.2') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][2]" class="form-control">
+                  @if ($errors->has('choice.'.$i.'.2'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.2')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.2'))
+                    <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.2')}}</strong>
+                    </label>
+                  @endif
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group hide" id="template_choice_4_{{$i}}">
+                <div id="choice_4">
+                  <label>Fourth Multiple Choice:</label>
+                  <input type="text" name="choice[{{$i}}][3]" class="form-control" value="{{ old('choice.'.$i.'.3') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][3]" class="form-control">
+                  @if ($errors->has('choice.'.$i.'.3'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.3')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.3'))
+                    <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.3')}}</strong>
+                    </label>
+                  @endif
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>    
+                </div>
+              </div>
+
+              <div class="form-group hide" id="template_choice_5_{{$i}}">
+                <div id="choice_5">
+                  <label>Fifth Multiple Choice:</label>
+                  <input type="text" name="choice[{{$i}}][4]" class="form-control" value="{{ old('choice.'.$i.'.4') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][4]" class="form-control">
+                  @if ($errors->has('choice.'.$i.'.4'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.4')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.4'))
+                    <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.4')}}</strong>
+                    </label>
+                  @endif
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+                  </div>  
+                </div>
+              </div>
+
+						</div>
+
+            <div class="col-md-12">
 							<div class="form-group">
 								<label class="display-block">True Answer:</label>
                 <label class="radio-inline col-md-1">
@@ -153,20 +203,8 @@
                   <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
                   Second
                 </label>
-                <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="3" class="styled">
-                  Third
-                </label>
-                <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="4" class="styled">
-                  Fourth
-                </label>
-                <label class="radio-inline col-md-1">
-                  <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="5" class="styled">
-                  Fifth
-                </label>
 							</div>
-						</div> -->
+						</div>
 					</div>
 				</fieldset>
         @endfor
@@ -181,20 +219,59 @@
 @endsection
 @push('after_script')
   <script>
-  $( document ).ready(function() {
-    var i = $('#question-index').val();
-    $('#label-true').hide();
-    $('#make-choice').click(function() {
-      $('#choice').empty();
-      $('#true-answer').empty();
-      $('#label-true').show();
-      var a = $('#number-of-choice').val();
-      console.log(a);
-      for (var j = 1; j <= a; j++) {
-        $('#choice').append('<input type="text" name="choice['+i+']['+j+']" class="form-control" value="" placeholder="opsi '+j+'" style="margin-top:5px">');
-        $('#true-answer').append('<label class="radio-inline"><input type="radio" name="true_answer['+i+']" value="'+j+'" class="styled">'+j+'</label>');
-      }
+    $(document).ready(function(){
+      
+      $(document).on('click', '.addButton', function(){  
+
+        var id = $(this).val();
+        var counter = $('#choice'+id+' div').children('input[type=text]').length;
+
+          switch (counter) {
+            case 2:
+              var $template = $('#template_choice_3_'+id).children();                   
+              $clone    = $template.clone();
+              $('#choice'+id).find('.btn-group').remove(); 
+              break;
+            case 3:
+              var $template = $('#template_choice_4_'+id).children();
+              $clone    = $template.clone();
+              $('#choice'+id).find('.btn-group').remove(); 
+              break;
+            case 4:
+              var $template = $('#template_choice_5_'+id).children();
+              $clone    = $template.clone();
+              $('#choice'+id).find('.btn-group').remove(); 
+              break;
+          }
+          $('#choice'+id).append($clone);
+      });
+
+      $(document).on('click', '.removeButton', function(){  
+
+        var id = $(this).val();
+        var counter = $('#choice'+id+' div').children('input[type=text]').length;
+
+        switch (counter) {
+          case 3:
+            $('#choice'+id+' #choice_2').append('<div class="btn-group" role="group"><button type="button" value="'+id+'" class="btn btn-default addButton"><i class="fa fa-plus"></i></button></div>');
+            break;
+          case 4:
+            var $template = $('#template_choice_3_'+id).children();
+            $clone    = $template.clone();
+            $('#choice'+id+' #choice_3').append($clone.find('.btn-group'));
+            break;
+          case 5:
+            var $template = $('#template_choice_4_'+id).children();
+            $clone    = $template.clone();
+            $('#choice'+id+' #choice_4').append($clone.find('.btn-group'));
+            break;
+        }   
+
+        $(this).parent().parent().remove();
+        console.log($clone.find('.btn-group'));
+
+      }); 
+
     });
-  });
   </script>
 @endpush
