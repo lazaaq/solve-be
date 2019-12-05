@@ -103,11 +103,15 @@
                     </label>
                   @endif
                 </div>
-
+                <br>
                 <div id="choice_2">
                   <label>Second Multiple Choice:</label>
                   <input type="text" name="choice[{{$i}}][1]" class="form-control" value="{{ old('choice.'.$i.'.1') }}" placeholder="">
                   <input type="file" name="picture_choice[{{$i}}][1]" class="form-control">
+
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>
 
                   @if ($errors->has('choice.'.$i.'.1'))
                   <label style="padding-top:7px;color:#F44336;">
@@ -119,16 +123,11 @@
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.1')}}</strong>
                     </label>
                   @endif
-                  <div class="btn-group" role="group">
-                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>
+                  
                 </div>
-
+                <br>
                 <div id="choice_3" class="hide">
-                  <label>Third Multiple Choice:</label>
-                  <input type="text" name="choice[{{$i}}][2]" class="form-control" value="{{ old('choice.'.$i.'.2') }}" placeholder="">
-                  <input type="file" name="picture_choice[{{$i}}][2]" class="form-control">
-                  @if ($errors->has('choice.'.$i.'.2'))
+                  @if ($choice3[$i] = $errors->has('choice.'.$i.'.2'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.2')}}</strong>
                   </label>
@@ -137,18 +136,11 @@
                     <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.2')}}</strong>
                     </label>
-                  @endif
-                  <div class="btn-group" role="group">
-                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>
+                @endif
                 </div>
-       
+                <br>
                 <div id="choice_4" class="hide">
-                  <label>Fourth Multiple Choice:</label>
-                  <input type="text" name="choice[{{$i}}][3]" class="form-control" value="{{ old('choice.'.$i.'.3') }}" placeholder="">
-                  <input type="file" name="picture_choice[{{$i}}][3]" class="form-control">
-                  @if ($errors->has('choice.'.$i.'.3'))
+                  @if ($choice4[$i] = $errors->has('choice.'.$i.'.3'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.3')}}</strong>
                   </label>
@@ -157,18 +149,11 @@
                     <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.3')}}</strong>
                     </label>
-                  @endif
-                  <div class="btn-group" role="group">
-                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>
+                  @endif                
                 </div>
-
+                <br>
                 <div id="choice_5" class="hide">
-                  <label>Fifth Multiple Choice:</label>
-                  <input type="text" name="choice[{{$i}}][4]" class="form-control" value="{{ old('choice.'.$i.'.4') }}" placeholder="">
-                  <input type="file" name="picture_choice[{{$i}}][4]" class="form-control">
-                  @if ($errors->has('choice.'.$i.'.4'))
+                  @if ($choice5[$i] = $errors->has('choice.'.$i.'.4'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.4')}}</strong>
                   </label>
@@ -177,11 +162,7 @@
                     <label style="padding-top:7px;color:#F44336;">
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.4')}}</strong>
                     </label>
-                  @endif
-                  <div class="btn-group" role="group">
-                    <button type="button" value="{{$i}}" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
-                  </div>
-                </div>
+                  @endif   
               </div>
 						</div>
 
@@ -244,22 +225,26 @@
           switch (counter) {
             case 2:
               var $template = $('#choice'+id+' #choice_3');
+              var choice = temp_choice3(id);
               var $template2 = $('#third_'+id);
               $('#choice'+id+' #choice_2').find('.btn-group').addClass('hide');
               break;
             case 3:
               var $template = $('#choice'+id+' #choice_4');
+              var choice = temp_choice4(id);
               var $template2 = $('#fourth_'+id);
               $('#choice'+id+' #choice_3').find('.btn-group').addClass('hide');
               break;
             case 4:
               var $template = $('#choice'+id+' #choice_5');
+              var choice = temp_choice5(id);
               var $template2 = $('#fifth_'+id);
               $('#choice'+id+' #choice_4').find('.btn-group').addClass('hide');
               break;
           }
 
           $template.removeClass('hide');
+          $template.append(choice);
           $template2.removeClass('hide');
       });
 
@@ -287,9 +272,65 @@
         }
         $template2.addClass('hide');
         $template.addClass('hide');
+        $template.children().remove();
 
       });
+      
+      function temp_choice3($i){return "<label>Third Multiple Choice:</label>"+
+                           "<input type='text' name='choice["+$i+"][2]' class='form-control' value='' placeholder=''>"+
+                           "<input type='file' name='picture_choice["+$i+"][2]' class='form-control'>"+
+                           "<div class='btn-group' role='group'>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
+                           "</div>"};
+      function temp_choice4($i){return "<label>Fourth Multiple Choice:</label>"+
+                           "<input type='text' name='choice["+$i+"][3]' class='form-control' value='' placeholder=''>"+
+                           "<input type='file' name='picture_choice["+$i+"][3]' class='form-control'>"+
+                           "<div class='btn-group' role='group'>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
+                           "</div>"};
+      function temp_choice5($i){return "<label>Fifth Multiple Choice:</label>"+
+                           "<input type='text' name='choice["+$i+"][4]' class='form-control' value='' placeholder=''>"+
+                           "<input type='file' name='picture_choice["+$i+"][4]' class='form-control'>"+
+                           "<div class='btn-group' role='group'>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                           "</div>"};
 
+      @for ($i=0; $i < $total; $i++)
+        @if ($choice3[$i] == 1)
+          $('#choice'+'{{$i}}'+' #choice_3').prepend(temp_choice3('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_2').find('.btn-group').addClass('hide');
+          $('#third_'+'{{$i}}').removeClass('hide');
+        @elseif ($temp = old('choice.'.$i.'.2'))
+          $('#choice'+'{{$i}}'+' #choice_3').prepend(temp_choice3('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_3').find('input[name="choice['+"{{$i}}"+'][2]"]').val("{{$temp}}");
+          $('#choice'+'{{$i}}'+' #choice_2').find('.btn-group').addClass('hide');
+          $('#third_'+'{{$i}}').removeClass('hide');
+        @endif
+
+        @if ($choice4[$i] == 1)
+          $('#choice'+'{{$i}}'+' #choice_4').prepend(temp_choice4('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_3').find('.btn-group').addClass('hide');
+          $('#fourth_'+'{{$i}}').removeClass('hide');
+        @elseif ($temp = old('choice.'.$i.'.3'))
+          $('#choice'+'{{$i}}'+' #choice_4').prepend(temp_choice4('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_4').find('input[name="choice['+"{{$i}}"+'][3]"]').val("{{$temp}}");
+          $('#choice'+'{{$i}}'+' #choice_3').find('.btn-group').addClass('hide');
+          $('#fourth_'+'{{$i}}').removeClass('hide');
+        @endif
+        
+        @if ($choice5[$i] == 1)
+          $('#choice'+'{{$i}}'+' #choice_5').prepend(temp_choice5('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_4').find('.btn-group').addClass('hide');
+          $('#fifth_'+'{{$i}}').removeClass('hide');
+        @elseif ($temp = old('choice.'.$i.'.4'))
+          $('#choice'+'{{$i}}'+' #choice_5').prepend(temp_choice5('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_5').find('input[name="choice['+"{{$i}}"+'][4]"]').val("{{$temp}}");
+          $('#choice'+'{{$i}}'+' #choice_4').find('.btn-group').addClass('hide');
+          $('#fifth_'+'{{$i}}').removeClass('hide');
+        @endif
+      @endfor
     });
   </script>
 @endpush
