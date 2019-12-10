@@ -46,7 +46,6 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    // dd($request->all());
     $this->validate($request,
     [
       'question.*' => 'required',
@@ -102,7 +101,7 @@ class QuestionController extends Controller
             ];
         }
 
-        for ($j=0; $j < @count($request->picture_choice[$i]); $j++) {
+        for ($j=0; $j < @count($request->choice[$i]); $j++) {
           if (!empty($request->picture_choice[$i][$j])) {
               $fileChoice[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
               $extensionChoice[$i][$j] = strtolower($fileChoice[$i][$j]->getClientOriginalExtension());
