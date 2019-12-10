@@ -279,32 +279,39 @@ class QuestionController extends Controller
         ]);
       }
 
-      $option  = [];
-      foreach ($question as $key => $item) {
-          $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
-      }
-
-      $option_char = ['opsi','opsi','opsi','opsi','opsi'];
-      $option_pic = ['pic_opt','pic_opt','pic_opt','pic_opt','pic_opt'];
-      $array = [];
-
+      // $option  = [];
+      // foreach ($question as $key => $item) {
+      //     $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
+      // }
+      //
+      // $collection = [];
+      // foreach ($question as $i => $item) {
+      //   $array_option = [];
+      //
+      //   for ($j=0; $j < count($option[$i]) ; $j++) {
+      //     $array_option[] = ['opsi' => $option[$i]->get($j)->content,
+      //                        'pic' => $option[$i]->get($j)->pic_url,
+      //                        'isTrue' => $option[$i]->get($j)->isTrue];
+      //   }
+      //
+      //   $collection[$i] = [
+      //     'id' => $item['id'],
+      //     'question' => $item['question'],
+      //     'pic_question' => $item['pic_url'],
+      //     'option' => $array_option,
+      //     'trueAnswer' => $option[$i]->where('isTrue', 1)->first()->content,
+      //     'trueAnswerPic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
+      //   ];
+      // }
       $collection = [];
       foreach ($question as $i => $item) {
-        $array_option = [];
-
-        for ($j=0; $j < count($option[$i]) ; $j++) {
-          $array_option[] = [$option_char[$j] => $option[$i]->get($j)->content,
-                             $option_pic[$j] => $option[$i]->get($j)->pic_url,
-                             'isTrue' => $option[$i]->get($j)->isTrue];
-        }
-
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
           'pic_question' => $item['pic_url'],
-          'option' => $array_option,
-          'trueAnswer' => $option[$i]->where('isTrue', 1)->first()->content,
-          'trueAnswerPic' => $option[$i]->where('isTrue', 1)->first()->pic_url,
+          'option' => $item->answer()->orderBy('option', 'asc')->get(),
+          'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
+          'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
         ];
       }
 
