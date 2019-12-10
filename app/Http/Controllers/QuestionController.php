@@ -285,8 +285,8 @@ class QuestionController extends Controller
           $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
       }
 
-      $option_char = ['a','b','c','d','e'];
-      $option_pic = ['pic_a','pic_b','pic_c','pic_d','pic_e'];
+      $option_char = ['opsi','opsi','opsi','opsi','opsi'];
+      $option_pic = ['pic_opt','pic_opt','pic_opt','pic_opt','pic_opt'];
       $array = [];
 
       $collection = [];
