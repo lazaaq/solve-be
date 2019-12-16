@@ -46,7 +46,6 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    // dd($request->all());
     $this->validate($request,
     [
       'question.*' => 'required',
@@ -79,7 +78,8 @@ class QuestionController extends Controller
             $file[$i] = $request->file('picture.'.$i);
             $extension[$i] = strtolower($file[$i]->getClientOriginalExtension());
             $filename[$i] = uniqid() . '.' . $extension[$i];
-            \Storage::put('public/images/question/' . $filename[$i], \File::get($file[$i]));
+            $img[$i] = Image::make($file[$i])->resize(300, 200);
+            \Storage::put('public/images/question/' . $filename[$i], $img[$i]->encode());
         } else {
           $filename[$i] = '';
         }
@@ -102,12 +102,13 @@ class QuestionController extends Controller
             ];
         }
 
-        for ($j=0; $j < @count($request->picture_choice[$i]); $j++) {
+        for ($j=0; $j < @count($request->choice[$i]); $j++) {
           if (!empty($request->picture_choice[$i][$j])) {
               $fileChoice[$i][$j] = $request->file('picture_choice.'.$i.'.'.$j);
               $extensionChoice[$i][$j] = strtolower($fileChoice[$i][$j]->getClientOriginalExtension());
               $filenameChoice[$i][$j] = uniqid() . '.' . $extensionChoice[$i][$j];
-              \Storage::put('public/images/option/' . $filenameChoice[$i][$j], \File::get($fileChoice[$i][$j]));
+              $imgChoice[$i][$j] = Image::make($fileChoice[$i][$j])->resize(300, 200);
+              \Storage::put('public/images/option/' . $filenameChoice[$i][$j], $imgChoice[$i][$j]->encode());
           } else {
             $filenameChoice[$i][$j] = '';
           }
@@ -190,7 +191,8 @@ class QuestionController extends Controller
         $file = $request->file('picture');
         $extension = strtolower($file->getClientOriginalExtension());
         $filename = uniqid() . '.' . $extension;
-        \Storage::put('public/images/question/' . $filename, \File::get($file));
+        $img = Image::make($file)->resize(300, 200);
+        \Storage::put('public/images/question/' . $filename, $img->encode());
         $data->pic_url=$filename;
     }
     $data->question=$request->question;
@@ -211,7 +213,8 @@ class QuestionController extends Controller
           $fileChoice[$key] = $request->file('picture_choice.'.$key);
           $extensionChoice[$key] = strtolower($fileChoice[$key]->getClientOriginalExtension());
           $filenameChoice[$key] = uniqid() . '.' . $extensionChoice[$key];
-          \Storage::put('public/images/option/' . $filenameChoice[$key], \File::get($fileChoice[$key]));
+          $img[$key] = Image::make($fileChoice[$key])->resize(300, 200);
+          \Storage::put('public/images/option/' . $filenameChoice[$key], $img[$key]->choice());
           $value2->pic_url = $filenameChoice[$key];
       }
       $value2->save();
