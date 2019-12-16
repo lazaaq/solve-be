@@ -310,9 +310,10 @@ class QuestionController extends Controller
           'id' => $item['id'],
           'question' => $item['question'],
           'pic_question' => $item['pic_url'],
-          'option' => $item->answer()->orderBy('option', 'asc')->get(),
           'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
+          'user_answer' => null,
+          'option' => $item->answer()->orderBy('option', 'asc')->get(),
         ];
       }
 

@@ -426,8 +426,7 @@ class QuizController extends Controller
     $data = Quiz::where('quiz_type_id', $id)
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
-                  ->select('quizs.id',// 'quiz_types.name as type',
-                    'quizs.sum_question','quizs.pic_url')
+                  ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   // ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   ->get();
     if (empty($data[0])) {
@@ -443,6 +442,25 @@ class QuizController extends Controller
     //     $value->pic_url = route('quiz.picture',$value->id);
     //   }
     // }
+    return response()->json([
+      'status'=>'success',
+      'result'=>$data
+    ]);
+  }
+
+
+  public function api_indexByCode($id){
+    $data = Quiz::where('code', $id)
+                  ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
+                  ->orderBy('quizs.id')
+                  ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->get();
+    if (empty($data[0])) {
+      return response()->json([
+        'status'=>'failed',
+        'message'=>'Not found quiz data.'
+      ]);
+    }
     return response()->json([
       'status'=>'success',
       'result'=>$data
