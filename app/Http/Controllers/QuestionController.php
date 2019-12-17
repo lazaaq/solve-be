@@ -317,7 +317,7 @@ class QuestionController extends Controller
           'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
           'user_answer' => null,
-          'option' => $item->answer()->orderBy('option', 'asc')->get(),
+          'option' => ['chosen'=>0,$item->answer()->orderBy('option', 'asc')->get()],
         ];
       }
 
