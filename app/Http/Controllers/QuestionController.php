@@ -310,7 +310,7 @@ class QuestionController extends Controller
       $collection = [];
       foreach ($question as $i => $item) {
         $opt = $item->answer()->orderBy('option', 'asc')->get();
-        $opt->chosen = 0;
+        $opt['chosen'] = 0;
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
