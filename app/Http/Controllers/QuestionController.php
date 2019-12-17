@@ -309,6 +309,8 @@ class QuestionController extends Controller
       // }
       $collection = [];
       foreach ($question as $i => $item) {
+        $opt = $item->answer()->orderBy('option', 'asc')->get();
+        $opt = $item->chosen = 0;
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
@@ -317,7 +319,7 @@ class QuestionController extends Controller
           'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
           'user_answer' => null,
-          'option' => ['chosen'=>0,$item->answer()->orderBy('option', 'asc')->get()],
+          'option' => $opt,
         ];
       }
 
