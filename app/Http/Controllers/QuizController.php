@@ -426,7 +426,7 @@ class QuizController extends Controller
     $data = Quiz::where('quiz_type_id', $id)
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
-                  ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   // ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   ->get();
     if (empty($data[0])) {
@@ -453,7 +453,7 @@ class QuizController extends Controller
     $data = Quiz::where('code', $id)
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
-                  ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
