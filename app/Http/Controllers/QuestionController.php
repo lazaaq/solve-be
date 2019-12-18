@@ -332,6 +332,11 @@ class QuestionController extends Controller
           'question'   => $data
       ]);
   }
+
+  public function api_store(Request $request)
+  {
+    dd(json_decode($request->getContent(), true));
+  }
 }
 
 ?>
