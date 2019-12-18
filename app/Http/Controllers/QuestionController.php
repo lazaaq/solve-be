@@ -12,6 +12,9 @@ use App\QuizType;
 use App\Quiz;
 use App\Answer;
 use App\Question;
+use App\QuizCollager;
+use App\AnswerSave;
+use Auth;
 use File;
 use DB;
 
@@ -335,7 +338,37 @@ class QuestionController extends Controller
 
   public function api_store(Request $request)
   {
-    dd(json_decode($request->getContent(), true));
+    $answer = json_decode($request->getContent(), true);
+    $total_score = 0;
+    DB::beginTransaction();
+    $quizCollager = QuizCollager::create([
+            'quiz_id' => $answer['quiz']['id'],
+            'collager_id' => Auth::user()->collager->id,
+            'total_score'=> $total_score,
+    ]);
+    foreach ($answer['question'] as $key => $value) {
+      $isTrue = 0;
+      $score = 0;
+      if ($answer['question'][$key]['trueAnswer'] == $answer['question'][$key]['user_answer']) {
+        $isTrue = 1;
+        $score = 100;
+      }
+      $total_score += $score;
+      AnswerSave::create([
+              'quiz_collager_id'=>$quizCollager->id,
+              'question_id'=>$answer['question'][$key]['id'],
+              'collager_answer' => $answer['question'][$key]['user_answer'],
+              'isTrue' => $isTrue,
+              'score' => $score,
+      ]);
+    }
+    $data = QuizCollager::with('answerSave')->find($quizCollager->id);
+    $data->total_score = $total_score;
+    DB::commit();
+    return response()->json([
+        'status' => 'success',
+        'result'   => $data,
+    ]);
   }
 }
 

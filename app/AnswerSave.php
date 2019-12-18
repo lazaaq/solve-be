@@ -9,6 +9,7 @@ class AnswerSave extends Model
 
     protected $table = 'answer_saves';
     public $timestamps = true;
+    protected $guarded = ['created_at', 'updated_at'];
 
     public function collager()
     {
