@@ -171,14 +171,11 @@ class QuestionController extends Controller
     [
       'question' => 'required',
       'picture' => 'mimes:png,jpg,jpeg|max:2048',
-      'choice.*' => 'required_without:picture_choice.*',
-      'picture_choice.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*',
+      'picture_choice.*' => 'mimes:png,jpg,jpeg|max:2048',
     ],
     [
       'question.*.required' => 'The question field is required.',
       'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'choice.*.required_without' => 'The choice field is required when file field is not present.',
-      'picture_choice.*.required_without' => 'The file field is required when choice field is not present.',
       'picture_choice.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
 
     ]);
@@ -213,8 +210,8 @@ class QuestionController extends Controller
           $fileChoice[$key] = $request->file('picture_choice.'.$key);
           $extensionChoice[$key] = strtolower($fileChoice[$key]->getClientOriginalExtension());
           $filenameChoice[$key] = uniqid() . '.' . $extensionChoice[$key];
-          $img[$key] = Image::make($fileChoice[$key])->resize(300, 200);
-          \Storage::put('public/images/option/' . $filenameChoice[$key], $img[$key]->choice());
+          $imgChoice[$key] = Image::make($fileChoice[$key])->resize(300, 200);
+          \Storage::put('public/images/option/' . $filenameChoice[$key], $imgChoice[$key]->encode());
           $value2->pic_url = $filenameChoice[$key];
       }
       $value2->save();
