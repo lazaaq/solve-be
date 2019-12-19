@@ -81,23 +81,23 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Waktu Mulai <span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">Start Time <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                      <input type="datetime-local" class="form-control" name="waktu_mulai" id="" value="{{old('waktu_mulai')}}">
-                      @if ($errors->has('waktu_mulai'))
+                      <input type="datetime-local" class="form-control" name="start_time" id="start_time" value="{{old('start_time')}}">
+                      @if ($errors->has('start_time'))
                       <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('waktu_mulai') }}</strong>
+                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('start_time') }}</strong>
                       </label>
                       @endif
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Waktu Selesai <span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">End Time <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <input type="datetime-local" class="form-control" name="waktu_selesai" id="" value="{{old('waktu_selesai')}}">
-                      @if ($errors->has('waktu_selesai'))
+                    <input type="datetime-local" class="form-control" name="end_time" id="end_time" value="{{old('end_time')}}">
+                      @if ($errors->has('end_time'))
                       <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('waktu_selesai') }}</strong>
+                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('end_time') }}</strong>
                       </label>
                       @endif
                   </div>

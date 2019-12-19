@@ -58,6 +58,18 @@
                     <textarea type="text" name="description_edit" rows="3" class="form-control"  placeholder=""></textarea>
                   </div>
                 </div>
+								<div class="form-group">
+                  <label class="control-label col-lg-3">Start Time <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control" name="start_time_edit" id="start_time_edit" value="{{old('start_time_edit')}}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">End Time <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="datetime-local" class="form-control" name="end_time_edit" id="end_time_edit" value="{{old('end_time_edit')}}">
+                  </div>
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Time <span class="text-danger">*</span></label>
                   <div class="col-lg-9">

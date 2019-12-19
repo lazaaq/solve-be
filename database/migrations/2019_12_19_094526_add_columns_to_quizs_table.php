@@ -14,11 +14,11 @@ class AddColumnsToQuizsTable extends Migration
     public function up()
     {
         Schema::table('quizs', function (Blueprint $table) {
-            $table->enum('status', ['Aktif', 'Tidak Aktif'])->after('tot_visible');
-            $table->dateTime('waktu_mulai')->after('status');
-            $table->dateTime('waktu_selesai')->after('waktu_mulai');
+            $table->enum('status', ['active', 'inactive'])->after('tot_visible');
+            $table->dateTime('start_time')->after('status')->nullable();
+            $table->dateTime('end_time')->after('start_time')->nullable();
         });
-        DB::statement('ALTER TABLE quizs MODIFY COLUMN time time AFTER waktu_selesai');
+        DB::statement('ALTER TABLE quizs MODIFY COLUMN time time AFTER end_time');
     }
 
     /**
