@@ -81,6 +81,28 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="control-label col-lg-3">Waktu Mulai <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control" name="waktu_mulai" id="" value="{{old('waktu_mulai')}}">
+                      @if ($errors->has('waktu_mulai'))
+                      <label style="padding-top:7px;color:#F44336;">
+                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('waktu_mulai') }}</strong>
+                      </label>
+                      @endif
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Waktu Selesai <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="datetime-local" class="form-control" name="waktu_selesai" id="" value="{{old('waktu_selesai')}}">
+                      @if ($errors->has('waktu_selesai'))
+                      <label style="padding-top:7px;color:#F44336;">
+                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('waktu_selesai') }}</strong>
+                      </label>
+                      @endif
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="control-label col-lg-3">Time <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <input type="time" class="form-control" name="time" id="time" value="{{ old('time') }}" placeholder="">
@@ -104,7 +126,7 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-arrow-left13"></i> Close</button>
                 </div>
                 <div class="col-md-8 text-right">
-                  <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
+                  <!-- <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button> -->
                   <button type="submit" id="btn-submit" class="btn btn-primary">Save</button>
                 </div>
         			</div>
