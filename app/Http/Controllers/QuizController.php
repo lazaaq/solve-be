@@ -17,6 +17,7 @@ use Validator;
 use Excel;
 use App\Imports\QuestionImport;
 use Redirect;
+use Carbon\Carbon;
 
 class QuizController extends Controller
 {
@@ -110,8 +111,8 @@ class QuizController extends Controller
                 'description'=>request('description'),
                 'code' => strtoupper(substr(md5(microtime()),rand(0,26),5)),
                 // 'sum_question'=>request('total_question'),
-                'tot_visible'=>request('total_visible_question'),
-                'tot_visible'=>request('total_visible_question'),
+                'start_time'=>request('start_time'),
+                'end_time'=>request('end_time'),
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename,
                 'time'=>request('time')
@@ -198,6 +199,8 @@ class QuizController extends Controller
     $data->description=$request->description_edit;
     $data->tot_visible=$request->total_visible_question_edit;
     $data->pic_url=$filename;
+    $data->start_time = $request->start_time_edit;
+    $data->end_time = $request->end_time_edit;
     $data->time=$request->time_edit;
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
