@@ -11,7 +11,7 @@ class CreateAnswerSavesTable extends Migration {
 			$table->increments('id');
 			$table->integer('quiz_collager_id');
 			$table->integer('question_id');
-			$table->string('collager_answer');
+			$table->string('collager_answer')->nullable();
 			$table->smallInteger('isTrue');
 			$table->integer('score');
 			$table->timestamps();
