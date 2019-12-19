@@ -26,5 +26,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole('admin');
+        $this->call(QuizCategorysTableSeeder::class);
+        $this->call(QuizTypesTableSeeder::class);
+        $this->call(QuizsTableSeeder::class);
+        $this->call(QuestionsTableSeeder::class);
+        $this->call(AnswersTableSeeder::class);
     }
 }
