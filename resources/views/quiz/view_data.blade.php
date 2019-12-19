@@ -18,12 +18,13 @@
         <div class="col-md-3">
         <button id="delete-specific-question" value="{{$value->id}}" style="margin-top:-8px;color:#fff" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon pull-right"><i class="icon-trash position-left"></i>Delete</button>
         <a style="margin-top:-8px;color:#fff;margin-right:10px" href="{{route('question.edit',$value->id)}}" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-pencil6 position-left"></i>Edit</a>
+        <button id="show-hide-option" value="{{$value->id}}" style="margin-top:-8px;color:#fff;margin-right:10px" class="btn border-info btn-xs text-info-600 btn-flat btn-icon pull-right"><i class="icon-eye position-left"></i>Show</button>
         </div>
         </p>
     </div>
     <hr style="margin-top:0">
     <div>
-        <div class="panel-body">
+        <div id="option{{$value->id}}" class="panel-body hide">
         @foreach ($value->answer as $key2 => $value2)
         <div class="col-sm-6 form-group">
         @if ($value2->isTrue == '1')
@@ -65,3 +66,22 @@
     {{ $question->links() }}
     </div>
 </div>
+
+@push('after_script')
+  <script>
+    $(document).ready(function(){
+        $(document).on('click', '#show-hide-option', function(){
+            var id = $(this).val();
+            if ($('#option'+id).hasClass('hide')) {
+                $('#show-hide-option[value="'+id+'"]').empty();
+                $('#show-hide-option[value="'+id+'"]').append("<i class='icon-eye position-left'></i>Hide");
+                $('#option'+id).removeClass('hide');
+            } else {
+                $('#show-hide-option[value="'+id+'"]').empty();
+                $('#show-hide-option[value="'+id+'"]').append("<i class='icon-eye position-left'></i>Show");
+                $('#option'+id).addClass('hide');   
+            }
+        });
+    });
+  </script>
+@endpush

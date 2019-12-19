@@ -81,7 +81,7 @@ class QuestionController extends Controller
             $file[$i] = $request->file('picture.'.$i);
             $extension[$i] = strtolower($file[$i]->getClientOriginalExtension());
             $filename[$i] = uniqid() . '.' . $extension[$i];
-            $img[$i] = Image::make($file[$i])->resize(300, 200);
+            $img[$i] = Image::make($file[$i])->resize(800, 500);
             \Storage::put('public/images/question/' . $filename[$i], $img[$i]->encode());
         } else {
           $filename[$i] = '';
@@ -191,7 +191,7 @@ class QuestionController extends Controller
         $file = $request->file('picture');
         $extension = strtolower($file->getClientOriginalExtension());
         $filename = uniqid() . '.' . $extension;
-        $img = Image::make($file)->resize(300, 200);
+        $img = Image::make($file)->resize(800, 500);
         \Storage::put('public/images/question/' . $filename, $img->encode());
         $data->pic_url=$filename;
     }
