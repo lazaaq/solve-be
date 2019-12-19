@@ -33,7 +33,15 @@ class QuizController extends Controller
       // $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
-    ->rawColumns(['action'])
+    ->addColumn('status', function($row){
+        if ($row->status == 'active') {
+          $btn = '<button id="change-status" title="Change to inactive" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i> Active</button>';
+        }else {
+          $btn = '<button id="change-status" title="Change to active" class="btn border-default btn-xs text-default btn-flat btn-icon"><i class="fa fa-toggle-off"></i> Inactive</button>';
+        }
+        return $btn;
+    })
+    ->rawColumns(['action','status'])
     ->addColumn('quiz_category', function($row){
       return $row->quizType->quizCategory->name;
     })
@@ -102,6 +110,8 @@ class QuizController extends Controller
                 'description'=>request('description'),
                 'code' => strtoupper(substr(md5(microtime()),rand(0,26),5)),
                 // 'sum_question'=>request('total_question'),
+                'tot_visible'=>request('total_visible_question'),
+                'tot_visible'=>request('total_visible_question'),
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename,
                 'time'=>request('time')
@@ -465,6 +475,17 @@ class QuizController extends Controller
       'status'=>'success',
       'result'=>$data
     ]);
+  }
+
+  public function changeStatus($id){
+    $data = Quiz::find($id);
+    if ($data->status == 'active') {
+      $data->status = 'inactive';
+    }else {
+      $data->status = 'active';
+    }
+    $data->save();
+    return response()->json(['success'=>'Data changed successfully','data'=>$data]);
   }
 
 }
