@@ -31,9 +31,10 @@
           <legend class="text-bold">Edit Question</legend>
           @csrf
           <input type="hidden" name="quiz_id" value="{{$quiz->id}}">
+          <input type="hidden" name="jumlah" value="2">
   				<div class="form-group">
   					<label><b>Question:</b></label>
-            <textarea type="text" name="question" rows="3" class="form-control"  placeholder="">{{ $data->question }}</textarea>
+            <textarea name="question" rows="3" class="form-control"  placeholder="">{{ $data->question }}</textarea>
             @if ($errors->has('question'))
               <label style="padding-top:7px;color:#F44336;">
                   <strong><i class="fa fa-times-circle"></i> {{ $errors->first('question') }}</strong>
@@ -56,11 +57,11 @@
           <div class="form-group">
             <label><b>Answer Option</b></label>
           </div>
-          <div style="margin-top:-20px" class="panel panel-flat" id="group_choice">
-        		<div class="panel-body">
-              @foreach ($data->answer as $key => $value)
-            	<div class="form-group" id="option[{{$key}}]">
-                <div style="margin-top:10px" class="col-md-3" div="name_choice[{{$key}}]">
+          <div style="margin-top:-20px" class="panel panel-flat">
+        		<div class="panel-body" id="group_choice">
+              @for ($key=0;$key<5;$key++)
+            	<div class="form-group" id="option{{$key}}">
+                <div style="margin-top:10px" class="col-md-3" id="name_choice{{$key}}">
                 @switch($key)
                   @case(0)
                   <label class="pull-right" style="margin-top:7px"><b>First Multiple Choice:</b></label>
@@ -78,50 +79,51 @@
                   <label class="pull-right" style="margin-top:7px"><b>Fifth Multiple Choice:</b></label>
                 @endswitch
                 </div>
-                <div style="margin-top:10px" class="col-md-9" div="available_choice[{{$key}}]">
-                  @if(!empty($value->pic_url))
+                <div style="margin-top:10px" class="col-md-9" id="available_choice{{$key}}">
+                  @if(!empty($data->answer->get($key)->pic_url))
                       <div class="col-md-12">
                         <div class="col-md-2">
-                          <img style="padding:10px" class="img-responsive" src="{{route('answer.picture',$value->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+                          <img style="padding:10px" class="img-responsive" src="{{route('answer.picture',$data->answer->get($key)->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
                         </div>
-                        @if ($errors->has('picture_choice.'.$value->id))
+                        @if ($errors->has('picture_choice.'.$data->answer->get($key)->id))
                         <label style="padding-top:7px;color:#F44336;">
-                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice_'.$value->id)}}</strong>
+                          <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice_'.$data->answer->get($key)->id)}}</strong>
                         </label>
                         @endif
                       </div>
                       <div class="col-md-12">
-                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
-                        {{-- <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control"> --}}
-                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $value->content }}" placeholder="">
+                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $data->answer->get($key)->content }}" placeholder="">
                         @if ($errors->has('choice.'.$key))
                         <label style="padding-top:7px;color:#F44336;">
                           <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$key)}}</strong>
                         </label>
                         @endif
+                        <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
                       </div>
                   @else
                       <div class="col-md-12">
-                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $value->content }}" placeholder="">
+                        @if ($data->answer->get($key) == NULL)
+                        <input type="text" name="choice[{{$key}}]" class="form-control" value="" placeholder="">
+                        @else
+                        <input type="text" name="choice[{{$key}}]" class="form-control" value="{{ $data->answer->get($key)->content }}" placeholder="">
+                        @endif
                         @if ($errors->has('choice.'.$key))
                         <label style="padding-top:7px;color:#F44336;">
                           <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$key)}}</strong>
                         </label>
                         @endif
-                      </div>
-                      <div class="col-md-12">
+
                         <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
-                        {{-- <input type="file" style="width:200px" name="picture_choice[{{$key}}]" class="form-control"> --}}
                         @if ($errors->has('picture_choice.'.$key))
                           <label style="padding-top:7px;color:#F44336;">
                             <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$key)}}</strong>
                           </label>
                         @endif
                       </div>
-                    @endif
+                  @endif
                 </div>
               </div>
-              @endforeach
+              @endfor
             </div>
           </div>
           <div class="form-group" id="true_answer">
@@ -154,7 +156,109 @@
 @push('after_script')
   <script>
     $(document).ready(function(){
-      console.log($('#availabe_choice[1]'));
+        var id = parseInt('{{$data->answer->count()}}') - 1; 
+        var array = [1,2,3,4];
+        var jumlah = 2;
+      switch ('{{$data->answer->count()}}') {
+        case '2':
+          $('#available_choice1').append(button1(id));
+          $.each(array, function( i, l ){
+            if (l != id) {
+              $('#option'+l).addClass('hide');
+            }
+          });
+          break;
+        case '3':
+          $('#available_choice2').append(button2(id));
+          $.each(array, function( i, l ){
+            if (l != id) {
+              $('#option'+l).addClass('hide');
+            }
+          });
+          break;
+        case '4':
+          $('#available_choice3').append(button2(id));
+          $.each(array, function( i, l ){
+            if (l != id) {
+              $('#option'+l).addClass('hide');
+            }
+          });
+          break;
+        default:
+          $('#available_choice4').append(button3(id));
+          $.each(array, function( i, l ){
+            if (l != id) {
+              $('#option'+l).addClass('hide');
+            }
+          });
+          break;
+      }
+
+      $(document).on('click', '.addButton', function(){
+        var id = parseInt($(this).val()) + 1;
+        jumlah += 1;
+        switch (id) {
+          case 2:
+            func = button2(id);
+            $('#available_choice'+id).append(func);
+            $('#option'+id).removeClass('hide');
+            break;
+          case 3:
+            $('#available_choice'+id).append(button2(id));
+            $('#option'+id).removeClass('hide');
+            break;
+          case 4:
+            $('#available_choice'+id).append(button3(id));
+            $('#option'+id).removeClass('hide');
+            break;
+        }
+        id = id-1;
+        $('#available_choice'+id+' #button'+id).remove();
+        $('input[name=jumlah]').val(jumlah)
+      });
+
+      $(document).on('click', '.removeButton', function(){
+        var id = parseInt($(this).val());
+        jumlah -= 1;
+        switch (id) {
+          case 2:
+            temp = id - 1;
+            $('#available_choice'+temp).append(button1(temp));
+            $('#option'+id).addClass('hide');
+            break;
+          case 3:
+            temp = id - 1;
+            $('#available_choice'+temp).append(button2(temp));
+            $('#option'+id).addClass('hide');
+            break;
+          case 4:
+            temp = id - 1;
+            $('#available_choice'+temp).append(button2(temp));
+            $('#option'+id).addClass('hide');
+            break;
+        }
+        $('#available_choice'+id+' #button'+id).remove();
+        $('input[name=jumlah]').val(jumlah)
+      });
+
+      
+      function button1(id) {return "<div class='col-md-12' id='button"+id+"'>"+
+                  "<div class='btn-group' role='group'>"+
+                  "<button type='button' value='"+id+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
+                  "</div>"+
+                  "</div>"}; 
+
+      function button2(id) {return "<div class='col-md-12' id='button"+id+"'>"+
+                  "<div class='btn-group' role='group'>"+
+                  "<button type='button' value='"+id+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                  "<button type='button' value='"+id+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
+                  "</div>"+
+                  "</div>"}; 
+
+      function button3(id) {return "<div class='col-md-12' id='button"+id+"'>"+
+                  "<button type='button' value='"+id+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                  "</div>"+
+                  "</div>"}; 
     });
   </script>
 @endpush
