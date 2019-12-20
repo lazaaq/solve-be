@@ -128,11 +128,18 @@
           </div>
           <div class="form-group" id="true_answer">
             <label class="display-block"><b>True Answer:</b></label>
-            @for($i=0;$i<count($data->answer);$i++)
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer[$i]->isTrue == '1') checked @endif value="{{$option_value[$i]}}" class="styled">
+            @for($i=0;$i<5;$i++)
+            @if($data->answer->get($i) == NULL)
+            <label class="radio-inline col-md-1 hide" id="true{{$i}}">
+              <input type="radio" name="true_answer[]" value="{{$option_value[$i]}}" class="styled">
               {{$option[$i]}}
             </label>
+            @else
+            <label class="radio-inline col-md-1">
+              <input type="radio" name="true_answer[]" @if ($data->answer->get($i)->isTrue == '1') checked @endif value="{{$option_value[$i]}}" class="styled">
+              {{$option[$i]}}
+            </label>
+            @endif
             @endfor
           </div>
         </fieldset>
@@ -199,17 +206,19 @@
         jumlah += 1;
         switch (id) {
           case 2:
-            func = button2(id);
-            $('#available_choice'+id).append(func);
+            $('#available_choice'+id).append(button2(id));
             $('#option'+id).removeClass('hide');
+            $('#true'+id).removeClass('hide');
             break;
           case 3:
             $('#available_choice'+id).append(button2(id));
             $('#option'+id).removeClass('hide');
+            $('#true'+id).removeClass('hide');
             break;
           case 4:
             $('#available_choice'+id).append(button3(id));
             $('#option'+id).removeClass('hide');
+            $('#true'+id).removeClass('hide');
             break;
         }
         id = id-1;
@@ -225,16 +234,19 @@
             temp = id - 1;
             $('#available_choice'+temp).append(button1(temp));
             $('#option'+id).addClass('hide');
+            $('#true'+id).addClass('hide');
             break;
           case 3:
             temp = id - 1;
             $('#available_choice'+temp).append(button2(temp));
             $('#option'+id).addClass('hide');
+            $('#true'+id).addClass('hide');
             break;
           case 4:
             temp = id - 1;
             $('#available_choice'+temp).append(button2(temp));
             $('#option'+id).addClass('hide');
+            $('#true'+id).addClass('hide');
             break;
         }
         $('#available_choice'+id+' #button'+id).remove();
