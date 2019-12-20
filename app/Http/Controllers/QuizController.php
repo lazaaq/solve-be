@@ -476,6 +476,13 @@ class QuizController extends Controller
         'message'=>'Not found quiz data.'
       ]);
     }
+    // if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() >= $data[0]->start_time) {
+    if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() <= $data[0]->start_time) {
+      return response()->json([
+        'status'=>'failed',
+        'message'=>'Quis is currently unavailable.'
+      ]);
+    }
     return response()->json([
       'status'=>'success',
       'result'=>$data
