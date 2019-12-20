@@ -131,12 +131,12 @@
             @for($i=0;$i<5;$i++)
             @if($data->answer->get($i) == NULL)
             <label class="radio-inline col-md-1 hide" id="true{{$i}}">
-              <input type="radio" name="true_answer[]" value="{{$option_value[$i]}}" class="styled">
+              <input type="radio" disabled name="true_answer[]" value="{{$option_value[$i]}}" class="styled">
               {{$option[$i]}}
             </label>
             @else
-            <label class="radio-inline col-md-1">
-              <input type="radio" name="true_answer[]" @if ($data->answer->get($i)->isTrue == '1') checked @endif value="{{$option_value[$i]}}" class="styled">
+            <label class="radio-inline col-md-1" id="true{{$i}}">
+              <input type="radio" disabled name="true_answer[]" @if ($data->answer->get($i)->isTrue == '1') checked @endif value="{{$option_value[$i]}}" class="styled">
               {{$option[$i]}}
             </label>
             @endif
@@ -165,7 +165,8 @@
     $(document).ready(function(){
         var id = parseInt('{{$data->answer->count()}}') - 1; 
         var array = [1,2,3,4];
-        var jumlah = 2;
+        var jumlah = parseInt('{{$data->answer->count()}}') - 1;
+        $('input[name=jumlah]').val(jumlah)
       switch ('{{$data->answer->count()}}') {
         case '2':
           $('#available_choice1').append(button1(id));
@@ -177,8 +178,9 @@
           break;
         case '3':
           $('#available_choice2').append(button2(id));
+
           $.each(array, function( i, l ){
-            if (l != id) {
+            if (l > id) {
               $('#option'+l).addClass('hide');
             }
           });
@@ -186,7 +188,7 @@
         case '4':
           $('#available_choice3').append(button2(id));
           $.each(array, function( i, l ){
-            if (l != id) {
+            if (l > id) {
               $('#option'+l).addClass('hide');
             }
           });
@@ -194,7 +196,7 @@
         default:
           $('#available_choice4').append(button3(id));
           $.each(array, function( i, l ){
-            if (l != id) {
+            if (l > id) {
               $('#option'+l).addClass('hide');
             }
           });

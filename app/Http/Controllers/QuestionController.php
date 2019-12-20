@@ -185,6 +185,7 @@ class QuestionController extends Controller
 
     $data = Question::find($id);
     $quiz = Quiz::find($data->quiz_id);
+    $option = ['A', 'B', 'C', 'D', 'E'];
 
     DB::beginTransaction();
     if (!empty($request->picture)) {
@@ -202,10 +203,33 @@ class QuestionController extends Controller
       return 'failed DB transaction';
     }
 
-    foreach ($data->answer as $key => $value) {
-        $value->content       = $request->choice[$key];
-        $value->isTrue        = $request->true_answer[0] == $value->option ? 1 : 0;
-        $value->save();
+    for ($i=0; $i<=$request->jumlah; $i++) { 
+      if ($data->answer->count() > $request->jumlah+1) {
+        #kurang
+        if ($i < $request->jumlah) {
+          $data->answer->get($i)->content  = $request->choice[$i];
+          $data->answer->get($i)->save();
+        } else {
+          $option = Answer::find($data->answer->get($i+1)->id);
+          $option->delete();
+        }
+      } elseif ($data->answer->count() < $request->jumlah+1) {
+        #tambah     
+        if ($i < $request->jumlah) {
+          $data->answer->get($i)->content  = $request->choice[$i];
+          $data->answer->get($i)->save();
+        } else {
+          $answers = [
+            'option'        => $option[$i],
+            'content'       => $request->choice[$i],
+            'isTrue'        => 0
+          ];
+          $data->answer()->create($answers);
+        }
+      } else {
+          $data->answer->get($i)->content  = $request->choice[$i];
+          $data->answer->get($i)->save();
+      }
     }
 
     foreach ($data->answer as $key => $value2) {
