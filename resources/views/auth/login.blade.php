@@ -54,6 +54,11 @@
 								<div class="form-control-feedback">
 									<i class="icon-user text-muted"></i>
 								</div>
+								@error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
 							</div>
 
 							<div class="form-group has-feedback has-feedback-left">
@@ -61,6 +66,11 @@
 								<div class="form-control-feedback">
 									<i class="icon-lock2 text-muted"></i>
 								</div>
+								@error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
 							</div>
 
 							<div class="form-group">
