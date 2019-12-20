@@ -12,12 +12,12 @@ class QuizsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('quizs')->delete();
-        
+
         \DB::table('quizs')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'quiz_type_id' => 1,
@@ -27,13 +27,16 @@ class QuizsTableSeeder extends Seeder
                 'pic_url' => 'blank.jpg',
                 'sum_question' => 5,
                 'tot_visible' => 5,
-                'created_at' => '2019-12-18 11:20:37',
-                'updated_at' => '2019-12-18 11:23:29',
-                'deleted_at' => NULL,
+                'status' => 'active',
+                'start_time' => '2019-12-01 00:00:00',
+                'end_time' => '2019-12-31 23:59:59',
                 'time' => '01:00:00',
+                'created_at' => '2019-12-18 11:20:37',
+                'updated_at' => '2019-12-20 06:17:22',
+                'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

@@ -18,15 +18,33 @@ class DatabaseSeeder extends Seeder
         Role::create(['name' => 'student']);
         Role::create(['name' => 'teacher']);
 
-        $user = User::create([
+        $admin = User::create([
             'name'      => 'Developer',
             'username'  => 'developer',
             'email'     => 'developer@dev.com',
             'password'  =>  bcrypt('devpass'),
             'picture'   => 'avatar.png',
         ]);
+        $admin->assignRole('admin');
 
-        $user->assignRole('admin');
+        $teacher = User::create([
+            'name'      => 'Teacher Dev',
+            'username'  => 'teacherdev',
+            'email'     => 'teacher@dev.com',
+            'password'  =>  bcrypt('devpass'),
+            'picture'   => 'avatar.png',
+        ]);
+        $teacher->assignRole('teacher');
+
+        $student = User::create([
+            'name'      => 'Student Dev',
+            'username'  => 'studentdev',
+            'email'     => 'student@dev.com',
+            'password'  =>  bcrypt('devpass'),
+            'picture'   => 'avatar.png',
+        ]);
+        $student->assignRole('student');
+
         $this->call(QuizCategorysTableSeeder::class);
         $this->call(QuizTypesTableSeeder::class);
         $this->call(QuizsTableSeeder::class);
