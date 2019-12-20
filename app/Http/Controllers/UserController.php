@@ -251,7 +251,7 @@ class UserController extends Controller
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
        'picture'=>'avatar.png',
-     ])->assignRole('user');
+     ])->assignRole('student');
      if (!$user) {
        DB::rollback();
        return response()->json([
@@ -287,7 +287,7 @@ class UserController extends Controller
     ]))
     {
         $user = Auth::user();
-        if ($user->hasRole('user')) {
+        if ($user->hasRole('student')) {
           $email = $request->get('email');
           $password = $request->get('password');
 

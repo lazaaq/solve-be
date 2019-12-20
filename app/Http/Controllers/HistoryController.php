@@ -23,7 +23,7 @@ class HistoryController extends Controller
 
     public function getData()
     {
-        $data = User::role('user')->get()->sortBy('name');
+        $data = User::role('student')->get()->sortBy('name');
         return datatables()->of($data)->addColumn('action', function($row){
         $btn = '<a id="btn-detail" href="'.route('history.show',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
         return $btn;

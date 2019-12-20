@@ -28,7 +28,7 @@ class LoginController extends Controller
      */
     public function redirectTo()
     {
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('teacher')) {
             return route('dashboard.index');
         } else {
             Auth::logout();
