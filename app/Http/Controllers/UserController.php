@@ -29,7 +29,7 @@ class UserController extends Controller
   }
 
   public function getData(Request $request)
-  {    
+  {
     $filter = $request->filter;
     $data = User::whereHas("roles", function($q) use ($filter) { $q->where("name", $filter); })->get();
     return datatables()->of($data)->addColumn('action', function($row){

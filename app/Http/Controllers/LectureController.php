@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class LectureController extends Controller 
+class LectureController extends Controller
 {
 
   /**
@@ -24,7 +24,7 @@ class LectureController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -34,7 +34,7 @@ class LectureController extends Controller
    */
   public function store(Request $request)
   {
-    
+
   }
 
   /**
@@ -45,7 +45,7 @@ class LectureController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -56,7 +56,7 @@ class LectureController extends Controller
    */
   public function edit($id)
   {
-    
+
   }
 
   /**
@@ -67,7 +67,7 @@ class LectureController extends Controller
    */
   public function update($id)
   {
-    
+
   }
 
   /**
@@ -78,9 +78,9 @@ class LectureController extends Controller
    */
   public function destroy($id)
   {
-    
+
   }
-  
+
 }
 
 ?>
