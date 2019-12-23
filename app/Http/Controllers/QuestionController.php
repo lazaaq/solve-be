@@ -243,6 +243,18 @@ class QuestionController extends Controller
       }
       $value2->save();
     }
+    for ($i=0; $i<=$request->jumlah; $i++) { 
+      if (!empty($request->picture_choice[$key])) {
+        $fileChoice[$i] = $request->file('picture_choice.'.$i);
+        $extensionChoice[$i] = strtolower($fileChoice[$i]->getClientOriginalExtension());
+        $filenameChoice[$i] = uniqid() . '.' . $extensionChoice[$i];
+        $imgChoice[$i] = Image::make($fileChoice[$i])->resize(300, 200);
+        \Storage::put('public/images/option/' . $filenameChoice[$i], $imgChoice[$i]->encode());
+        $data->answer->get($i)->pic_url = $filenameChoice[$i];
+      }
+      $data->answer->get($i)->save();
+    }
+
     DB::commit();
     return redirect()->route('quiz.show',$data->quiz_id);
   }
