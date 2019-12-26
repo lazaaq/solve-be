@@ -309,6 +309,9 @@ class QuestionController extends Controller
   {
       $quiz = Quiz::where('id', $id)->first();
       if(!empty($quiz)){
+          $jam = date('H', strtotime($quiz->time)) * 60;
+          $menit = date('i', strtotime($quiz->time)) * 1;
+          $quiz->time = $jam+$menit;
           $question = Question::where('quiz_id', $quiz->id)->with('answer')->get();
           // return $question;
 
@@ -371,7 +374,9 @@ class QuestionController extends Controller
 
   public function api_store(Request $request)
   {
-    $answer = json_decode($request->getContent(), true);
+    // $answer = json_decode($request->getContent(), true);
+    $file = $request->file('answer');
+    $answer = json_decode(File::get($file), true);
     $total_score = 0;
     DB::beginTransaction();
     $quizCollager = QuizCollager::create([
