@@ -203,7 +203,7 @@ class QuestionController extends Controller
       return 'failed DB transaction';
     }
 
-    for ($i=0; $i<=$request->jumlah; $i++) { 
+    for ($i=0; $i<=$request->jumlah; $i++) {
       if ($data->answer->count() > $request->jumlah+1) {
         #kurang
         if ($i < $request->jumlah) {
@@ -214,7 +214,7 @@ class QuestionController extends Controller
           $option->delete();
         }
       } elseif ($data->answer->count() < $request->jumlah+1) {
-        #tambah     
+        #tambah
         if ($i < $request->jumlah) {
           $data->answer->get($i)->content  = $request->choice[$i];
           $data->answer->get($i)->save();
@@ -243,7 +243,7 @@ class QuestionController extends Controller
       }
       $value2->save();
     }
-    for ($i=0; $i<=$request->jumlah; $i++) { 
+    for ($i=0; $i<=$request->jumlah; $i++) {
       if (!empty($request->picture_choice[$key])) {
         $fileChoice[$i] = $request->file('picture_choice.'.$i);
         $extensionChoice[$i] = strtolower($fileChoice[$i]->getClientOriginalExtension());
@@ -354,9 +354,9 @@ class QuestionController extends Controller
           'question' => $item['question'],
           'pic_question' => $item['pic_url'],
           'duration' => $item['time'],
-          'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
+          'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->option,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
-          'user_answer' => null,
+          'user_answer' => '**',
           'option' => $opt,
         ];
       }
@@ -381,10 +381,10 @@ class QuestionController extends Controller
     ]);
     foreach ($answer['question'] as $key => $value) {
       $isTrue = 0;
-      $score = 0;
+      $score = -1;
       if ($answer['question'][$key]['trueAnswer'] == $answer['question'][$key]['user_answer']) {
         $isTrue = 1;
-        $score = 100;
+        $score = 4;
       }
       $total_score += $score;
       AnswerSave::create([
