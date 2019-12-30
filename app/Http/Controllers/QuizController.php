@@ -457,6 +457,11 @@ class QuizController extends Controller
     //     $value->pic_url = route('quiz.picture',$value->id);
     //   }
     // }
+    foreach ($data as $key => $value) {
+      $jam = date('H', strtotime($value->time)) * 60;
+      $menit = date('i', strtotime($value->time)) * 1;
+      $value->time = $jam+$menit;
+    }
     return response()->json([
       'status'=>'success',
       'result'=>$data
@@ -483,6 +488,13 @@ class QuizController extends Controller
         'message'=>'Quis is currently unavailable.'
       ]);
     }
+
+    foreach ($data as $key => $value) {
+      $jam = date('H', strtotime($value->time)) * 60;
+      $menit = date('i', strtotime($value->time)) * 1;
+      $value->time = $jam+$menit;
+    }
+    
     return response()->json([
       'status'=>'success',
       'result'=>$data

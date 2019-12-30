@@ -306,14 +306,14 @@ class UserController extends Controller
         }
         else {
           $success['status'] = 'failed';
-          $success['error'] = 'Unauthorised';
+          $success['error'] = 'Unauthorized';
           $success['message'] = 'Your email or password incorrect!';
           return response()->json($success,401);
         }
     }
     else{
         $success['status'] = 'failed';
-        $success['error'] = 'Unauthorised';
+        $success['error'] = 'Unauthorized';
         $success['message'] = 'Your email or password incorrect!';
         return response()->json($success,401);
     }
