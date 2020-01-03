@@ -358,6 +358,7 @@ class QuestionController extends Controller
           'pic_question' => $item['pic_url'],
           'duration' => $item['time'],
           'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->option,
+          'trueAnswerContent' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
           'user_answer' => '**',
           'option' => $opt,
