@@ -402,6 +402,7 @@ class QuestionController extends Controller
     }
     $data = QuizCollager::with('answerSave')->find($quizCollager->id);
     $data->total_score = $total_score;
+    $data->save();
     DB::commit();
     return response()->json([
         'status' => 'success',
