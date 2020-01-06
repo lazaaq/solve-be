@@ -21,6 +21,24 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="control-label col-lg-3">Province <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="province_edit" class="form-control" value="{{ old('province_edit') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Regency <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="regency_edit" class="form-control" value="{{ old('regency_edit') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">District <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="district_edit" class="form-control" value="{{ old('district_edit') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="control-label col-lg-3">Address <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <input type="text" name="address_edit" class="form-control" value="{{ old('address_edit') }}" placeholder="">

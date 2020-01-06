@@ -29,7 +29,10 @@
   			<thead>
       		<tr>
              <th>Id</th>
-             <th>Name</th>
+             <th>School Name</th>
+             <th>Province</th>
+             <th>Regency</th>
+             <th>District</th>
              <th>Address</th>
              <th class="col-md-2">Action</th>
           </tr>
@@ -52,6 +55,9 @@
     $(document).ready(function(){
       $("#btn-create").on('click', function(){
           $('input[name=name]').val('');
+          $('input[name=province]').val('');
+          $('input[name=regency]').val('');
+          $('input[name=district]').val('');
           $('input[name=address]').val('');
           $('#modal-create').modal('show');
       });
@@ -72,6 +78,9 @@
         columns: [
             { data: 'id', name:'id', visible:false},
             { data: 'name', name:'name', visible:true},
+            { data: 'province', name:'province', visible:true},
+            { data: 'region', name:'region', visible:true},
+            { data: 'district', name:'district', visible:true},
             { data: 'address', name:'address', visible:true},
             { data: 'action', name:'action', visible:true}
         ],
@@ -112,6 +121,9 @@
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
             $('input[name=name_edit]').val(data['data']['name']);
+            $('input[name=province_edit]').val(data['data']['province']);
+            $('input[name=regency_edit]').val(data['data']['region']);
+            $('input[name=district_edit]').val(data['data']['district']);
             $('input[name=address_edit]').val(data['data']['address']);
           });
       });
