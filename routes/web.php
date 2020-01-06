@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('quizcollager', 'QuizCollagerController');
             Route::resource('version', 'VersionAppController')->except('destroy');
             Route::resource('banner', 'BannerController')->except('destroy');
+            Route::resource('school', 'SchoolController')->except('destroy');
 
             Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
             Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
@@ -47,6 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
 
             Route::get('version/delete/{id}', 'VersionAppController@destroy')->name('version.destroy');
+            Route::get('school/delete/{id}', 'SchoolController@destroy')->name('school.destroy');
+
         });
         Route::resource('dashboard', 'DashboardController');
         Route::resource('history', 'HistoryController');
@@ -77,6 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/data-user', 'UserController@getData');
             Route::get('/data-banner', 'BannerController@getData');
             Route::get('/data-version', 'VersionAppController@getData');
+            Route::get('/data-school', 'SchoolController@getData');
         });
         Route::get('/data-history', 'HistoryController@getData');
         Route::get('/data-history-user/{id}', 'HistoryController@getDataHistoryUser');
