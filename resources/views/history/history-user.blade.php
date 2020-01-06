@@ -114,7 +114,7 @@
                     r: 4
                 },        
                 data: {
-                   // x: 'x',
+                    x: 'x',
                     columns: data,
                 },
                 grid: {

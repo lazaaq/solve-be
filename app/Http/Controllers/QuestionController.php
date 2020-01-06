@@ -244,7 +244,7 @@ class QuestionController extends Controller
       $value2->save();
     }
     for ($i=0; $i<=$request->jumlah; $i++) {
-      if (!empty($request->picture_choice[$key])) {
+      if (!empty($request->picture_choice[$i])) {
         $fileChoice[$i] = $request->file('picture_choice.'.$i);
         $extensionChoice[$i] = strtolower($fileChoice[$i]->getClientOriginalExtension());
         $filenameChoice[$i] = uniqid() . '.' . $extensionChoice[$i];

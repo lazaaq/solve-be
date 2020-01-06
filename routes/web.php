@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth'], function () {
         });
         Route::resource('dashboard', 'DashboardController');
         Route::resource('history', 'HistoryController');
-
+        Route::get('history/detail/{id}', 'HistoryController@detailHistory')->name('detailHistory');
         Route::resource('quiztype', 'QuizTypeController')->except('destroy');
         Route::resource('quizcategory', 'QuizCategoryController')->except('destroy');
         Route::resource('quiz', 'QuizController')->except('destroy');

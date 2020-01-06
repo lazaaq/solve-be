@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Collager;
 use App\QuizCollager;
+use App\Quiz;
+use App\Question;
+use App\AnswerSave;
 use DataTables;
 
 class HistoryController extends Controller
@@ -38,7 +41,7 @@ class HistoryController extends Controller
         $data = QuizCollager::where('collager_id',$collager_id)->get();
         //return $data;
         return datatables()->of($data)->addColumn('action', function($row){
-        $btn = '<a id="btn-detail" href="#" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
+        $btn = '<a id="btn-detail" href="'.route('detailHistory',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
         return $btn;
         })
         ->rawColumns(['action'])
@@ -114,16 +117,26 @@ class HistoryController extends Controller
                 if ($key1 == 0) {
                     $number[] = "x";
                 } else {
-                    $number[] = "".$key1."";
+                    $number[] = $key1;
                 }
             }
         }
         $number = array_combine($number,$number);
         $number = array_values($number);
-        //array_unshift($result , $number);
+        array_unshift($result , $number);
 
-        //dd(json_encode($result));
+        // dd(json_encode($result));
         return response()->json($result);
+    }
+
+    public function detailHistory($id)
+    {
+        $quiz = Quiz::where('id', QuizCollager::find($id)->quiz_id)->first();
+        $question = Question::where('quiz_id', $quiz->id)->paginate(10);
+        $number = $question->firstItem();
+        $user = QuizCollager::find($id)->collager->user->id;
+        $data = AnswerSave::where('quiz_collager_id',$id)->get();
+        return view('history.view', compact('quiz','question','number','user','data'));
     }
 
     /**
