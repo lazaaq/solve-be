@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {
         Route::get('/data-quiz-category', 'QuizCategoryController@getSelect');
         Route::get('/data-quiz-category/{id}', 'QuizCategoryController@getPreSelect');
+        Route::get('/data-school', 'SchoolController@getSelect');
+        Route::get('/data-school/{id}', 'SchoolController@getPreSelect');
     });
 });
 

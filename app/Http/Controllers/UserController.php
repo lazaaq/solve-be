@@ -7,6 +7,7 @@ use Datatables;
 use App\User;
 use App\Collager;
 use App\QuizCollager;
+use App\School;
 use Auth;
 use DB;
 use Spatie\Permission\Models\Role;
@@ -36,6 +37,13 @@ class UserController extends Controller
           $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
           $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
           return $btn;
+    })
+    ->addColumn('school', function($row){
+      if ($row->school_id == NULL) {
+        return '-';
+      } else {
+        return School::find($row->school_id)->name;
+      }
     })
     ->rawColumns(['action'])
     ->make(true);
@@ -86,6 +94,7 @@ class UserController extends Controller
     $user->email = $request->email;
     $user->password = \Hash::make($request->password);
     $user->picture = $filename;
+    $user->school_id = $request->school;
     $user->save();
     $user->roles()->sync($request->role);
 
@@ -161,6 +170,7 @@ class UserController extends Controller
       $user->password = \Hash::make($request->password);
     }
     $user->picture = $filename;
+    $user->school_id = $request->school;
     $user->save();
     $user->roles()->sync($request->role);
     return redirect()->route('user.index');

@@ -29,6 +29,18 @@
                 <fieldset class="content-group">
                 <legend class="text-bold">Create User</legend>
                 <div class="form-group">
+                    <label class="control-label col-lg-3">School</label>
+                    <div class="col-lg-9">
+                        <select id="school" class="select-search" name="school">
+                        </select>
+                        @if ($errors->has('school'))
+                        <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{ $errors->first('school') }}</strong>
+                        </label>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
                         <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">
@@ -130,4 +142,25 @@
 <!-- /content area -->
 @endsection
 @push('after_script')
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#school').select2({
+        ajax : {
+            url :  "{{ url('select/data-school') }}",
+            dataType: 'json',
+            data: function(params){
+                return {
+                    term: params.term,
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            },
+            cache : true,
+        },
+        });
+    });
+</script>
 @endpush

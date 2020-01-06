@@ -38,6 +38,26 @@ class SchoolController extends Controller
       ->make(true);
     }
 
+    public function getSelect(Request $request)
+    {
+      $param  = $request->get('term');
+      $data = School::select('id','name')->orWhere('name','like',"%$param%")->orWhere('address','like',"%$param%")->get()->sortBy('name');
+      $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'id'=>$value->id,
+                'text'=>$value->name
+            ];
+        }
+        return response()->json($list);
+    }
+
+    public function getPreSelect(Request $request, $id)
+    {
+        $data = School::find($id);
+        return response()->json($data);
+    }
+
     public function create()
     {
         //
