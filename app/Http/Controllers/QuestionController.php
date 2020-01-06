@@ -240,8 +240,8 @@ class QuestionController extends Controller
           $imgChoice[$key] = Image::make($fileChoice[$key])->resize(300, 200);
           \Storage::put('public/images/option/' . $filenameChoice[$key], $imgChoice[$key]->encode());
           $value2->pic_url = $filenameChoice[$key];
+          $value2->save();
       }
-      $value2->save();
     }
     for ($i=0; $i<=$request->jumlah; $i++) {
       if (!empty($request->picture_choice[$i])) {
@@ -251,8 +251,8 @@ class QuestionController extends Controller
         $imgChoice[$i] = Image::make($fileChoice[$i])->resize(300, 200);
         \Storage::put('public/images/option/' . $filenameChoice[$i], $imgChoice[$i]->encode());
         $data->answer->get($i)->pic_url = $filenameChoice[$i];
+        $data->answer->get($i)->save();
       }
-      $data->answer->get($i)->save();
     }
 
     DB::commit();
