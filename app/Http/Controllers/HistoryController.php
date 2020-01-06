@@ -108,7 +108,7 @@ class HistoryController extends Controller
             foreach ($value as $key1 => $value1) {
                 $result[$key][] = $value1->total_score;
             }
-            
+
         }
         $result = array_values($result);
 

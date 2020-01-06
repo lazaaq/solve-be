@@ -68,11 +68,6 @@
         <label class="text-bold col-md-4">Time</label>
         <label class="col-md-8">: {{$quiz->time}}</label>
 
-        <label class="text-bold col-md-4">Start Time</label>
-        <label class="col-md-8">: {{\Carbon\Carbon::parse($data->first()->created_at)->format('j F Y, H:i:s')}}</label>
-
-        <label class="text-bold col-md-4">End Time</label>
-        <label class="col-md-8">: {{\Carbon\Carbon::parse($data->last()->created_at)->format('j F Y, H:i:s')}}</label>
 
         <label class="text-bold col-md-4">Description</label>
         <label class="col-md-8">: {{$quiz->description}}</label>

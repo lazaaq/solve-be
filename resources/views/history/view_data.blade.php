@@ -23,10 +23,14 @@
             <div id="option{{$value->id}}" class="panel-body">
             @foreach ($value->answer as $key2 => $value2)
             @if($data[$key]->collager_answer == $value2->option)
-                <div class="col-sm-6 form-group" style="border: 2px solid black;">
+              @if($data[$key]->isTrue == 1)
+                <div class="col-sm-6 form-group" style="border: 2px solid #4CAF50;">
+              @else
+                <div class="col-sm-6 form-group" style="border: 2px solid #F44336;">
+              @endif
                     @if ($value2->isTrue == '1')
                         <div class="col-md-1">
-                        <p class="pull-right"><i style="color:#4CAF50;" class="fa fa-check-circle position-left"></i></p>
+                        <p style="margin:0px" class="pull-right"><i style="color:#4CAF50;" class="fa fa-check-circle position-left"></i></p>
                         </div>
                         <div class="col-md-11">
                         @if(!empty($value2->pic_url))
@@ -34,11 +38,11 @@
                             <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
                         </div>
                         @endif
-                        <p>{{ $value2->content }}</p>
+                        <p style="margin:0px">{{ $value2->content }}</p>
                         </div>
                     @else
                         <div class="col-md-1">
-                        <p class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
+                        <p style="margin:0px" class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
                         </div>
                         <div class="col-md-11">
                         @if(!empty($value2->pic_url))
@@ -46,7 +50,7 @@
                             <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
                         </div>
                         @endif
-                        <p>{{ $value2->content }}</p>
+                        <p style="margin:0px">{{ $value2->content }}</p>
                         </div>
                     @endif
                 </div>
