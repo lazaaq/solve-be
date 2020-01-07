@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Datatables;
 use App\User;
 use App\Collager;
+use App\Lecture;
 use App\QuizCollager;
 use App\School;
 use Auth;
@@ -88,6 +89,7 @@ class UserController extends Controller
       $filename = 'avatar.png';
     }
 
+    DB::beginTransaction();
     $user = new User();
     $user->name = $request->name;
     $user->username = $request->username;
@@ -98,6 +100,16 @@ class UserController extends Controller
     $user->save();
     $user->roles()->sync($request->role);
 
+    if ($request->role[0] == "2") {
+      $addCollager = Collager::create([
+        'user_id' => $user->id,
+      ]);
+    } elseif ($request->role[0] == '3') {
+      $addLecture = Lecture::create([
+         'user_id' => $user->id,
+      ]);
+    }
+    DB::commit();
     return redirect()->route('user.index');
   }
 
