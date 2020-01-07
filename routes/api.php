@@ -46,6 +46,9 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/leaderboard-not-podium/{id_quiz}','QuizCollagerController@api_leaderboardQuizNotPodium');
 
   Route::get('/banner','BannerController@api_index');
+
+  Route::get('/history','HistoryController@api_index');
+  Route::get('/history/{quiz_collager_id}','HistoryController@api_detailHistory');
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {

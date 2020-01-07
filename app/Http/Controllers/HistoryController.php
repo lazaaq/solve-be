@@ -10,6 +10,7 @@ use App\Quiz;
 use App\Question;
 use App\AnswerSave;
 use DataTables;
+use Auth;
 
 class HistoryController extends Controller
 {
@@ -172,4 +173,21 @@ class HistoryController extends Controller
     {
         //
     }
+
+    // START OF API
+
+    public function api_index()
+    {
+        $collager_id = Auth::user()->collager->id;
+        $data = QuizCollager::where('collager_id',$collager_id)->with('quiz.quizType.quizCategory')->get();
+        return $data;
+    }
+
+    public function api_detailHistory($quiz_collager_id)
+    {
+        $collager_id = Auth::user()->collager->id;
+        $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->with('quiz.quizType.quizCategory')->first();
+        return $data;
+    }
+
 }
