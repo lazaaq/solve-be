@@ -41,12 +41,12 @@ class SchoolController extends Controller
     public function getSelect(Request $request)
     {
       $param  = $request->get('term');
-      $data = School::select('id','name')->orWhere('name','like',"%$param%")->orWhere('address','like',"%$param%")->get()->sortBy('name');
+      $data = School::select('id','name','district')->orWhere('name','like',"%$param%")->get()->sortBy('name');
       $list = [];
         foreach ($data as $key => $value) {
             $list[] = [
                 'id'=>$value->id,
-                'text'=>$value->name
+                'text'=>$value->name . ' - ' . $value->district
             ];
         }
         return response()->json($list);
@@ -78,7 +78,7 @@ class SchoolController extends Controller
             'regency' => 'required',
             'district' => 'required',
           ];
-    
+
           $validator = Validator::make($request->all(), $rules);
           if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
@@ -160,4 +160,21 @@ class SchoolController extends Controller
         $data = School::find($id);
         $data->delete();
     }
+
+    // START OF API
+    public function api_index(Request $request)
+    {
+      $param  = $request->get('term');
+      $data = School::select('id','name','district')->orWhere('name','like',"%$param%")->get()->sortBy('name');
+      $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'id'=>$value->id,
+                'text'=>$value->name . ' - ' . $value->district
+            ];
+        }
+        return response()->json($list);
+    }
+
+
 }

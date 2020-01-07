@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'username',
+        'name', 'email', 'password', 'username', 'school_id'
     ];
 
     /**
@@ -50,5 +50,10 @@ class User extends Authenticatable
     public function collager()
     {
         return $this->hasOne('App\Collager', 'user_id', 'id');
+    }
+
+    public function school()
+    {
+        return $this->belongsTo('App\School', 'school_id', 'id');
     }
 }

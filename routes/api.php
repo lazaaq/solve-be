@@ -49,6 +49,8 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
 
   Route::get('/history','HistoryController@api_index');
   Route::get('/history/{quiz_collager_id}','HistoryController@api_detailHistory');
+
+  Route::get('/school','SchoolController@api_index');
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {

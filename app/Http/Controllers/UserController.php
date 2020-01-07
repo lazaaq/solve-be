@@ -272,6 +272,7 @@ class UserController extends Controller
        'username'=>$request->username,
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
+       'school_id'=>$request->school_id,
        'picture'=>'avatar.png',
      ])->assignRole('student');
      if (!$user) {
@@ -294,7 +295,7 @@ class UserController extends Controller
          ]);
      }
      DB::commit();
-     $collager = User::where('id', $user->id)->with('collager')->first();
+     $collager = User::where('id', $user->id)->with('collager','school')->first();
      return response()->json([
        'status'=>'success',
        'user'=>$collager
@@ -351,7 +352,7 @@ class UserController extends Controller
 
   public function api_index()
   {
-      $users = User::with('collager')->where('id', Auth::user()->id)->first();
+      $users = User::with('collager','school')->where('id', Auth::user()->id)->first();
       // if($users->picture == 'avatar.png'){
       //   $users->picture = asset('img/'.$users->picture.'');
       // }else {
@@ -378,6 +379,7 @@ class UserController extends Controller
     $data->email=$request->email;
     $data->username=$request->username;
     $data->name=$request->name;
+    $data->school_id=$request->school_id;
     $data->save();
     if($data->picture == 'avatar.png'){
       $data->picture = asset('img/'.$data->picture.'');
