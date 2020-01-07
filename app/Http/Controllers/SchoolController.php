@@ -38,6 +38,26 @@ class SchoolController extends Controller
       ->make(true);
     }
 
+    public function getSelect(Request $request)
+    {
+      $param  = $request->get('term');
+      $data = School::select('id','name')->orWhere('name','like',"%$param%")->orWhere('address','like',"%$param%")->get()->sortBy('name');
+      $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'id'=>$value->id,
+                'text'=>$value->name
+            ];
+        }
+        return response()->json($list);
+    }
+
+    public function getPreSelect(Request $request, $id)
+    {
+        $data = School::find($id);
+        return response()->json($data);
+    }
+
     public function create()
     {
         //
@@ -54,6 +74,9 @@ class SchoolController extends Controller
         $rules = [
             'name' => 'required',
             'address' => 'required',
+            'province' => 'required',
+            'regency' => 'required',
+            'district' => 'required',
           ];
     
           $validator = Validator::make($request->all(), $rules);
@@ -64,6 +87,9 @@ class SchoolController extends Controller
                [
                  'name'=>request('name'),
                  'address'=>request('address'),
+                 'province'=>request('province'),
+                 'region'=>request('regency'),
+                 'district'=>request('district'),
                ]
              );
             return response()->json(['success'=>'Data added successfully','data'=>$data]);
@@ -106,6 +132,9 @@ class SchoolController extends Controller
         $rules = [
             'name_edit' => 'required',
             'address_edit' => 'required',
+            'province_edit' => 'required',
+            'regency_edit' => 'required',
+            'district_edit' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -113,6 +142,9 @@ class SchoolController extends Controller
         }
         $data->name=$request->name_edit;
         $data->address=$request->address_edit;
+        $data->province=$request->province_edit;
+        $data->region=$request->regency_edit;
+        $data->district=$request->district_edit;
         $data->save();
         return response()->json(['success'=>'Data updated successfully','data'=>$data]);
     }

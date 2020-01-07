@@ -46,6 +46,7 @@
   			<thead>
   				<tr>
             <th>Id</th>
+            <th>School</th>
   					<th>Name</th>
   					<th>Username</th>
             <th>Email</th>
@@ -85,6 +86,7 @@ var tableUser;
 
       columns: [
           { data: 'id', name:'id', visible:false},
+          { data: 'school', name:'school', visible:true},
           { data: 'name', name:'name', visible:true},
           { data: 'username', name:'username', visible:true},
           { data: 'email', name:'email', visible:true},
@@ -93,7 +95,6 @@ var tableUser;
     });
 
     $('#filter').change(function() {
-      console.log($('#filter').find(":selected").text())
       tableUser.draw(true);
     });
 

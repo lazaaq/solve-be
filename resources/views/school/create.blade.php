@@ -18,6 +18,24 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="control-label col-lg-3">Province <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="province" class="form-control" value="{{ old('province') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">Regency <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="regency" class="form-control" value="{{ old('regency') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-lg-3">District <span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                    <input type="text" name="district" class="form-control" value="{{ old('district') }}" placeholder="">
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="control-label col-lg-3">Address <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                     <input type="text" name="address" class="form-control" value="{{ old('address') }}" placeholder="">
