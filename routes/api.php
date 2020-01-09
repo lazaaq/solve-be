@@ -24,6 +24,7 @@ Route::group(['middleware' => ['api'],'prefix' => '/collager'], function () {
   Route::post('/login','UserController@api_collagerLogin');
   Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
   Route::get('/version', 'VersionAppController@api_index');
+  Route::get('/school','SchoolController@api_index');
 });
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
   Route::get('/logout', 'UserController@api_logout');
@@ -50,7 +51,6 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/history','HistoryController@api_index');
   Route::get('/history/{quiz_collager_id}','HistoryController@api_detailHistory');
 
-  Route::get('/school','SchoolController@api_index');
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
