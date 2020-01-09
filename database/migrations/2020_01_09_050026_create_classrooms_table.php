@@ -17,7 +17,7 @@ class CreateClassroomsTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('name');
-            $table->integer('lecturer_id')->unsigned();
+            $table->integer('lecturer_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             

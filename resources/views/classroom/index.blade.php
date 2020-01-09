@@ -76,7 +76,7 @@
             { data: 'id', name:'id', visible:false},
             { data: 'name', name:'name', visible:true},
             { data: 'code', name:'code', visible:true},
-            { data: 'lecture.user.name', name:'lecturer', visible:true},
+            { data: 'lecturer', name:'lecturer', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });

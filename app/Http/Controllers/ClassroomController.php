@@ -17,20 +17,24 @@ class ClassroomController extends Controller
 
     public function getData()
     {
-       if (!empty(Auth::user()->lecture)) {
-         $data = Classroom::where('lecturer_id',Auth::user()->lecture->id)->with('lecture.user')->get()->sortBy('name');
-       } else {
-         $data = Classroom::with('lecture.user')->get()->sortBy('name');
-       }
-       return datatables()->of($data)
-         ->addColumn('action', function($row){
-           $btn = '<a id="detail" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
-           $btn = $btn.'  <a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-           $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
-           return $btn;
-       })
-       ->rawColumns(['action'])
-       ->make(true);
+      $data = Classroom::get()->sortBy('name');
+      
+      return datatables()->of($data)
+        ->addColumn('action', function($row){
+          $btn = '<a id="detail" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
+          $btn = $btn.'  <a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+          $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
+          return $btn;
+      })
+      ->addColumn('lecturer', function($row){
+        if (Auth::user()->hasRole('teacher')) {
+          return $row->lecturer->user->name;
+        } else {
+          return '-';
+        }
+      })
+      ->rawColumns(['action'])
+      ->make(true);
     }
     public function index()
     {
@@ -64,16 +68,17 @@ class ClassroomController extends Controller
         return response()->json(['errors' => $validator->errors()->all()]);
       }
       else{
-        Classroom::create(
+        $class = Classroom::create(
           [
                 'name' => request('name'),
                 'code'=> request('code'),
-                // 'code'=> strtoupper(substr(md5(microtime()),rand(0,26),5)),
-                'lecturer_id'=>Auth::user()->lecture->id
           ]
         );
+        if (Auth::user()->hasRole('teacher')) {
+          $class->lecturer_id = Auth::user()->lecture->id;
+          $class->save();
+        }
         return response()->json(['success'=>'Data added successfully']);
-        // return redirect(route('quizcategory.index'));
       }
     }
 
