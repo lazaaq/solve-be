@@ -173,7 +173,10 @@ class SchoolController extends Controller
                 'text'=>$value->name . ' - ' . $value->district
             ];
         }
-        return response()->json($list);
+        return response()->json([
+            'status' => 'success',
+            'result'   => $list
+        ]);
     }
 
 
