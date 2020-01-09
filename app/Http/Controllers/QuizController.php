@@ -18,6 +18,7 @@ use Excel;
 use App\Imports\QuestionImport;
 use Redirect;
 use Carbon\Carbon;
+use Auth;
 
 class QuizController extends Controller
 {
@@ -115,7 +116,8 @@ class QuizController extends Controller
                 'end_time'=>request('end_time'),
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename,
-                'time'=>request('time')
+                'time'=>request('time'),
+                'created_by'=>Auth::id()
           ]
         );
         return response()->json(['success'=>'Data added successfully','data'=>$data]);
@@ -204,6 +206,7 @@ class QuizController extends Controller
     $data->start_time = $request->start_time_edit;
     $data->end_time = $request->end_time_edit;
     $data->time=$request->time_edit;
+    $data->created_by=Auth::id();
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
     // return redirect()->route('quiz.index');

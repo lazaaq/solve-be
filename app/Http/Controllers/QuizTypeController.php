@@ -10,6 +10,7 @@ use App\QuizType;
 use File;
 use Validator;
 use Cache;
+use Auth;
 
 class QuizTypeController extends Controller
 {
@@ -80,7 +81,8 @@ class QuizTypeController extends Controller
               'name' => request('name'),
               'quiz_category_id' => request('quiz_category'),
               'description'=>request('description'),
-              'pic_url'=>$filename
+              'pic_url'=>$filename,
+              'created_by'=>Auth::id()
         ]
       );
 
@@ -159,6 +161,7 @@ class QuizTypeController extends Controller
     $data->quiz_category_id=$request->quiz_category_edit;
     $data->description=$request->description_edit;
     $data->pic_url=$filename;
+    $data->created_by=Auth::id();
     $data->save();
 
     Cache::forget('quiztype'.$id);
