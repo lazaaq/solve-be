@@ -165,18 +165,22 @@ class SchoolController extends Controller
     public function api_index(Request $request)
     {
       $param  = $request->get('term');
-      $data = School::select('id','name','district')->orWhere('name','like',"%$param%")->get()->sortBy('name');
+      if (empty($request->term)) {
+        $data = School::select('id','name','district')->limit(15)->get()->sortBy('name');
+      } else {
+        $data = School::select('id','name','district')->orWhere('name','like',"%$param%")->get()->sortBy('name');
+      }
       $list = [];
-        foreach ($data as $key => $value) {
-            $list[] = [
-                'id'=>$value->id,
-                'text'=>$value->name . ' - ' . $value->district
-            ];
-        }
-        return response()->json([
-            'status' => 'success',
-            'result'   => $list
-        ]);
+      foreach ($data as $key => $value) {
+          $list[] = [
+              'id'=>$value->id,
+              'text'=>$value->name . ' - ' . $value->district
+          ];
+      }
+      return response()->json([
+          'status' => 'success',
+          'result'   => $list
+      ]);
     }
 
 
