@@ -14,10 +14,10 @@ class CreateClassroomsTable extends Migration
     public function up()
     {
         Schema::create('classrooms', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('code');
             $table->string('name');
-            $table->integer('lecturer_id');
+            $table->integer('lecturer_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             

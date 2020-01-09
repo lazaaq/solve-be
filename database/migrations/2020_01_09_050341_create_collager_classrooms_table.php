@@ -15,8 +15,8 @@ class CreateCollagerClassroomsTable extends Migration
     {
         Schema::create('collager_classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('collager_id');
-            $table->integer('clasroom_id');
+            $table->integer('collager_id')->unsigned();
+            $table->integer('classroom_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
