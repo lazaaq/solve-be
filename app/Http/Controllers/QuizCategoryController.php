@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use App\QuizCategory;
 use Validator;
 use File;
+use Auth;
 
 class QuizCategoryController extends Controller
 {
@@ -59,7 +60,8 @@ class QuizCategoryController extends Controller
         [
               'name' => request('name'),
               'description'=>request('description'),
-              'pic_url'=>$filename
+              'pic_url'=>$filename,
+              'created_by'=>Auth::id()
         ]
       );
       return response()->json(['success'=>'Data added successfully']);
@@ -98,6 +100,7 @@ class QuizCategoryController extends Controller
       $data->name=$request->name_edit;
       $data->description=$request->description_edit;
       $data->pic_url=$filename;
+      $data->created_by=Auth::id();
       $data->save();
       return response()->json(['success'=>'Data updated successfully']);
       // return redirect()->route('quizcategory.index');
