@@ -58,6 +58,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('quizcategory', 'QuizCategoryController')->except('destroy');
         Route::resource('quiz', 'QuizController')->except('destroy');
         Route::resource('question', 'QuestionController');
+        Route::resource('classroom', 'ClassroomController')->except('destroy');
+
 
         Route::get('quiz/question/{id}','QuestionController@create')->name('quisz.question');
         Route::get('quiz/question/{id}/add','QuestionController@add')->name('quiz.questionAdd');
@@ -72,7 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('quiz/change-status/{id}', 'QuizController@changeStatus');
         Route::get('question/delete/{id}', 'QuestionController@destroy')->name('question.destroy');
         Route::get('quizcategory/delete/{id}', 'QuizCategoryController@destroy')->name('quizcategory.destroy');
-
+        Route::get('classroom/delete/{id}', 'ClassroomController@destroy')->name('classroom.destroy');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/table'], function () {
@@ -88,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-quiz-type', 'QuizTypeController@getData');
         Route::get('/data-quiz-category', 'QuizCategoryController@getData');
         Route::get('/data-quiz', 'QuizController@getData');
+        Route::get('/data-classroom', 'ClassroomController@getData');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {

@@ -5,6 +5,7 @@
             <!-- Main -->
             <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
             <li><a href="{{url('admin/dashboard')}}"><img src="{{asset('img/web_ic_home.png')}}" alt="" style="height:20px;margin-right:15px"><span>Dashboard</span></a></li>
+            <li><a href="{{route('classroom.index')}}"><img src="{{asset('img/web_ic_home.png')}}" alt="" style="height:20px;margin-right:15px"><span>Classroom</span></a></li>
             <li><a href="{{url('admin/history')}}"><img src="{{asset('img/web_ic_home.png')}}" alt="" style="height:20px;margin-right:15px"><span>History</span></a></li>
             <li class="navigation-header"><span>Master Data</span> <i class="icon-menu" title="Main pages"></i></li>
             <li><a href="{{route('quizcategory.index')}}"><img src="{{asset('img/web_ic_category.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Category</span></a></li>
