@@ -93,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-quiz', 'QuizController@getData');
         Route::get('/data-classroom', 'ClassroomController@getData');
         Route::get('/data-collager-classroom/{id}', 'CollagerClassroomController@getData');
-        Route::get('/data-collager-classroom-add', 'CollagerClassroomController@getDataAdd');
+        Route::get('/data-collager-classroom-add/{id}', 'CollagerClassroomController@getDataAdd');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {

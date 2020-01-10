@@ -28,12 +28,24 @@ class CollagerClassroomController extends Controller
        ->rawColumns(['action'])
        ->make(true);
     }
-    public function getDataAdd()
+    public function getDataAdd($lecture_user_id)
     {
-       // $data = User::get()->sortBy('name');
-       $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
-                    ->where('school_id',Auth::user()->school_id)
-                    ->get();
+       if (Auth::user()->hasRole('teacher')) {
+         $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
+                     ->where('school_id',Auth::user()->school_id)
+                     ->get();
+       } else {
+         $lecture = User::where('id',$lecture_user_id)->first();
+         if ($lecture->lecture) {
+           $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
+                       ->where('school_id',$lecture->school_id)
+                       ->get();
+         } else {
+           $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
+                       // ->where('school_id',$lecture->school_id)
+                       ->get();
+         }
+       }
 
        return datatables()->of($data)
          ->addColumn('action', function($row){

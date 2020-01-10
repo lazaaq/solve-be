@@ -12,7 +12,7 @@
         <ul class="breadcrumb">
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="">Master Data</a></li>
-            <li><a href="">Classroom</a></li>
+            <li><a href="{{url('admin/classroom')}}">Classroom</a></li>
             <li class="active">Classroom Detail</li>
         </ul>
     </div>
@@ -25,7 +25,24 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
 		<div style="padding:20px">
+      <div class="breadcrumb-line breadcrumb-line-component" style="margin-bottom:10px">
+        <div class="col-md-2">
+          <ul class="breadcrumb">
+            <p>Teacher</p>
+            <p>Class Name</a></p>
+            <p>Code</p>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <ul class="breadcrumb">
+            <p>: {{$classroom->user['name']}}</p>
+            <p>: {{$classroom->name}}</a></p>
+            <p>: {{$classroom->code}}</p>
+          </ul>
+        </div>
+      </div>
       <input type="hidden" name="classroom_id" id="classroom_id" value="{{$classroom->id}}">
+      <input type="hidden" name="lecture_user_id" id="lecture_user_id" value="{{$classroom->user_id}}">
       <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i> Add Student</button>
     	<table class="table" id="table-collager-classroom" class="display" style="width:100%">
   			<thead>
@@ -54,7 +71,6 @@
   var classroom_id;
     $(document).ready(function(){
       classroom_id = $('#classroom_id').val();
-      console.log(classroom_id);
       $("#btn-create").on('click', function(){
           $('#modal-create').modal('show');
       });
