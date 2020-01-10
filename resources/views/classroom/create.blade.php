@@ -21,7 +21,7 @@
                   <label class="control-label col-lg-3">Code <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
 										<div class="input-group">
-											<span class="input-group-addon"><a id="rnd-code">Generate</a></span>
+											<span id="rnd-code" class="input-group-addon"><a id="rnd-code">Generate</a></span>
 											<input type="text" name="code" class="form-control" value="{{ old('code') }}" placeholder="">
 										</div>
                     <!-- <input type="text" name="code" class="form-control" value="{{ old('code') }}" placeholder=""> -->

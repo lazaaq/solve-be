@@ -17,11 +17,11 @@ class CreateClassroomsTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('name');
-            $table->integer('lecturer_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->foreign('lecturer_id')->references('id')->on('lecturers');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

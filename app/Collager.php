@@ -25,5 +25,9 @@ class Collager extends Model
     {
         return $this->hasMany('App\QuizCollager', 'collager_id', 'id');
     }
+    public function collagerClassroom()
+    {
+        return $this->hasMany('App\CollagerClassroom', 'collager_id', 'id');
+    }
 
 }

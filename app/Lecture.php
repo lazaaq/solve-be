@@ -15,9 +15,6 @@ class Lecture extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
-    public function classroom()
-    {
-        return $this->hasMany('App\Classroom', 'lecturer_id', 'id');
-    }
+    
 
 }

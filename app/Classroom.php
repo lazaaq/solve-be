@@ -13,8 +13,8 @@ class Classroom extends Model
     protected $guarded = ['created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
-    public function lecture()
+    public function user()
     {
-        return $this->belongsTo('App\Lecture', 'lecturer_id', 'id');
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 }
