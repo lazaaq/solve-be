@@ -30,26 +30,33 @@ class CollagerClassroomController extends Controller
     }
     public function getDataAdd($lecture_user_id)
     {
+       $checking = [];
+       foreach (CollagerClassroom::all() as $key => $value) {
+         $checking[] = $value->collager_id;
+       }
+
        if (Auth::user()->hasRole('teacher')) {
          $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
+                     ->whereHas('collager', function($q) use ($checking) { $q->whereNotIn('id',$checking); })
                      ->where('school_id',Auth::user()->school_id)
                      ->get();
        } else {
          $lecture = User::where('id',$lecture_user_id)->first();
          if ($lecture->lecture) {
            $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
+                       ->whereHas('collager', function($q) use ($checking) { $q->whereNotIn('id',$checking); })
                        ->where('school_id',$lecture->school_id)
                        ->get();
          } else {
            $data = User::whereHas("roles", function($q) { $q->where("name", 'student'); })
-                       // ->where('school_id',$lecture->school_id)
+                       ->whereHas('collager', function($q) use ($checking) { $q->whereNotIn('id',$checking); })
                        ->get();
          }
        }
 
        return datatables()->of($data)
          ->addColumn('action', function($row){
-           $checkbox = '<div class="checkbox"><label><input type="checkbox" class="styled"></label></div>';
+           $checkbox = '<div class="checkbox"><label><input name="student['.$row->id.']" value="'.$row->id.'" type="checkbox" class="styled"></label></div>';
            return $checkbox;
        })
        ->rawColumns(['action'])
@@ -78,7 +85,15 @@ class CollagerClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      if (!empty($request->student)) {
+        foreach ($request->student as $value) {
+          $data = new CollagerClassroom;
+          $data->collager_id = User::find($value)->collager->id;
+          $data->classroom_id = $request->classrom_id;
+          $data->save();
+        }
+        return response()->json(['success'=>'Data added successfully']);
+      }
     }
 
     /**
@@ -121,8 +136,8 @@ class CollagerClassroomController extends Controller
      * @param  \App\CollagerClassroom  $collagerClassroom
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CollagerClassroom $collagerClassroom)
+    public function destroy($id)
     {
-        //
+      $data = CollagerClassroom::find($id)->delete();
     }
 }

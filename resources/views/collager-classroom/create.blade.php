@@ -7,8 +7,9 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal" id="collager-classroom-store" method="post" enctype="multipart/form-data" files=true>
+        	  <form class="form-horizontal" id="collager-classroom-store" method="post" enctype="multipart/form-data" files=true>
               @csrf
+			  <input type="hidden" name="classrom_id" value="{{$classroom->id}}">
               <fieldset class="content-group">
         				<legend class="text-bold">Add Classroom Member</legend>
 								<table class="table" id="table-collager-classroom-add" class="display" style="width:100%">
@@ -66,6 +67,31 @@ $(document).ready(function(){
 		],
 	});
 
+	$('#collager-classroom-store').on('submit', function (e) {
+      e.preventDefault();
+        $.ajax({
+            'type': 'POST',
+            'url' : "{{ route('collager-classroom.store') }}",
+            'data': new FormData(this),
+            'processData': false,
+            'contentType': false,
+            'dataType': 'JSON',
+            'success': function(data){
+			if(data.success){
+			$('#modal-create').modal('hide');
+				toastr.success('Successfully added data!', 'Success', {timeOut: 5000});
+				tableCollagerClassroom.ajax.reload();
+				tableCollagerClassroomAdd.ajax.reload();
+			}else{
+				console.log(data);
+					for(var count = 0; count < data.errors.length; count++){
+						toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+					}
+				}
+			},
+
+        });
+    });
 });
 
 </script>

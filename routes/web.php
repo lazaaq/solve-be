@@ -76,6 +76,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('question/delete/{id}', 'QuestionController@destroy')->name('question.destroy');
         Route::get('quizcategory/delete/{id}', 'QuizCategoryController@destroy')->name('quizcategory.destroy');
         Route::get('classroom/delete/{id}', 'ClassroomController@destroy')->name('classroom.destroy');
+        Route::get('collagerclassroom/delete/{id}', 'CollagerClassroomController@destroy')->name('collager-classroom.destroy');
+
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/table'], function () {

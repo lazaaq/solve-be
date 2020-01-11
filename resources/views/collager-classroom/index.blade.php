@@ -108,10 +108,11 @@
         .then((willDelete) => {
           if (willDelete) {
             $.ajax({
-              url: "{{ url('admin/collager-classroom/delete') }}"+"/"+data['id'],
+              url: "{{ url('admin/collagerclassroom/delete') }}"+"/"+data['id'],
               method: 'get',
               success: function(result){
                 tableCollagerClassroom.ajax.reload();
+                tableCollagerClassroomAdd.ajax.reload();
                 swal("Poof! Your imaginary file has been deleted!", {
                   icon: "success",
                 });
