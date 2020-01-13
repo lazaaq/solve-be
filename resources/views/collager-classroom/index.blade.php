@@ -28,16 +28,18 @@
       <div class="breadcrumb-line breadcrumb-line-component" style="margin-bottom:10px">
         <div class="col-md-2">
           <ul class="breadcrumb">
+            <p>Class Code</p>
+            <p>School Name</p>
+            <p>Class Name</p>
             <p>Teacher</p>
-            <p>Class Name</a></p>
-            <p>Code</p>
           </ul>
         </div>
         <div class="col-md-9">
           <ul class="breadcrumb">
-            <p>: {{$classroom->user['name']}}</p>
-            <p>: {{$classroom->name}}</a></p>
             <p>: {{$classroom->code}}</p>
+            <p>: {{$classroom->user->school['name']}}</p>
+            <p>: {{$classroom->name}}</p>
+            <p>: {{$classroom->user['name']}}</p>
           </ul>
         </div>
       </div>
