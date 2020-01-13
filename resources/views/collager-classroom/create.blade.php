@@ -13,7 +13,7 @@
               <fieldset class="content-group">
         				<legend class="text-bold">Add Classroom Member</legend>
 								<div class="col-md-12" style="margin-right:0px">
-									<button id="btn-select-all" type="button" class="btn btn-primary btn-xs bg-primary-800 pull-right"><i class="icon-select2 position-left"></i>Select All Student</button>
+									<button id="btn-select-all" type="button" class="btn btn-primary btn-xs bg-primary-800 pull-right" value="check"><i class="icon-select2 position-left"></i><span>Select All Student</span></button>
 								</div>
 								<table class="table" id="table-collager-classroom-add" class="display" style="width:100%">
 					  			<thead>
@@ -96,6 +96,23 @@ $(document).ready(function(){
 
         });
     });
+
+	$('#btn-select-all').click(function(event) {   
+		if($(this).val() == 'check') {
+			// Iterate each checkbox
+			$(':checkbox').each(function() {
+				this.checked = true;                        
+			});
+			$(this).val('uncheck');
+			$("span", this).text("Unselect All Student");
+		} else {
+			$(':checkbox').each(function() {
+				this.checked = false;                       
+			});
+			$(this).val('check');
+			$("span", this).text("Select All Student");
+		}
+	});
 });
 
 </script>
