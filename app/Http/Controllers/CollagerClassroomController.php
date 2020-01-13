@@ -22,16 +22,17 @@ class CollagerClassroomController extends Controller
 
        return datatables()->of($data)
          ->addColumn('action', function($row){
-           $btn = '<button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
+           $btn = '<a id="btn-detail" href="'.route('history.show',$row->collager->user->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
+           $btn = $btn.' <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
            return $btn;
        })
        ->rawColumns(['action'])
        ->make(true);
     }
-    public function getDataAdd($lecture_user_id)
+    public function getDataAdd($lecture_user_id, $class_id)
     {
        $checking = [];
-       foreach (CollagerClassroom::all() as $key => $value) {
+       foreach (CollagerClassroom::where('classroom_id', $class_id)->get() as $key => $value) {
          $checking[] = $value->collager_id;
        }
 
