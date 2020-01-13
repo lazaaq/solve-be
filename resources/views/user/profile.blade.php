@@ -78,6 +78,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="display-block">School</label>
+                              <select id="school" class="select-search" name="school" disabled>
+                              </select>
+                              @if ($errors->has('school'))
+                              <label style="padding-top:7px;color:#F44336;">
+                              <strong><i class="fa fa-times-circle"></i> {{ $errors->first('school') }}</strong>
+                              </label>
+                              @endif
+                        </div>
+                    </div>
+                </div>
                 <div class="text-right">
                     <button id="back-profil" style="display:none" onclick="backProfile(); return false;" class="btn btn-default"><i class="icon-arrow-left13 position-left"></i> Back</button>
                     <button id="save-profil" style="display:none" type="submit" class="btn btn-primary">Save <i class="icon-arrow-right14 position-right"></i></button>
@@ -153,6 +167,7 @@
         $("input[name='name']").prop('readonly', false);
         $("input[name='username']").prop('readonly', false);
         $("input[name='email']").prop('readonly', false);
+        document.getElementById('school').disabled = false;
         $("input[name='picture']").prop('disabled', false);
         $('#edit-profil').hide();
     }
@@ -162,6 +177,7 @@
         $("input[name='name']").prop('readonly', true);
         $("input[name='username']").prop('readonly', true);
         $("input[name='email']").prop('readonly', true);
+        document.getElementById('school').disabled = true;
         $("input[name='picture']").prop('disabled', true);
         $('#edit-profil').show();
     }
@@ -179,5 +195,36 @@
         $("input[name='password_confirmation']").prop('readonly', true);
         $('#edit-password').show();
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#school').select2({
+        ajax : {
+            url :  "{{ url('select/data-school') }}",
+            dataType: 'json',
+            data: function(params){
+                return {
+                    term: params.term,
+                };
+            },
+            processResults: function(data){
+                return {
+                    results: data
+                };
+            },
+            cache : true,
+        },
+        });
+
+        $.ajax({
+              type: 'GET',
+              dataType: 'json',
+              url: "{{ url('select/data-school') }}"+"/"+"{{$data->school_id}}",
+        }).then(function (data) {
+            // create the option and append to Select2
+            var option = new Option(data.name, data.id, true, true);
+            $('#school').append(option).trigger('change');
+        });
+    });
 </script>
 @endpush

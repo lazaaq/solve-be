@@ -31,7 +31,6 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/admin'], function () {
         Route::group(['middleware' => ['role:admin']], function () {
-            Route::resource('user', 'UserController')->except('destroy');
             Route::resource('answersave', 'AnswerSaveController');
             Route::resource('lecture', 'LectureController');
             Route::resource('collager', 'CollagerController');
@@ -41,8 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('school', 'SchoolController')->except('destroy');
 
             Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
-            Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
-            Route::put('user/profile/password/{id}', 'UserController@updatePassword')->name('user.updatePassword');
+
 
             Route::get('banner/delete/{id}', 'BannerController@destroy')->name('banner.destroy');
             Route::post('banner/change-is-view/{id}', 'BannerController@changeIsView')->name('banner.changeIsView');
@@ -51,6 +49,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('school/delete/{id}', 'SchoolController@destroy')->name('school.destroy');
 
         });
+        Route::resource('user', 'UserController')->except('destroy');
+        Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
+        Route::put('user/profile/password/{id}', 'UserController@updatePassword')->name('user.updatePassword');
+                
         Route::resource('dashboard', 'DashboardController');
         Route::resource('history', 'HistoryController');
         Route::get('history/detail/{id}', 'HistoryController@detailHistory')->name('detailHistory');
