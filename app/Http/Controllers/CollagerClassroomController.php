@@ -141,4 +141,8 @@ class CollagerClassroomController extends Controller
     {
       $data = CollagerClassroom::find($id)->delete();
     }
+    public function resetClass($id)
+    {
+      $data = CollagerClassroom::where('classroom_id',$id)->delete();
+    }
 }

@@ -46,6 +46,7 @@
       <input type="hidden" name="classroom_id" id="classroom_id" value="{{$classroom->id}}">
       <input type="hidden" name="lecture_user_id" id="lecture_user_id" value="{{$classroom->user_id}}">
       <button id="btn-create" type="button" class="btn btn-primary btn-sm bg-primary-800"><i class="icon-add position-left"></i> Add Student</button>
+      <button id="btn-reset-class" type="button" class="btn btn-danger btn-sm bg-danger-800"><i class="icon-reset position-left"></i> Reset Class</button>
     	<table class="table" id="table-collager-classroom" class="display" style="width:100%">
   			<thead>
       		<tr>
@@ -126,6 +127,35 @@
         });
       });
       /*END OF DELETE DATA*/
+
+      /*START OF RESET CLASS DATA*/
+      $("#btn-reset-class").on('click', function(){
+        swal({
+          // title: "Are you sure?",
+          text: "Are you sure to reset class?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/collagerclassroom/reset-class') }}"+"/"+classroom_id,
+              method: 'get',
+              success: function(result){
+                tableCollagerClassroom.ajax.reload();
+                tableCollagerClassroomAdd.ajax.reload();
+                swal("Poof! Classroom has been reset!", {
+                  icon: "success",
+                });
+              }
+            });
+          } else {
+            swal("Your imaginary file is safe!");
+          }
+        });
+      });
+      /*END OF RESET CLASS DATA*/
 
     });
   </script>

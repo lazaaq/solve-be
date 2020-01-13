@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('user', 'UserController')->except('destroy');
         Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
         Route::put('user/profile/password/{id}', 'UserController@updatePassword')->name('user.updatePassword');
-                
+
         Route::resource('dashboard', 'DashboardController');
         Route::resource('history', 'HistoryController');
         Route::get('history/detail/{id}', 'HistoryController@detailHistory')->name('detailHistory');
@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('quizcategory/delete/{id}', 'QuizCategoryController@destroy')->name('quizcategory.destroy');
         Route::get('classroom/delete/{id}', 'ClassroomController@destroy')->name('classroom.destroy');
         Route::get('collagerclassroom/delete/{id}', 'CollagerClassroomController@destroy')->name('collager-classroom.destroy');
+        Route::get('collagerclassroom/reset-class/{id}', 'CollagerClassroomController@resetClass');
 
     });
 
