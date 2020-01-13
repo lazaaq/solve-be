@@ -29,10 +29,10 @@ class CollagerClassroomController extends Controller
        ->rawColumns(['action'])
        ->make(true);
     }
-    public function getDataAdd($lecture_user_id)
+    public function getDataAdd($lecture_user_id, $class_id)
     {
        $checking = [];
-       foreach (CollagerClassroom::all() as $key => $value) {
+       foreach (CollagerClassroom::where('classroom_id', $class_id)->get() as $key => $value) {
          $checking[] = $value->collager_id;
        }
 

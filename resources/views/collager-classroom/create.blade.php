@@ -44,9 +44,10 @@
 @push('after_script')
 <script type="text/javascript">
 var tableCollagerClassroomAdd;
-var lecture_user_id;
+var lecture_user_id, class_id;
 $(document).ready(function(){
 	lecture_user_id = $('#lecture_user_id').val();
+	class_id = $('#classroom_id').val();
 		tableCollagerClassroomAdd = $('#table-collager-classroom-add').DataTable({
 		processing	: true,
 		language: {
@@ -57,7 +58,7 @@ $(document).ready(function(){
 		serverSide	: true,
 		stateSave: true,
 		ajax		: {
-				url : "{{ url('table/data-collager-classroom-add') }}" + '/' + lecture_user_id,
+				url : "{{ url('table/data-collager-classroom-add') }}" + '/' + lecture_user_id + '/' + class_id,
 				type: "GET",
 		},
 		columns: [
