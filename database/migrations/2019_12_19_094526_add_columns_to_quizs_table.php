@@ -18,7 +18,7 @@ class AddColumnsToQuizsTable extends Migration
             $table->dateTime('start_time')->after('status')->nullable();
             $table->dateTime('end_time')->after('start_time')->nullable();
         });
-        DB::statement('ALTER TABLE quizs MODIFY COLUMN time time AFTER end_time');
+        // DB::statement('ALTER TABLE quizs MODIFY COLUMN time time AFTER end_time');
     }
 
     /**
