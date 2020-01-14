@@ -446,7 +446,7 @@ class QuizController extends Controller
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  // ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question','quizs.pic_url', 'quizs.status')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
