@@ -117,6 +117,7 @@ class QuizController extends Controller
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename,
                 'time'=>request('time'),
+                'status'=>'active',
                 'created_by'=>Auth::id()
           ]
         );
