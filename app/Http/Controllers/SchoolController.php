@@ -40,7 +40,7 @@ class SchoolController extends Controller
 
     public function getSelect(Request $request)
     {
-      $param  = $request->get('term');
+      $param  = strtolower($request->get('term'));
       $data = School::select('id','name','district')->orWhere(\DB::raw('lower(name)'),'like',"%$param%")->get()->sortBy('name');
       $list = [];
         foreach ($data as $key => $value) {
