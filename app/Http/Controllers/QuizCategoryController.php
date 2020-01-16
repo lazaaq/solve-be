@@ -103,7 +103,7 @@ class QuizCategoryController extends Controller
       if(!empty($request->picture_edit)){
            $file = $request->file('picture_edit');
            $extension = strtolower($file->getClientOriginalExtension());
-           $filename = $request->name_edit . '.' . $extension;
+           $filename = uniqid() . '.' . $extension;
            Storage::delete('public/images/quizcategory/' . $data->pic_url);
            Storage::put('public/images/quizcategory/' . $filename, File::get($file));
       }else{
@@ -118,7 +118,7 @@ class QuizCategoryController extends Controller
       }else{
             $filename2=$data->pic_url_2;
       }
-      $data->name=uniqid();
+      $data->name=$request->name_edit;
       $data->description=$request->description_edit;
       $data->pic_url=$filename;
       $data->pic_url_2=$filename2;
@@ -133,6 +133,7 @@ class QuizCategoryController extends Controller
   {
     $data = QuizCategory::find($id);
     Storage::delete('public/images/quizcategory/'.$data->pic_url);
+    Storage::delete('public/images/quizcategory/'.$data->pic_url_2);
     $data->delete();
 
     return redirect()->route('quizcategory.index');
