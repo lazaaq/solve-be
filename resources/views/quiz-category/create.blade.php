@@ -118,6 +118,13 @@
         						{{-- <input type="file" name="picture" class="form-control"> --}}
         					</div>
         				</div>
+                <div class="form-group">
+        					<label class="control-label col-lg-3">Picture 2</label>
+        					<div class="col-lg-9">
+										<input type="file" name="picture2" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+        						{{-- <input type="file" name="picture" class="form-control"> --}}
+        					</div>
+        				</div>
         			</fieldset>
               <div>
                 <div class="col-md-4">

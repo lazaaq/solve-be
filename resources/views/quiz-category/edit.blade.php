@@ -34,6 +34,14 @@
 										<input type="file" name="picture_edit" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
 									</div>
         				</div>
+                <div class="form-group">
+        					<label class="control-label col-lg-3">Picture 2</label>
+                  <div id="img-edit-2" class="col-lg-9"></div>
+									<label class="control-label col-lg-3"></label>
+									<div class="col-lg-9">
+										<input type="file" name="picture_edit2" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
+									</div>
+        				</div>
         			</fieldset>
               <div>
                 <div class="col-md-4">

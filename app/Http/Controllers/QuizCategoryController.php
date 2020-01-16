@@ -41,6 +41,7 @@ class QuizCategoryController extends Controller
       'name' => 'required|max:150|unique:quiz_categorys',
       'description' => 'required|max:191',
       'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
+      'pic_url_2' => 'max:2048|mimes:png,jpg,jpeg',
     ];
     $validator = Validator::make($request->all(), $rules);
     if ($validator->fails()) {
@@ -50,17 +51,27 @@ class QuizCategoryController extends Controller
       if(!empty($request->picture)){
            $file = $request->file('picture');
            $extension = strtolower($file->getClientOriginalExtension());
-           $filename = $request->name . '.' . $extension;
+           $filename = uniqid() . '.' . $extension;
            Storage::put('public/images/quizcategory/' . $filename, File::get($file));
        }else{
           $filename='blank.jpg';
        }
-       // dd($filename);
+
+       if(!empty($request->picture2)){
+        $file2 = $request->file('picture2');
+        $extension2 = strtolower($file2->getClientOriginalExtension());
+        $filename2 = uniqid() . '.' . $extension2;
+        Storage::put('public/images/quizcategory/' . $filename2, File::get($file2));
+       } else{
+          $filename2='blank.jpg';
+       }
+
       QuizCategory::create(
         [
               'name' => request('name'),
               'description'=>request('description'),
               'pic_url'=>$filename,
+              'pic_url_2'=>$filename2,
               'created_by'=>Auth::id()
         ]
       );
@@ -83,6 +94,7 @@ class QuizCategoryController extends Controller
       'name_edit' => 'required|max:150|unique:quiz_categorys,name,'.$data->id.',id',
       'description_edit' => 'required|max:191',
       'pic_url' => 'max:2048|mimes:png,jpg,jpeg',
+      'pic_url_2' => 'max:2048|mimes:png,jpg,jpeg',
     ];
     $validator = Validator::make($request->all(), $rules);
     if ($validator->fails()) {
@@ -97,9 +109,19 @@ class QuizCategoryController extends Controller
       }else{
            $filename=$data->pic_url;
       }
-      $data->name=$request->name_edit;
+      if(!empty($request->picture_edit2)){
+        $file2 = $request->file('picture_edit2');
+        $extension2 = strtolower($file2->getClientOriginalExtension());
+        $filename2 = uniqid() . '.' . $extension2;
+        Storage::delete('public/images/quizcategory/' . $data->pic_url_2);
+        Storage::put('public/images/quizcategory/' . $filename2, File::get($file2));
+      }else{
+            $filename2=$data->pic_url_2;
+      }
+      $data->name=uniqid();
       $data->description=$request->description_edit;
       $data->pic_url=$filename;
+      $data->pic_url_2=$filename2;
       $data->created_by=Auth::id();
       $data->save();
       return response()->json(['success'=>'Data updated successfully']);
@@ -120,6 +142,12 @@ class QuizCategoryController extends Controller
   {
     $picture = QuizCategory::find($id);
     return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url))->response();
+  }
+
+  public function picture2($id)
+  {
+    $picture = QuizCategory::find($id);
+    return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url_2))->response();
   }
 
   public function getSelect(Request $request)

@@ -41,6 +41,17 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-lg-3">Phone Number</label>
+                    <div class="col-lg-9">
+                        <input type="number" name="phone_number" class="form-control" value="{{ old('phone_number') }}" placeholder="">
+                        @if ($errors->has('phone_number'))
+                        <label style="padding-top:7px;color:#F44336;">
+                        <strong><i class="fa fa-times-circle"></i> {{ $errors->first('phone_number') }}</strong>
+                        </label>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
                         <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">
