@@ -18,7 +18,7 @@
                   <div class="col-lg-9">
 										<select id="category-edit" class="select-search" name="quiz_category_edit">
                         @foreach($quizcategory as $value => $key)
-                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                            <option value="{{$key->id}}" {{collect(old('quiz_category_edit'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
                         @endforeach
                     </select>
                   </div>
