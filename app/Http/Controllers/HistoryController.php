@@ -194,14 +194,31 @@ class HistoryController extends Controller
     {
         $collager_id = Auth::user()->collager->id;
         // $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->with('quiz.quizType.quizCategory')->first();
-        $data = QuizCollager::where('collager_id',$collager_id)->with('answerSave')->first();
+        $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->first();
         $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
         $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
-        $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
-        $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
+
+        $answerSave = AnswerSave::where('quiz_collager_id',$data->id)->get();
+        $collection = [];
+        foreach ($answerSave as $i => $item) {
+          $collection[$i] = [
+            'question_id' => $item['question_id'],
+            'question' => $item->question['question'],
+            'pic_question' => $item->question['pic_url'],
+            'trueAnswer' => $item->question->answer()->get()->where('isTrue', 1)->first()->option,
+            'trueAnswerContent' => $item->question->answer()->get()->where('isTrue', 1)->first()->content,
+            'trueAnswerPic' => $item->question->answer()->get()->where('isTrue', 1)->first()->pic_url,
+            'user_true' => $item['isTrue'],
+            'user_answer' => $item['collager_answer'],
+            'user_answer_content' => $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content,
+            'user_answer_pic' => $item->question->answer()->get()->where('option', $item->collager_answer)->first()->pic_url,
+          ];
+        }
+
         return response()->json([
-            'status' => 'success',
-            'result'   => $data
+            'status'   => 'success',
+            'result'   => $data,
+            'question' => $collection,
         ]);
 
     }
