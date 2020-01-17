@@ -13,7 +13,7 @@
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Edit Quiz</legend>
-								{{--<div class="form-group">
+								<div class="form-group">
                   <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
 										<select id="category-edit" class="select-search" name="quiz_category_edit">
@@ -22,7 +22,7 @@
                         @endforeach
                     </select>
                   </div>
-                </div>--}}
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
