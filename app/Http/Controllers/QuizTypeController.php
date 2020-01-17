@@ -67,6 +67,10 @@ class QuizTypeController extends Controller
     if ($validator->fails()) {
       return response()->json(['errors' => $validator->errors()->all()]);
     }else{
+      $cek = QuizType::where('quiz_category_id',$request->quiz_category)->where('name',$request->name)->first();
+      if ($cek) {
+        return response()->json(['errors'=>['Combination of Category Name & Type Name has already been taken.']]);
+      }
       if(!empty($request->picture)){
         $file = $request->file('picture');
         $extension = strtolower($file->getClientOriginalExtension());
