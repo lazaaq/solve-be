@@ -193,13 +193,17 @@ class HistoryController extends Controller
     public function api_detailHistory($quiz_collager_id)
     {
         $collager_id = Auth::user()->collager->id;
-        $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->with('quiz.quizType.quizCategory')->first();
+        // $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->with('quiz.quizType.quizCategory')->first();
+        $data = QuizCollager::where('collager_id',$collager_id)->with('answerSave')->first();
+        $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
+        $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
         $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
         $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
         return response()->json([
             'status' => 'success',
             'result'   => $data
         ]);
+
     }
 
 }
