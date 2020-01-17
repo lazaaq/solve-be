@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "~2.1.0",
         "orangehill/iseed": "^2.6",
+        "phpoffice/phpspreadsheet": "^1.10",
         "realrashid/sweet-alert": "^2.0",
         "spatie/laravel-permission": "^2.37",
         "stevebauman/location": "^3.0",

@@ -50,6 +50,7 @@
   					<th>Name</th>
   					<th>Username</th>
             <th>Email</th>
+            <th>Phone Number</th>
   					<th class="col-md-2">Actions</th>
   				</tr>
   			</thead>
@@ -90,6 +91,7 @@ var tableUser;
           { data: 'name', name:'name', visible:true},
           { data: 'username', name:'username', visible:true},
           { data: 'email', name:'email', visible:true},
+          { data: 'phone_number', name:'phone_number', visible:true},
           { data: 'action', name:'action', visible:true},
       ],
     });

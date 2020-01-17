@@ -46,6 +46,13 @@ class UserController extends Controller
         return School::find($row->school_id)->name;
       }
     })
+    ->addColumn('phone_number', function($row){
+      if ($row->phone_number == NULL) {
+        return '-';
+      } else {
+        return $row->phone_number;
+      }
+    })
     ->rawColumns(['action'])
     ->make(true);
   }
@@ -77,6 +84,7 @@ class UserController extends Controller
         'password_confirmation' => 'required',
         'role' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
+        'phone_number' => 'numeric:min:10'
       ]
     );
 
@@ -97,6 +105,7 @@ class UserController extends Controller
     $user->password = \Hash::make($request->password);
     $user->picture = $filename;
     $user->school_id = $request->school;
+    $user->phone_number = $request->phone_number;
     $user->save();
     $user->roles()->sync($request->role);
 
@@ -160,6 +169,7 @@ class UserController extends Controller
         'password' => 'confirmed',
         'role' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
+        'phone_number' => 'numeric:min:10'
       ]
     );
 
@@ -183,6 +193,7 @@ class UserController extends Controller
     }
     $user->picture = $filename;
     $user->school_id = $request->school;
+    $user->phone_number = $request->phone_number;
     $user->save();
     $user->roles()->sync($request->role);
     return redirect()->route('user.index');
@@ -264,6 +275,8 @@ class UserController extends Controller
        'username' => 'required|unique:users|max:20',
        'password' => 'required|string|max:191',
        'name' => 'required|max:50',
+       'school_id' => 'required',
+       'phone_number' => 'required|numeric|min:10'
      ]);
      DB::beginTransaction();
 
@@ -274,6 +287,7 @@ class UserController extends Controller
        'password'=>bcrypt($request->password),
        'name'=>$request->name,
        'school_id'=>$request->school_id,
+       'phone_number'=>$request->phone_number,
        'picture'=>'avatar.png',
      ])->assignRole('student');
      if (!$user) {
@@ -376,11 +390,14 @@ class UserController extends Controller
       'email' => 'required|string|email|unique:users,email,'.$data->id.',id|max:50',
       'username' => 'required|unique:users,username,'.$data->id.',id|max:20',
       'name' => 'required|max:50',
+      'school_id' => 'required',
+      'phone_number' => 'required|numeric|min:10',
     ]);
     $data->email=$request->email;
     $data->username=$request->username;
     $data->name=$request->name;
     $data->school_id=$request->school_id;
+    $data->phone_number=$request->phone_number;
     $data->save();
     if($data->picture == 'avatar.png'){
       $data->picture = asset('img/'.$data->picture.'');

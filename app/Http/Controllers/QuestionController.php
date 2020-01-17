@@ -361,6 +361,7 @@ class QuestionController extends Controller
           'trueAnswerContent' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->content,
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
           'user_answer' => '**',
+          'user_answer_content' => '**',
           'option' => $opt,
         ];
       }

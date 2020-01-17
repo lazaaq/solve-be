@@ -106,6 +106,14 @@
               var img = $('<img id="img-quizcategory" class="img-responsive" src="{{ url('storage/quiz_category/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
             }
             $('#img-edit').append(img);
+
+            $('#img-edit-2').empty();
+            var img2 = $('<img id="img-quizcategory2" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
+            if (data['data']['pic_url_2'] != "blank.jpg") {
+              var img2 = $('<img id="img-quizcategory2" class="img-responsive" src="{{ url('storage/quiz_category2/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+            }
+            $('#img-edit-2').append(img2);
+
           /*END GET PICTURE*/
             $('input[name=_method]').val('PUT');
             $('input[name=_token]').val(token);

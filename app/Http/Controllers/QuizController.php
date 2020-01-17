@@ -19,6 +19,8 @@ use App\Imports\QuestionImport;
 use Redirect;
 use Carbon\Carbon;
 use Auth;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class QuizController extends Controller
 {
@@ -117,6 +119,7 @@ class QuizController extends Controller
                 'tot_visible'=>request('total_visible_question'),
                 'pic_url'=>$filename,
                 'time'=>request('time'),
+                'status'=>'active',
                 'created_by'=>Auth::id()
           ]
         );
@@ -241,6 +244,36 @@ class QuizController extends Controller
 
   public function saveImport(Request $request, $id)
   {
+    // $file = $request->file('excel');
+    // $excel = IOFactory::load($file);
+    // $data = [];
+
+    // foreach ($excel->getActiveSheet()->getDrawingCollection() as $value => $drawing) {
+    //   //check if it is instance of drawing
+    //   $data[] = $drawing;
+    //   // if ($drawing) {
+    //   //     //creating image name with extension
+    //   //     // $file = file_get_contents($drawing->getPath());
+    //   //     $filename = uniqid() . '.' .$drawing->getExtension();
+    //   //     // $img = Image::make($file)->resize(800, 500);
+    //   //     // \Storage::put('public/images/question/' . $filename, $img->encode());
+    //   //     $data[substr($drawing->getCoordinates(),1)] = $filename;
+    //   // }
+    // }
+    // dd($data);
+    // $column = 'C';
+
+    // $highestColumnIndex = Coordinate::columnIndexFromString($column); // e.g. 5
+
+    // $lastRow = $excel->getActiveSheet()->getHighestRow();
+    // for ($row = 1; $row <= 5; $row++) {
+    //     $draw = $excel->getActiveSheet()->getCellByColumnAndRow(3,$row);
+    //     $data[] = $draw->getDrawingCollection();
+    //     //  Do what you want with the cell
+    // }
+
+    // dd($data);
+    
     $this->validate(request(),
       [
         'excel' => 'required|mimes:xlsx',
@@ -445,7 +478,7 @@ class QuizController extends Controller
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  // ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question','quizs.pic_url', 'quizs.status')
                   ->get();
     if (empty($data[0])) {
       return response()->json([

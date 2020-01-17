@@ -117,6 +117,7 @@ Route::group(['prefix' => '/storage'], function () {
     Route::get('user/{id}', 'UserController@picture')->name('user.picture');
     Route::get('quiz_type/{id}', 'QuizTypeController@picture')->name('quiztype.picture');
     Route::get('quiz_category/{id}', 'QuizCategoryController@picture')->name('quizcategory.picture');
+    Route::get('quiz_category2/{id}', 'QuizCategoryController@picture2')->name('quizcategory.picture2');
     Route::get('quiz/{id}', 'QuizController@picture')->name('quiz.picture');
     Route::get('question/{id}', 'QuestionController@picture')->name('question.picture');
     Route::get('answer/{id}', 'AnswerController@picture')->name('answer.picture');
