@@ -104,6 +104,7 @@
 </div>
 <!-- /content area -->
 @push('after_script')
+<script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#type-edit").chained("#category-edit");

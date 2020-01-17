@@ -165,7 +165,7 @@ class QuizController extends Controller
   public function edit($id)
   {
     $data = Quiz::where('id', $id)->with('QuizType')->first();
-    $data->quiz_category_id = QuizType::find($data->quiz_type_id)->first()->quiz_category_id;
+    $data->quiz_category_id = QuizType::find($data->quiz_type_id)->quiz_category_id;
     $data->start_time = Carbon::parse($data->start_time)->format('Y-m-d\TH:i:s');
     $data->end_time = Carbon::parse($data->end_time)->format('Y-m-d\TH:i:s');
     return response()->json(['status' => 'ok','data'=>$data],200);
