@@ -514,26 +514,24 @@ class QuizController extends Controller
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  ->get();
-    if (empty($data[0])) {
+                  ->first();
+    if (empty($data)) {
       return response()->json([
         'status'=>'failed',
         'message'=>'Not found quiz data.'
       ]);
     }
-    // if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() >= $data[0]->start_time) {
-    if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() <= $data[0]->start_time) {
+    // if ($data->status == 'inactive' || Carbon::now() >= $data->end_time || Carbon::now() >= $data->start_time) {
+    if ($data->status == 'inactive' || Carbon::now() >= $data->end_time || Carbon::now() <= $data->start_time) {
       return response()->json([
         'status'=>'failed',
         'message'=>'Quis is currently unavailable.'
       ]);
     }
 
-    foreach ($data as $key => $value) {
-      $jam = date('H', strtotime($value->time)) * 60;
-      $menit = date('i', strtotime($value->time)) * 1;
-      $value->time = $jam+$menit;
-    }
+    $jam = date('H', strtotime($data->time)) * 60;
+    $menit = date('i', strtotime($data->time)) * 1;
+    $data->time = $jam+$menit;
     
     return response()->json([
       'status'=>'success',
