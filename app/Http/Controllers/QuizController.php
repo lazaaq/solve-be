@@ -476,6 +476,9 @@ class QuizController extends Controller
   /*START OF API*/
   public function api_index($id){
     $data = Quiz::where('quiz_type_id', $id)
+                  ->where('status', 'active')
+                  ->where('start_time', '<=', Carbon::now())
+                  ->where('end_time', '>=', Carbon::now())
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
