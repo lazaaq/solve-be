@@ -165,6 +165,7 @@ class QuizController extends Controller
   public function edit($id)
   {
     $data = Quiz::where('id', $id)->with('QuizType')->first();
+    $data->quiz_category_id = QuizType::find($data->quiz_type_id)->quiz_category_id;
     $data->start_time = Carbon::parse($data->start_time)->format('Y-m-d\TH:i:s');
     $data->end_time = Carbon::parse($data->end_time)->format('Y-m-d\TH:i:s');
     return response()->json(['status' => 'ok','data'=>$data],200);
@@ -475,6 +476,9 @@ class QuizController extends Controller
   /*START OF API*/
   public function api_index($id){
     $data = Quiz::where('quiz_type_id', $id)
+                  ->where('status', 'active')
+                  ->where('start_time', '<=', Carbon::now())
+                  ->where('end_time', '>=', Carbon::now())
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')

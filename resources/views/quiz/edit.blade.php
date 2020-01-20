@@ -13,16 +13,16 @@
               @csrf
               <fieldset class="content-group">
         				<legend class="text-bold">Edit Quiz</legend>
-								{{--<div class="form-group">
+								<div class="form-group">
                   <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
 										<select id="category-edit" class="select-search" name="quiz_category_edit">
                         @foreach($quizcategory as $value => $key)
-                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                            <option value="{{$key->id}}" {{collect(old('quiz_category_edit'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
                         @endforeach
                     </select>
                   </div>
-                </div>--}}
+                </div>
                 <div class="form-group">
                   <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
@@ -104,6 +104,7 @@
 </div>
 <!-- /content area -->
 @push('after_script')
+<script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#type-edit").chained("#category-edit");
