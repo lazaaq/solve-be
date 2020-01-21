@@ -274,7 +274,7 @@ class QuizController extends Controller
     // }
 
     // dd($data);
-    
+
     $this->validate(request(),
       [
         'excel' => 'required|mimes:xlsx',
@@ -482,7 +482,7 @@ class QuizController extends Controller
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question','quizs.pic_url', 'quizs.status')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
@@ -534,7 +534,7 @@ class QuizController extends Controller
       $menit = date('i', strtotime($value->time)) * 1;
       $value->time = $jam+$menit;
     }
-    
+
     return response()->json([
       'status'=>'success',
       'result'=>$data

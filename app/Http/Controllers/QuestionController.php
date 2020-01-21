@@ -349,9 +349,19 @@ class QuestionController extends Controller
       $collection = [];
       foreach ($question as $i => $item) {
         $opt = $item->answer()->orderBy('option', 'asc')->get();
+        $collection2 = [];
         foreach ($opt as $key => $value) {
-          $value->choosen = 0;
+          $collection2[$key]= [
+            'id' => $value['id'],
+            'question_id' => $value['question_id'],
+            'option' => $value['option'],
+            'content' => $value['content'],
+            'pic_url' => $value['pic_url'],
+            'isTrue' => $value['isTrue'],
+            'choosen' => 0,
+          ];
         }
+        shuffle($collection2);
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
@@ -362,7 +372,7 @@ class QuestionController extends Controller
           'trueAnswerPic' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->pic_url,
           'user_answer' => '**',
           'user_answer_content' => '**',
-          'option' => $opt,
+          'option' => $collection2,
         ];
       }
 
