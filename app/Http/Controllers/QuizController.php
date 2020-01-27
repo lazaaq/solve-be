@@ -320,7 +320,7 @@ class QuizController extends Controller
     $validator = Validator::make($import_data_filter,[
       '*.question' => 'required|distinct|unique:questions,question',
       '*.option_a' => 'required',
-      '*.option_b' => 'required',
+      // '*.option_b' => 'required',
       // '*.option_c' => 'required',
       // '*.option_d' => 'required',
       // '*.option_e' => 'required'
