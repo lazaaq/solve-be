@@ -84,7 +84,6 @@ class UserController extends Controller
         'password_confirmation' => 'required',
         'role' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
-        'phone_number' => 'numeric:min:10'
       ]
     );
 
@@ -169,7 +168,6 @@ class UserController extends Controller
         'password' => 'confirmed',
         'role' => 'required',
         'picture' => 'max:2048|mimes:png,jpg,jpeg',
-        'phone_number' => 'numeric:min:10'
       ]
     );
 
