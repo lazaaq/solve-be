@@ -349,6 +349,10 @@ class QuestionController extends Controller
       $collection = [];
       foreach ($question as $i => $item) {
         $opt = $item->answer()->orderBy('option', 'asc')->get();
+        $type = 'option';
+        if ($item->answer()->count() == 1) {
+          $type = 'fill';
+        }
         $collection2 = [];
         foreach ($opt as $key => $value) {
           $collection2[$key]= [
@@ -365,6 +369,7 @@ class QuestionController extends Controller
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
+          'type' => $type,
           'pic_question' => $item['pic_url'],
           'duration' => $item['time'],
           'trueAnswer' => $item->answer()->orderBy('option', 'asc')->get()->where('isTrue', 1)->first()->option,
@@ -400,7 +405,7 @@ class QuestionController extends Controller
     foreach ($answer['question'] as $key => $value) {
       $isTrue = 0;
       $score = -1;
-      if ($answer['question'][$key]['trueAnswer'] == $answer['question'][$key]['user_answer']) {
+      if ($answer['question'][$key]['trueAnswerContent'] == $answer['question'][$key]['user_answer_content']) {
         $isTrue = 1;
         $score = 4;
       }
@@ -408,7 +413,7 @@ class QuestionController extends Controller
       AnswerSave::create([
               'quiz_collager_id'=>$quizCollager->id,
               'question_id'=>$answer['question'][$key]['id'],
-              'collager_answer' => $answer['question'][$key]['user_answer'],
+              'collager_answer' => $answer['question'][$key]['user_answer_content'],
               'isTrue' => $isTrue,
               'score' => $score,
       ]);
