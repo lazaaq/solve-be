@@ -92,6 +92,11 @@
                   <label>First Multiple Choice:</label>
                   <input type="text" name="choice[{{$i}}][0]" class="form-control" value="{{ old('choice.'.$i.'.0') }}" placeholder="">
                   <input type="file" name="picture_choice[{{$i}}][0]" class="form-control">
+
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>
+
                   @if ($errors->has('choice.'.$i.'.0'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.0')}}</strong>
@@ -104,16 +109,8 @@
                   @endif
                 </div>
                 <br>
-                <div id="choice_2">
-                  <label>Second Multiple Choice:</label>
-                  <input type="text" name="choice[{{$i}}][1]" class="form-control" value="{{ old('choice.'.$i.'.1') }}" placeholder="">
-                  <input type="file" name="picture_choice[{{$i}}][1]" class="form-control">
-
-                  <div class="btn-group" role="group">
-                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                  </div>
-
-                  @if ($errors->has('choice.'.$i.'.1'))
+                <div id="choice_2" class="hide">
+                  @if ($choice2[$i] = $errors->has('choice.'.$i.'.1'))
                   <label style="padding-top:7px;color:#F44336;">
                       <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.1')}}</strong>
                   </label>
@@ -175,7 +172,7 @@
                     First
                   </label>
                 </div>
-                <div id="second_{{$i}}" class="">
+                <div id="second_{{$i}}" class="hide">
                   <label class="radio-inline col-md-1">
                     <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
                     Second
@@ -223,6 +220,12 @@
         var counter = $('#choice'+id+' div:not(.hide)').children('input[type=text]').length;
 
           switch (counter) {
+            case 1:
+              var $template = $('#choice'+id+' #choice_2');
+              var choice = temp_choice2(id);
+              var $template2 = $('#second_'+id);
+              $('#choice'+id+' #choice_1').find('.btn-group').addClass('hide');
+              break;
             case 2:
               var $template = $('#choice'+id+' #choice_3');
               var choice = temp_choice3(id);
@@ -254,6 +257,11 @@
         var counter = $('#choice'+id+' div:not(.hide)').children('input[type=text]').length;
 
         switch (counter) {
+          case 2:
+            var $template = $('#choice'+id+' #choice_2');
+            $('#choice'+id+' #choice_1').find('.btn-group').removeClass('hide');
+            var $template2 = $('#second_'+id);
+            break;
           case 3:
             var $template = $('#choice'+id+' #choice_3');
             $('#choice'+id+' #choice_2').find('.btn-group').removeClass('hide');
@@ -275,7 +283,14 @@
         $template.children().remove();
 
       });
-      
+
+      function temp_choice2($i){return "<label>Second Multiple Choice:</label>"+
+                           "<input type='text' name='choice["+$i+"][1]' class='form-control' value='' placeholder=''>"+
+                           "<input type='file' name='picture_choice["+$i+"][1]' class='form-control'>"+
+                           "<div class='btn-group' role='group'>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
+                           "<button type='button' value='"+$i+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
+                           "</div>"};
       function temp_choice3($i){return "<label>Third Multiple Choice:</label>"+
                            "<input type='text' name='choice["+$i+"][2]' class='form-control' value='' placeholder=''>"+
                            "<input type='file' name='picture_choice["+$i+"][2]' class='form-control'>"+
@@ -298,6 +313,17 @@
                            "</div>"};
 
       @for ($i=0; $i < $total; $i++)
+        @if ($choice2[$i] == 1)
+          $('#choice'+'{{$i}}'+' #choice_2').prepend(temp_choice2('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_1').find('.btn-group').addClass('hide');
+          $('#third_'+'{{$i}}').removeClass('hide');
+        @elseif ($temp = old('choice.'.$i.'.1'))
+          $('#choice'+'{{$i}}'+' #choice_2').prepend(temp_choice2('{{$i}}')).removeClass('hide');
+          $('#choice'+'{{$i}}'+' #choice_2').find('input[name="choice['+"{{$i}}"+'][1]"]').val("{{$temp}}");
+          $('#choice'+'{{$i}}'+' #choice_1').find('.btn-group').addClass('hide');
+          $('#third_'+'{{$i}}').removeClass('hide');
+        @endif
+
         @if ($choice3[$i] == 1)
           $('#choice'+'{{$i}}'+' #choice_3').prepend(temp_choice3('{{$i}}')).removeClass('hide');
           $('#choice'+'{{$i}}'+' #choice_2').find('.btn-group').addClass('hide');
