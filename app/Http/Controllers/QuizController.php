@@ -349,8 +349,13 @@ class QuizController extends Controller
         $content = [$row['option_a'],$row['option_b'],$row['option_c'],$row['option_d'],$row['option_e']];
         $content = array_filter($content);
         for ($i=0; $i < count($content) ; $i++) {
+            if (count($content) == 1) {
+              $tipe = 'Isian';
+            } else {
+              $tipe = $option[$i];
+            }
             $answers[$key][$i] = [
-                'option'  => $option[$i],
+                'option'  => $tipe,
                 'content' => $content[$i],
                 'isTrue'  => $row['true_answer'] == $option[$i] ? 1 : 0,
             ];

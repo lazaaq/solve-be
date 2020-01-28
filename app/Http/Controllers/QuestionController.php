@@ -98,11 +98,16 @@ class QuestionController extends Controller
     $option = ['A', 'B', 'C', 'D', 'E'];
     for ($i=0; $i < @count($request->choice); $i++) {
         for ($j=0; $j < @count($request->choice[$i]); $j++) {
+            if (@count($request->choice[$i]) == 1) {
+              $tipe = 'Isian';
+            } else {
+              $tipe = $option[$j];
+            }
             $answers[$i][$j] = [
-                 'option'        => $option[$j],
-                 'content'       => $request->choice[$i][$j],
-                 'isTrue'        => $request->true_answer[$i] == $j+1 ? 1 : 0
-            ];
+              'option'        => $tipe,
+              'content'       => $request->choice[$i][$j],
+              'isTrue'        => $request->true_answer[$i] == $j+1 ? 1 : 0
+            ];          
         }
 
         for ($j=0; $j < @count($request->choice[$i]); $j++) {
