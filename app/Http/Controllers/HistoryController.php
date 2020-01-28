@@ -137,6 +137,7 @@ class HistoryController extends Controller
         $number = $question->firstItem();
         $user = QuizCollager::find($id)->collager->user->id;
         $data = AnswerSave::where('quiz_collager_id',$id)->get();
+        // dd($data);
         return view('history.view', compact('quiz','question','number','user','data'));
     }
 
@@ -201,15 +202,17 @@ class HistoryController extends Controller
         $answerSave = AnswerSave::where('quiz_collager_id',$data->id)->get();
         $collection = [];
         foreach ($answerSave as $i => $item) {
-          $user_answer_content = "--";
-          $user_answer_pic = "--";
-          if ($item['collager_answer'] == '**') {
-            $user_answer_content = '-';
-            $user_answer_pic = '-';
-          }
-          else {
-            $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
-            $user_answer_pic = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->pic_url;
+          $user_answer = "-";
+          $user_answer_pic = "";
+          if ($item['collager_answer'] != '-') {
+            if ($item->question->answer()->count() == 1) {
+              $user_answer = "-";
+              $user_answer_pic = "";
+            }
+            else {
+              $user_answer = $item->question->answer()->get()->where('content', $item->collager_answer)->first()->option;
+              $user_answer_pic = $item->question->answer()->get()->where('content', $item->collager_answer)->first()->pic_url;
+            }
           }
           $collection[$i] = [
             'question_id' => $item['question_id'],
@@ -219,8 +222,8 @@ class HistoryController extends Controller
             'trueAnswerContent' => $item->question->answer()->get()->where('isTrue', 1)->first()->content,
             'trueAnswerPic' => $item->question->answer()->get()->where('isTrue', 1)->first()->pic_url,
             'user_true' => $item['isTrue'],
-            'user_answer' => $item['collager_answer'],
-            'user_answer_content' => $user_answer_content,
+            'user_answer' => $user_answer,
+            'user_answer_content' => $item['collager_answer'],
             'user_answer_pic' => $user_answer_pic,
           ];
         }

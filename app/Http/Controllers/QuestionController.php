@@ -107,7 +107,7 @@ class QuestionController extends Controller
               'option'        => $tipe,
               'content'       => $request->choice[$i][$j],
               'isTrue'        => $request->true_answer[$i] == $j+1 ? 1 : 0
-            ];          
+            ];
         }
 
         for ($j=0; $j < @count($request->choice[$i]); $j++) {
@@ -414,11 +414,15 @@ class QuestionController extends Controller
         $isTrue = 1;
         $score = 4;
       }
+      $collager_answer = $answer['question'][$key]['user_answer_content'];
+      if ($collager_answer == '**') {
+        $collager_answer = '-';
+      }
       $total_score += $score;
       AnswerSave::create([
               'quiz_collager_id'=>$quizCollager->id,
               'question_id'=>$answer['question'][$key]['id'],
-              'collager_answer' => $answer['question'][$key]['user_answer_content'],
+              'collager_answer' => $collager_answer,
               'isTrue' => $isTrue,
               'score' => $score,
       ]);
