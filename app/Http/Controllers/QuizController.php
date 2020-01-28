@@ -357,7 +357,7 @@ class QuizController extends Controller
             $answers[$key][$i] = [
                 'option'  => $tipe,
                 'content' => $content[$i],
-                'isTrue'  => $row['true_answer'] == $option[$i] ? 1 : 0,
+                'isTrue'  => $row['true_answer'] == $tipe ? 1 : 0,
             ];
         }
       }
