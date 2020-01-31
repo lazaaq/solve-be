@@ -1,19 +1,19 @@
-@foreach ($question as $key => $value)
-<div class="panel panel-white">
+@foreach ($data as $key => $value)
+  <div class="panel panel-white">
     <div class="panel-body">
         <p class="panel-title">
         <div class="col-md-9">
             <div class="col-md-1">
                 <a><i class="icon-help position-left text-slate"></i></a>{{$number++}}
             </div>
-            @if(!empty($value->pic_url))
+            @if(!empty($value->question->pic_url))
             <div class="col-md-2">
-                <img class="img-responsive" src="{{route('question.picture',$value->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50"><br>
+                <img class="img-responsive" src="{{route('question.picture',$value->question->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50"><br>
             </div>
             @endif
             <div class="col-md-9">
-                {{ $value->question }}
-                @if($value->answer()->count() == 1)
+                {{ $value->question->question }}
+                @if($value->question->answer->count() == 1)
                 <i>(Soal Isian)</i>
                 @endif
             </div>
@@ -23,11 +23,11 @@
     <hr style="margin-top:0">
     <div>
       <div class="panel-body">
-        @if ($key < $data->count())
+        @if ($value->collager_answer != '-')
             <!-- <div class="panel-body"> -->
-            @foreach ($value->answer as $key2 => $value2)
-            @if($data[$key]->collager_answer == $value2->content)
-              @if($data[$key]->isTrue == 1)
+            @foreach ($value->question->answer as $key2 => $value2)
+            @if($value->collager_answer == $value2->content)
+              @if($value->isTrue == 1)
                 <div class="col-sm-6 form-group" style="border: 2px solid #4CAF50;">
               @else
                 <div class="col-sm-6 form-group" style="border: 2px solid #F44336;">
@@ -57,11 +57,7 @@
                             <p style="margin:0px">{{ $value2->content }}</p>
                         </div>
                     @endif
-                @if($data[$key]->isTrue == 1)
                   </div>
-                @else
-                  </div>
-                @endif
             @else
                 <div class="col-sm-6 form-group">
                     @if ($value2->isTrue == '1')
@@ -95,7 +91,7 @@
             <!-- </div> -->
         @else
             <!-- <div class="panel-body"> -->
-            @foreach ($value->answer as $key2 => $value2)
+            @foreach ($value->question->answer as $key2 => $value2)
                 <div class="col-sm-6 form-group">
                     @if ($value2->isTrue == '1')
                         <div class="col-md-1">
@@ -127,16 +123,16 @@
             <!-- </div> -->
         @endif
 
-        @if ($value->answer()->count() == '1')
-          @foreach ($value->answer as $key2 => $value2)
-            @if ($data[$key]->isTrue == '0')
+        @if ($value->question->answer->count() == '1')
+          @foreach ($value->question->answer as $key2 => $value2)
+            @if ($value->isTrue == '0')
             <!-- <div class="panel-body"> -->
               <div class="col-sm-6 form-group" style="border: 2px solid #F44336;">
                   <div class="col-md-1">
                       <p style="margin:0px" class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
                   </div>
                   <div class="col-md-11">
-                      <p style="margin:0px">{{ $data[$key]->collager_answer }}</p>
+                      <p style="margin:0px">{{ $value->collager_answer }}</p>
                   </div>
               </div>
             <!-- </div> -->
@@ -148,10 +144,10 @@
 </div>
 @endforeach
 <div class="col-md-6">
-    <a href="{{route('quiz.index')}}"type="reset" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
+  <a href="{{route('history.show',$user)}}" class="btn btn-default" id=""> <i class="icon-arrow-left13"></i> Back</a>
 </div>
 <div class="col-md-6">
     <div class="pull-right">
-    {{ $question->links() }}
+    {{ $data->links() }}
     </div>
 </div>
