@@ -204,7 +204,7 @@ class HistoryController extends Controller
         foreach ($answerSave as $i => $item) {
           $user_answer = "-";
           $user_answer_pic = "";
-          if ($item['collager_answer'] != '-') {
+          if ($item['collager_answer'] != '-' || $item['collager_answer'] != '**') {
             if ($item->question->answer()->count() == 1) {
               $user_answer = "-";
               $user_answer_pic = "";
