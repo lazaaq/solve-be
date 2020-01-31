@@ -410,13 +410,15 @@ class QuestionController extends Controller
     foreach ($answer['question'] as $key => $value) {
       $isTrue = 0;
       $score = -1;
+      // ISIAN
       if ($answer['question'][$key]['trueAnswer'] == 'Isian') {
-        if ($answer['question'][$key]['trueAnswerContent'] == $answer['question'][$key]['user_answer_content']) {
+        if (strtolower($answer['question'][$key]['trueAnswerContent']) == strtolower($answer['question'][$key]['user_answer_content'])) {
           $isTrue   = 1;
           $score    = 4;
           $answer['question'][$key]['user_answer'] = 'Isian';
         }
       }
+      // OPTION
       else {
         if ($answer['question'][$key]['trueAnswer'] == $answer['question'][$key]['user_answer']) {
           $isTrue = 1;
