@@ -204,11 +204,21 @@ class HistoryController extends Controller
         foreach ($answerSave as $i => $item) {
           $user_answer_content = "-";
           $user_answer_pic = "";
+          // JAWABAN TIDAK KOSONG
           if ($item['collager_answer'] != '-') {
+            // ISIAN
             if ($item->question->answer()->count() == 1) {
-              $user_answer_content = $item['collager_answer'];
-              $user_answer_pic = "";
+              // ISIAN BENAR
+              if ($item->isTrue == 1) {
+                $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
+              }
+              // ISIAN SALAH
+              else {
+                $user_answer_content = $item['collager_answer'];
+                $user_answer_pic = "";
+              }
             }
+            // OPTION
             else {
               $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
               $user_answer_pic = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->pic_url;
