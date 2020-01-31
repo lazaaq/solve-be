@@ -133,10 +133,10 @@ class HistoryController extends Controller
     public function detailHistory($id)
     {
         $quiz = Quiz::where('id', QuizCollager::find($id)->quiz_id)->first();
-        $question = Question::where('quiz_id', $quiz->id)->paginate(10);
+        $data = AnswerSave::where('quiz_collager_id',$id)->get();
+        $question = Question::where(['quiz_id', $data->question_id])->paginate(10);
         $number = $question->firstItem();
         $user = QuizCollager::find($id)->collager->user->id;
-        $data = AnswerSave::where('quiz_collager_id',$id)->get();
         // dd($data);
         return view('history.view', compact('quiz','question','number','user','data'));
     }
