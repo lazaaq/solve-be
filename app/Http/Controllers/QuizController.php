@@ -99,20 +99,31 @@ class QuizController extends Controller
         return response()->json(['errors' => $validator->errors()->all()]);
       }else{
         if(!empty($request->picture)){
-             $file = $request->file('picture');
-             $extension = strtolower($file->getClientOriginalExtension());
-             $filename = uniqid() . '.' . $extension;
-             Storage::put('public/images/quiz/' . $filename, File::get($file));
-           }else{
-             $filename='blank.jpg';
-           }
-           // dd($filename);
+          $file = $request->file('picture');
+          $extension = strtolower($file->getClientOriginalExtension());
+          $filename = uniqid() . '.' . $extension;
+          Storage::put('public/images/quiz/' . $filename, File::get($file));
+        } else {
+          $filename='blank.jpg';
+        }
+        if (!empty($request->code)) {
+          $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+          $validation = Quiz::where('code', $code)->first();
+          if (!empty($validation)) {
+            $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+          } else {
+            $code = $code;
+          }
+        } else {
+          $code = NULL;
+        }
+
         $data = Quiz::create(
           [
                 'quiz_type_id' => request('quiz_type'),
                 'title' => request('title'),
                 'description'=>request('description'),
-                'code' => strtoupper(substr(md5(microtime()),rand(0,26),5)),
+                'code' => $code,
                 // 'sum_question'=>request('total_question'),
                 'start_time'=>request('start_time'),
                 'end_time'=>request('end_time'),
@@ -201,7 +212,19 @@ class QuizController extends Controller
       }else{
            $filename=$data->pic_url;
       }
+      if (!empty($request->code)) {
+        $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+        $validation = Quiz::where('code', $code)->first();
+        if (!empty($validation)) {
+          $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+        } else {
+          $code = $code;
+        }
+      } else {
+        $code = NULL;
+      }
     }
+    $data->code=$code;
     $data->quiz_type_id=$request->quiz_type_edit;
     $data->title=$request->title_edit;
     $data->description=$request->description_edit;
@@ -481,6 +504,7 @@ class QuizController extends Controller
   /*START OF API*/
   public function api_index($id){
     $data = Quiz::where('quiz_type_id', $id)
+                  ->whereNull('code')
                   ->where('status', 'active')
                   ->where('start_time', '<=', Carbon::now())
                   ->where('end_time', '>=', Carbon::now())
