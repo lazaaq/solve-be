@@ -248,6 +248,10 @@ class QuizController extends Controller
   public function destroy($id)
   {
     $data = Quiz::find($id);
+    foreach ($data->question() as $key => $value) {
+      $value->answer()->delete();
+    }
+    $data->question()->delete();
     Storage::delete('public/images/quiz/'.$data->pic_url);
     $data->delete();
 
@@ -268,44 +272,56 @@ class QuizController extends Controller
 
   public function saveImport(Request $request, $id)
   {
-    // $file = $request->file('excel');
-    // $excel = IOFactory::load($file);
-    // $data = [];
-
-    // foreach ($excel->getActiveSheet()->getDrawingCollection() as $value => $drawing) {
-    //   //check if it is instance of drawing
-    //   $data[] = $drawing;
-    //   // if ($drawing) {
-    //   //     //creating image name with extension
-    //   //     // $file = file_get_contents($drawing->getPath());
-    //   //     $filename = uniqid() . '.' .$drawing->getExtension();
-    //   //     // $img = Image::make($file)->resize(800, 500);
-    //   //     // \Storage::put('public/images/question/' . $filename, $img->encode());
-    //   //     $data[substr($drawing->getCoordinates(),1)] = $filename;
-    //   // }
-    // }
-    // dd($data);
-    // $column = 'C';
-
-    // $highestColumnIndex = Coordinate::columnIndexFromString($column); // e.g. 5
-
-    // $lastRow = $excel->getActiveSheet()->getHighestRow();
-    // for ($row = 1; $row <= 5; $row++) {
-    //     $draw = $excel->getActiveSheet()->getCellByColumnAndRow(3,$row);
-    //     $data[] = $draw->getDrawingCollection();
-    //     //  Do what you want with the cell
-    // }
-
-    // dd($data);
 
     $this->validate(request(),
       [
         'excel' => 'required|mimes:xlsx',
       ]
     );
+    
     $data = Quiz::find($id);
     DB::beginTransaction();
 
+    $file = $request->file('excel');
+    $excel = IOFactory::load($file);
+    $question_picture = [];
+
+    foreach ($excel->getActiveSheet()->getDrawingCollection() as $value => $drawing) {
+      //check if it is instance of drawing
+      if ($drawing) {
+          //creating image name with extension
+          $cell = substr($drawing->getCoordinates(),0,1);
+          $file = file_get_contents($drawing->getPath());
+          $filename = uniqid() . '.' .$drawing->getExtension();
+          $img = Image::make($file)->resize(800, 500);
+          switch ($cell) {
+            case 'C':
+              \Storage::put('public/images/question/' . $filename, $img->encode());
+              $question_picture[substr($drawing->getCoordinates(),1)] = $filename;
+              break;
+            default:
+              \Storage::put('public/images/option/' . $filename, $img->encode());
+              switch ($cell) {
+                case 'E':
+                  $question_option[substr($drawing->getCoordinates(),1)][0] = $filename;
+                  break;
+                case 'G':
+                  $question_option[substr($drawing->getCoordinates(),1)][1] = $filename;
+                  break;
+                case 'I':
+                  $question_option[substr($drawing->getCoordinates(),1)][2] = $filename;
+                  break;
+                case 'K':
+                  $question_option[substr($drawing->getCoordinates(),1)][3] = $filename;
+                  break;
+                case 'M':
+                  $question_option[substr($drawing->getCoordinates(),1)][4] = $filename;
+                  break;
+              }              
+              break;
+          }
+      }
+    }
     $file = $request->file('excel');
     $import = Excel::load($file)->get();
     if (!$import) {
@@ -334,15 +350,17 @@ class QuizController extends Controller
       $messages_error[$key.'.question.distinct'] = "Question field number ".($key+1)." has duplicate value.";
       $messages_error[$key.'.question.unique'] = "Question field number ".($key+1)." has already been taken.";
       $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty.";
-      $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
+      $messages_error[$key.'.true_answer.required'] = "Question field number ".($key+1)." is empty.";
+      // $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_e.required'] = "Option E field number ".($key+1)." is empty.";
     }
 
     $validator = Validator::make($import_data_filter,[
-      '*.question' => 'required|distinct|unique:questions,question',
-      '*.option_a' => 'required',
+      // '*.question' => 'required|distinct|unique:questions,question,NULL,id,deleted_at,NULL',
+      '*.true_answer' => 'required',
+      // '*.option_a' => 'required',
       // '*.option_b' => 'required',
       // '*.option_c' => 'required',
       // '*.option_d' => 'required',
@@ -367,20 +385,28 @@ class QuizController extends Controller
         $question[$key] = [
             'quiz_id'       => $id,
             'question'      => $row['question'],
+            'pic_url'       => array_key_exists($key+2,$question_picture) ? $question_picture[$key+2] : NULL
         ];
 
         $content = [$row['option_a'],$row['option_b'],$row['option_c'],$row['option_d'],$row['option_e']];
         $content = array_filter($content);
-        for ($i=0; $i < count($content) ; $i++) {
-            if (count($content) == 1) {
+        $totalOption = array_key_exists($key+2,$question_option) ? count($question_option[$key+2]) : 0;
+        for ($i=0; $i < max(count($content), $totalOption) ; $i++) {
+            if ($row['true_answer'] == 'Isian') {
               $tipe = 'Isian';
             } else {
               $tipe = $option[$i];
             }
+            if (!empty(array_key_exists($key+2,$question_option))) {
+              $option_url[$i] = array_key_exists($i,$question_option[$key+2]) ? $question_option[$key+2][$i] : NULL;
+            } else {
+              $option_url[$i] = NULL;
+            }
             $answers[$key][$i] = [
                 'option'  => $tipe,
-                'content' => $content[$i],
+                'content' => array_key_exists($i,$content) ? $content[$i] : NULL,
                 'isTrue'  => $row['true_answer'] == $tipe ? 1 : 0,
+                'pic_url' => $option_url[$i]
             ];
         }
       }

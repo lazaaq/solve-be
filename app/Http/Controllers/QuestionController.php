@@ -198,6 +198,7 @@ class QuestionController extends Controller
         $extension = strtolower($file->getClientOriginalExtension());
         $filename = uniqid() . '.' . $extension;
         $img = Image::make($file)->resize(800, 500);
+        Storage::delete('public/images/question/'.$data->pic_url);
         \Storage::put('public/images/question/' . $filename, $img->encode());
         $data->pic_url=$filename;
     }
@@ -207,7 +208,6 @@ class QuestionController extends Controller
       DB::rollback();
       return 'failed DB transaction';
     }
-
     for ($i=0; $i<=$request->jumlah; $i++) {
       if ($data->answer->count() > $request->jumlah+1) {
         #kurang
@@ -215,12 +215,18 @@ class QuestionController extends Controller
           $data->answer->get($i)->content  = $request->choice[$i];
           $data->answer->get($i)->save();
         } else {
-          $option = Answer::find($data->answer->get($i+1)->id);
-          $option->delete();
+          for ($j=$request->jumlah+1; $j <5 ; $j++) {
+            if ($data->answer->get($j) != null) {
+              $option = Answer::find($data->answer->get($j)->id);
+              Storage::delete('public/images/option/'.$data->answer->get($j)->pic_url);
+              $option->delete();
+            } 
+            
+          }         
         }
       } elseif ($data->answer->count() < $request->jumlah+1) {
         #tambah
-        if ($i < $request->jumlah) {
+        if ($data->answer->get($i) != null) {
           $data->answer->get($i)->content  = $request->choice[$i];
           $data->answer->get($i)->save();
         } else {
@@ -236,31 +242,33 @@ class QuestionController extends Controller
           $data->answer->get($i)->save();
       }
     }
-
-    foreach ($data->answer as $key => $value2) {
-      if (!empty($request->picture_choice[$key])) {
-          $fileChoice[$key] = $request->file('picture_choice.'.$key);
-          $extensionChoice[$key] = strtolower($fileChoice[$key]->getClientOriginalExtension());
-          $filenameChoice[$key] = uniqid() . '.' . $extensionChoice[$key];
-          $imgChoice[$key] = Image::make($fileChoice[$key])->resize(300, 200);
-          \Storage::put('public/images/option/' . $filenameChoice[$key], $imgChoice[$key]->encode());
-          $value2->pic_url = $filenameChoice[$key];
-          $value2->save();
-      }
-    }
+    // foreach ($data->answer as $key => $value2) {
+    //   if (!empty($request->picture_choice[$key])) {
+    //       $fileChoice[$key] = $request->file('picture_choice.'.$key);
+    //       $extensionChoice[$key] = strtolower($fileChoice[$key]->getClientOriginalExtension());
+    //       $filenameChoice[$key] = uniqid() . '.' . $extensionChoice[$key];
+    //       $imgChoice[$key] = Image::make($fileChoice[$key])->resize(300, 200);
+    //       \Storage::put('public/images/option/' . $filenameChoice[$key], $imgChoice[$key]->encode());
+    //       $value2->pic_url = $filenameChoice[$key];
+    //       $value2->save();
+    //   }
+    // }
+    
+    DB::commit();
     for ($i=0; $i<=$request->jumlah; $i++) {
       if (!empty($request->picture_choice[$i])) {
         $fileChoice[$i] = $request->file('picture_choice.'.$i);
         $extensionChoice[$i] = strtolower($fileChoice[$i]->getClientOriginalExtension());
         $filenameChoice[$i] = uniqid() . '.' . $extensionChoice[$i];
         $imgChoice[$i] = Image::make($fileChoice[$i])->resize(300, 200);
-        \Storage::put('public/images/option/' . $filenameChoice[$i], $imgChoice[$i]->encode());
+        if ($data->answer->get($i) != null) {
+          Storage::delete('public/images/option/'.$data->answer->get($i)->pic_url);
+        }
+        Storage::put('public/images/option/' . $filenameChoice[$i], $imgChoice[$i]->encode());
         $data->answer->get($i)->pic_url = $filenameChoice[$i];
-        $data->answer->get($i)->save();
+        $data->answer->get($i)->save();    
       }
     }
-
-    DB::commit();
     return redirect()->route('quiz.show',$data->quiz_id);
   }
 
