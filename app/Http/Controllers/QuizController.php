@@ -191,7 +191,6 @@ class QuizController extends Controller
    */
   public function update(Request $request, $id)
   {
-    dd($request->all());
     $data= Quiz::find($id);
     $rules = [
       'quiz_type_edit' => 'required',
@@ -213,7 +212,7 @@ class QuizController extends Controller
       }else{
            $filename=$data->pic_url;
       }
-      if ($request->code == null) {
+      if ($request->code == 'checked') {
         $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
         $validation = Quiz::where('code', $code)->first();
         if (!empty($validation)) {
