@@ -84,6 +84,17 @@
 										<input type="file" name="picture_edit" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
 									</div>
         				</div>
+								<div class="form-group">
+        					<label class="control-label col-lg-3">Use Code</label>
+        					<div class="col-lg-9">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" name="code" class="styled">
+												Check this if you want add "code" to this quiz.
+											</label>
+										</div>
+        					</div>
+        				</div>
         			</fieldset>
               <div>
                 <div class="col-md-4">

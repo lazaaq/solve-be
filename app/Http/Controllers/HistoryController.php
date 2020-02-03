@@ -202,16 +202,26 @@ class HistoryController extends Controller
         $answerSave = AnswerSave::where('quiz_collager_id',$data->id)->get();
         $collection = [];
         foreach ($answerSave as $i => $item) {
-          $user_answer = "-";
+          $user_answer_content = "-";
           $user_answer_pic = "";
+          // JAWABAN TIDAK KOSONG
           if ($item['collager_answer'] != '-') {
+            // ISIAN
             if ($item->question->answer()->count() == 1) {
-              $user_answer = "-";
-              $user_answer_pic = "";
+              // ISIAN BENAR
+              if ($item->isTrue == 1) {
+                $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
+              }
+              // ISIAN SALAH
+              else {
+                $user_answer_content = $item['collager_answer'];
+                $user_answer_pic = "";
+              }
             }
+            // OPTION
             else {
-              $user_answer = $item->question->answer()->get()->where('content', $item->collager_answer)->first()->option;
-              $user_answer_pic = $item->question->answer()->get()->where('content', $item->collager_answer)->first()->pic_url;
+              $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
+              $user_answer_pic = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->pic_url;
             }
           }
           $collection[$i] = [
@@ -222,8 +232,8 @@ class HistoryController extends Controller
             'trueAnswerContent' => $item->question->answer()->get()->where('isTrue', 1)->first()->content,
             'trueAnswerPic' => $item->question->answer()->get()->where('isTrue', 1)->first()->pic_url,
             'user_true' => $item['isTrue'],
-            'user_answer' => $user_answer,
-            'user_answer_content' => $item['collager_answer'],
+            'user_answer' => $item['collager_answer'],
+            'user_answer_content' => $user_answer_content,
             'user_answer_pic' => $user_answer_pic,
           ];
         }

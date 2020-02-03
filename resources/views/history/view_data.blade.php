@@ -26,7 +26,7 @@
         @if ($value->collager_answer != '-')
             <!-- <div class="panel-body"> -->
             @foreach ($value->question->answer as $key2 => $value2)
-            @if($value->collager_answer == $value2->content)
+            @if($value->collager_answer == $value2->option)
               @if($value->isTrue == 1)
                 <div class="col-sm-6 form-group" style="border: 2px solid #4CAF50;">
               @else
