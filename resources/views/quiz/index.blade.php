@@ -129,6 +129,11 @@
             $('input[name=start_time_edit]').val(data['data']['start_time']);
             $('input[name=end_time_edit]').val(data['data']['end_time']);
             $('input[name=time_edit]').val(data['data']['time']);
+            if (data['data']['code'] == null) {
+              $('input[name=code]').val(data['data']['code'])
+            } else {
+              $('input[name=code]').val(null).parent().addClass('checked',true);
+            }
             $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
           });
