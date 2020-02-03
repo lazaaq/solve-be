@@ -1978,7 +1978,7 @@ body[class*=navbar-bottom] .footer:not(.navbar) {
 }
 .form-horizontal .checkbox .checker,
 .form-horizontal .checkbox-inline .checker {
-  /* top: 9px; */
+  top: 7px;
 }
 .checkbox-right .checker {
   left: auto;
