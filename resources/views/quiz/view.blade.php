@@ -12,7 +12,7 @@
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home2 position-left"></i> Home</a></li>
             <li><a href="">Master Data</a></li>
             <li><a href="{{route('quiz.index')}}">Quiz</a></li>
-            <li class="active">Create Question</li>
+            <li class="active">Detail Quiz</li>
         </ul>
     </div>
 </div>
@@ -95,7 +95,7 @@
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create New Question</button>
       <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
       <a href="{{route('quiz.export',$quiz->id)}}" style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right"><i class="icon-download position-left"></i> Export Question</a>
-			<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Question & Option</h6>
+			<h6 class="panel-title" style="width:50%"><i class="icon-cog3 position-left"></i> Question & Option</h6>
 		</div>
     <div class="panel-body">
         <div class="panel-body" style="padding:0px; margin-bottom:10px;margin-top:-10px">
@@ -120,12 +120,12 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 			</div>
-      <form class="form-validate-jquery" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
+      <form class="" action="{{route('quiz.questionAdd',$quiz->id)}}" method="get">
         <div class="modal-body text-center">
           <i class="fa fa-4x fa-plus-square-o"></i>
           {{ csrf_field() }}
           <h6>How many questions do you want to make?</h6>
-          <input type="number" name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
+          <input type="number" required name="total_add" min="1" class="form-control" value="{{ old('total_add') }}" placeholder="">
             @if ($errors->has('total_add'))
             <label style="padding-top:7px;color:#F44336;">
                 <strong><i class="fa fa-times-circle"></i> {{ $errors->first('total_add') }}</strong>
