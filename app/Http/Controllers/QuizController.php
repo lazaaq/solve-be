@@ -433,6 +433,7 @@ class QuizController extends Controller
   {
       $quiz = Quiz::where('id', $id)->first();
       $question = Question::where('quiz_id', $quiz->id)->get();
+      $content = ['a','b','c','d','e'];
       $option  = [];
       foreach ($question as $key => $item) {
           $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
@@ -442,14 +443,16 @@ class QuizController extends Controller
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
-          'a' => $option[$i]->get(0)->content,
-          'b' => $option[$i]->get(1)->content,
-          'c' => $option[$i]->get(2)->content,
-          'd' => $option[$i]->get(3)->content,
-          'e' => $option[$i]->get(4)->content,
           'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
         ];
+        for ($j=0; $j < count($option[$i]); $j++) {
+          $temp[$i][$j] = [
+            $content[$j] => $option[$i]->get($j)->content
+          ];
+          $collection[$i] = array_merge($collection[$i],$temp[$i][$j]);
+        }
       }
+      
       return Excel::create('Export Quiz '.$quiz->title, function($excel) use ($collection)
       {
           $excel->sheet('Sheet1', function($sheet) use ($collection)
@@ -462,17 +465,24 @@ class QuizController extends Controller
                   )
               ));
               $sheet->setAutoSize(array(
-                  'A', 'C', 'D', 'E', 'F', 'G', 'H'
+                  'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'
               ));
               $sheet->setWidth(array(
                   'B'     =>  74,
               ));
 
-              $sheet->cell('A1:H1', function($cell)
+              $sheet->cell('E1:M1', function($cell)
               {
-                  $cell->setBackground('#ede185');
+                  $cell->setBackground('#FFE699');
                   $cell->setFontWeight('bold');
               });
+
+              $sheet->cell('A1:B1', function($cell)
+              {
+                  $cell->setBackground('#FF0000');
+                  $cell->setFontWeight('bold');
+              });
+
               $sheet->cell('A1', function($cell)
               {
                   $cell->setValue('NO');
@@ -485,27 +495,57 @@ class QuizController extends Controller
 
               $sheet->cell('C1', function($cell)
               {
-                  $cell->setValue('OPTION A');
+                  $cell->setValue('QUESTION PICTURE');
+                  $cell->setBackground('#FFE699');
+                  $cell->setFontWeight('bold');
               });
               $sheet->cell('D1', function($cell)
               {
-                  $cell->setValue('OPTION B');
+                  $cell->setValue('OPTION A');
+                  $cell->setBackground('#FF0000');
+                  $cell->setFontWeight('bold');
               });
               $sheet->cell('E1', function($cell)
               {
-                  $cell->setValue('OPTION C');
+                  $cell->setValue('OPTION PICTURE A');
               });
               $sheet->cell('F1', function($cell)
               {
-                  $cell->setValue('OPTION D');
+                  $cell->setValue('OPTION B');
               });
               $sheet->cell('G1', function($cell)
               {
-                  $cell->setValue('OPTION E');
+                  $cell->setValue('OPTION PICTURE B');
               });
               $sheet->cell('H1', function($cell)
               {
+                  $cell->setValue('OPTION C');
+              });
+              $sheet->cell('I1', function($cell)
+              {
+                  $cell->setValue('OPTION PICTURE C');
+              });
+              $sheet->cell('J1', function($cell)
+              {
+                  $cell->setValue('OPTION D');
+              });
+              $sheet->cell('K1', function($cell)
+              {
+                  $cell->setValue('OPTION PICTURE D');
+              });
+              $sheet->cell('L1', function($cell)
+              {
+                  $cell->setValue('OPTION E');
+              });
+              $sheet->cell('M1', function($cell)
+              {
+                  $cell->setValue('OPTION PICTURE E');
+              });
+              $sheet->cell('N1', function($cell)
+              {
                   $cell->setValue('TRUE ANSWER');
+                  $cell->setBackground('#FF0000');
+                  $cell->setFontWeight('bold');
               });
 
               if (!empty($collection))
@@ -515,12 +555,18 @@ class QuizController extends Controller
                       $i= $key+2;
                       $sheet->cell('A'.$i, $key+1);
                       $sheet->cell('B'.$i, $value['question']);
-                      $sheet->cell('C'.$i, $value['a']);
-                      $sheet->cell('D'.$i, $value['b']);
-                      $sheet->cell('E'.$i, $value['c']);
-                      $sheet->cell('F'.$i, $value['d']);
-                      $sheet->cell('G'.$i, $value['e']);
-                      $sheet->cell('H'.$i, $value['isTrueOpt']);
+                      $sheet->cell('C'.$i, NULL);
+                      $sheet->cell('D'.$i, @$value['a']);
+                      $sheet->cell('E'.$i, NULL);
+                      $sheet->cell('F'.$i, @$value['b']);
+                      $sheet->cell('G'.$i, NULL);
+                      $sheet->cell('H'.$i, @$value['c']);
+                      $sheet->cell('I'.$i, NULL);
+                      $sheet->cell('J'.$i, @$value['d']);
+                      $sheet->cell('K'.$i, NULL);
+                      $sheet->cell('L'.$i, @$value['e']);
+                      $sheet->cell('M'.$i, NULL);
+                      $sheet->cell('N'.$i, $value['isTrueOpt']);
                   }
               }
           });
