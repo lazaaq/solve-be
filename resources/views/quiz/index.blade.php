@@ -130,9 +130,9 @@
             $('input[name=end_time_edit]').val(data['data']['end_time']);
             $('input[name=time_edit]').val(data['data']['time']);
             if (data['data']['code'] != null) {
-              $('input[name=code]').val('checked').parent().addClass('checked',true);
+              $('input[name=code]').val('checked').parent().addClass('checked',true).trigger('change');
             }
-            $('input[name=code]').val('checked'); 
+            $('input[name=code]').val('checked');
             $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
           });
