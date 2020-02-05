@@ -26,10 +26,16 @@
     	<table class="table" id="table-history" class="display" style="width:100%">
   			<thead>
       		<tr>
-             <th>Id</th>
-             <th>Name</th>
-             <th>Email</th>
-             <th class="col-md-2">Action</th>
+              <th>Id</th>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Quiz</th>
+              <th>True</th>
+              <th>False</th>
+              <th>Score</th>
+              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
   			<tbody>
@@ -61,8 +67,14 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
-            { data: 'name', name:'name', visible:true},
-            { data: 'email', name:'email', visible:true},
+            { data: 'date', name:'date', visible:true},
+            { data: 'collager.user.name', name:'name', visible:true},
+            { data: 'quiz.quiz_type.quiz_category.name', name:'category', visible:true},
+            { data: 'quiz.quiz_type.name', name:'type', visible:true},
+            { data: 'quiz.title', name:'quiz', visible:true},
+            { data: 'true_sum', name:'true', visible:true},
+            { data: 'false_sum', name:'false', visible:true},
+            { data: 'total_score', name:'score', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
@@ -70,3 +82,15 @@
     });
   </script>
 @endpush
+
+<th>Id</th>
+<th>Date</th>
+<th>Category</th>
+<th>Type</th>
+<th>Title Quiz</th>
+<th>Name</th>
+<th>Score</th>
+<th>True</th>
+<th>False</th>
+<th>Score</th>
+<th class="col-md-2">Action</th>
