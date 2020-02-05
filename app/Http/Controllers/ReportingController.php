@@ -85,9 +85,9 @@ class ReportingController extends Controller
                     $sheet->cell('D'.$i, $value->quiz->quizType->quizCategory->name);
                     $sheet->cell('E'.$i, $value->quiz->quizType->name);
                     $sheet->cell('F'.$i, $value->quiz->title);
-                    $sheet->cell('G'.$i, $value->answerSave->where('isTrue',1)->count() == '0' ? $value->answerSave->where('isTrue',1)->count() : '0');
-                    $sheet->cell('H'.$i, $value->answerSave->where('isTrue',0)->count() == '0' ? $value->answerSave->where('isTrue',0)->count() : '0');
-                    $sheet->cell('I'.$i, $value->total_score == '0' ? $value->total_score : '0');
+                    $sheet->cell('G'.$i, $value->answerSave->where('isTrue',1)->count());
+                    $sheet->cell('H'.$i, $value->answerSave->where('isTrue',0)->count());
+                    $sheet->cell('I'.$i, $value->total_score);
                     $i++;
                 }
             }           
