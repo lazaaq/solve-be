@@ -21,6 +21,9 @@ use Carbon\Carbon;
 use Auth;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class QuizController extends Controller
 {
@@ -278,7 +281,7 @@ class QuizController extends Controller
         'excel' => 'required|mimes:xlsx',
       ]
     );
-    
+
     $data = Quiz::find($id);
     DB::beginTransaction();
 
@@ -317,7 +320,7 @@ class QuizController extends Controller
                 case 'M':
                   $question_option[substr($drawing->getCoordinates(),1)][4] = $filename;
                   break;
-              }              
+              }
               break;
           }
       }
@@ -431,9 +434,30 @@ class QuizController extends Controller
 
   public function export($id)
   {
+    return Excel::create('Export Quiz', function($excel)
+    {
+        $excel->sheet('Sheet1', function($sheet)
+        {
+            // $sheet->cell('A1', function($cell)
+            // {
+                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+                $drawing->setName('Logo');
+                $drawing->setDescription('This is my logo');
+                $drawing->setPath(public_path('/storage/images/question/5e3916871f4c2.png'));
+                $drawing->setHeight(90);
+                $drawing->setCoordinates('A1');
+                // dd($drawing);
+                return $drawing;
+            // });
+        });
+    })->download('xlsx');;
+  }
+  public function exports($id)
+  {
       $quiz = Quiz::where('id', $id)->first();
       $question = Question::where('quiz_id', $quiz->id)->get();
       $content = ['a','b','c','d','e'];
+      $content_pic = ['a_pic','b_pic','c_pic','d_pic','e_pic'];
       $option  = [];
       foreach ($question as $key => $item) {
           $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
@@ -443,16 +467,18 @@ class QuizController extends Controller
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
+          'question_pic' => $item['pic_url'],
           'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
         ];
         for ($j=0; $j < count($option[$i]); $j++) {
           $temp[$i][$j] = [
-            $content[$j] => $option[$i]->get($j)->content
+            $content[$j] => $option[$i]->get($j)->content,
+            $content_pic[$j] => $option[$i]->get($j)->pic_url
           ];
           $collection[$i] = array_merge($collection[$i],$temp[$i][$j]);
         }
       }
-      
+      // dd($collection);
       return Excel::create('Export Quiz '.$quiz->title, function($excel) use ($collection)
       {
           $excel->sheet('Sheet1', function($sheet) use ($collection)
@@ -555,22 +581,23 @@ class QuizController extends Controller
                       $i= $key+2;
                       $sheet->cell('A'.$i, $key+1);
                       $sheet->cell('B'.$i, $value['question']);
-                      $sheet->cell('C'.$i, NULL);
+                      $sheet->cell('C'.$i, $value['question_pic']);
                       $sheet->cell('D'.$i, @$value['a']);
-                      $sheet->cell('E'.$i, NULL);
+                      $sheet->cell('E'.$i, @$value['a_pic']);
                       $sheet->cell('F'.$i, @$value['b']);
-                      $sheet->cell('G'.$i, NULL);
+                      $sheet->cell('G'.$i, @$value['b_pic']);
                       $sheet->cell('H'.$i, @$value['c']);
-                      $sheet->cell('I'.$i, NULL);
+                      $sheet->cell('I'.$i, @$value['c_pic']);
                       $sheet->cell('J'.$i, @$value['d']);
-                      $sheet->cell('K'.$i, NULL);
+                      $sheet->cell('K'.$i, @$value['d_pic']);
                       $sheet->cell('L'.$i, @$value['e']);
-                      $sheet->cell('M'.$i, NULL);
+                      $sheet->cell('M'.$i, @$value['e_pic']);
                       $sheet->cell('N'.$i, $value['isTrueOpt']);
                   }
               }
           });
       })->download('xlsx');
+
   }
 
   /*START OF API*/
