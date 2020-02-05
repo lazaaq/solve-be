@@ -639,9 +639,12 @@ class QuizController extends Controller
 
   public function api_indexByCode($id){
     $data = Quiz::where('code', $id)
+                  ->whereNull('code')
+                  ->where('status', 'active')
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
@@ -649,7 +652,6 @@ class QuizController extends Controller
         'message'=>'Not found quiz data.'
       ]);
     }
-    // if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() >= $data[0]->start_time) {
     if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() <= $data[0]->start_time) {
       return response()->json([
         'status'=>'failed',
