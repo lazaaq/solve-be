@@ -27,10 +27,19 @@ class HistoryController extends Controller
 
     public function getData()
     {
-        $data = User::role('student')->get()->sortBy('name');
-        return datatables()->of($data)->addColumn('action', function($row){
-        $btn = '<a id="btn-detail" href="'.route('history.show',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
-        return $btn;
+        // $data = User::role('student')->get()->sortBy('name');
+        $data = QuizCollager::with('quiz.quizType.quizCategory')->with('collager.user.school')->orderBy('created_at','DESC')->get();
+        foreach ($data as $key => $value) {
+          $data[$key]->true_sum = $data[$key]->answerSave()->where('isTrue', 1)->count();
+          $data[$key]->false_sum = $data[$key]->answerSave()->where('isTrue', 0)->count();
+        }
+        return datatables()->of($data)->
+        addColumn('action', function($row){
+            $btn = '<a id="btn-detail" href="'.route('history.show',$row->collager->user->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
+            return $btn;
+        })
+        ->addColumn('date', function($row){
+            return $row->created_at->format('j F Y');;
         })
         ->rawColumns(['action'])
         ->make(true);

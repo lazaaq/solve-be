@@ -23,13 +23,21 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
+      <button id="btn-download-history" type="button" class="btn btn-primary btn-sm bg-primary"><i class="icon-download position-left"></i> Download History</button>
     	<table class="table" id="table-history" class="display" style="width:100%">
   			<thead>
       		<tr>
-             <th>Id</th>
-             <th>Name</th>
-             <th>Email</th>
-             <th class="col-md-2">Action</th>
+              <th>Id</th>
+              <th>Date</th>
+              <th>Name</th>
+              <th>School</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Quiz</th>
+              <th>True</th>
+              <th>False</th>
+              <th>Score</th>
+              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
   			<tbody>
@@ -40,12 +48,16 @@
 	<!-- /state saving -->
 </div>
 <!-- /content area -->
-
+@include('history.download')
 @endsection
 @push('after_script')
   <script>
   var history;
     $(document).ready(function(){
+      $("#btn-download-history").on('click', function(){
+          $('#modal-download-history').modal('show');
+          console.log('halo');
+      });
       history = $('#table-history').DataTable({
         processing	: true,
         language: {
@@ -61,8 +73,15 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
-            { data: 'name', name:'name', visible:true},
-            { data: 'email', name:'email', visible:true},
+            { data: 'date', name:'date', visible:true},
+            { data: 'collager.user.name', name:'collager.user.name', visible:true},
+            { data: 'collager.user.school.name', name:'collager.user.school.name', visible:true},
+            { data: 'quiz.quiz_type.quiz_category.name', name:'quiz.quiz_type.quiz_category.name', visible:true},
+            { data: 'quiz.quiz_type.name', name:'quiz.quiz_type.name', visible:true},
+            { data: 'quiz.title', name:'quiz.title', visible:true},
+            { data: 'true_sum', name:'true_sum', visible:true},
+            { data: 'false_sum', name:'false_sum', visible:true},
+            { data: 'total_score', name:'total_score', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
