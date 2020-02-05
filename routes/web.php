@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('collagerclassroom/delete/{id}', 'CollagerClassroomController@destroy')->name('collager-classroom.destroy');
         Route::get('collagerclassroom/reset-class/{id}', 'CollagerClassroomController@resetClass');
 
-        Route::get('reporting/{id}', 'ReportingController@reporting');
+        Route::get('reporting/{id}', 'ReportingController@reporting')->name('reporting');
 
     });
 

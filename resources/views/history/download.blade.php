@@ -8,24 +8,24 @@
       	<div class="panel panel-flat">
           <div class="panel-body">
             <fieldset class="content-group">
-      				<legend class="text-bold">Download History</legend>
+              <legend class="text-bold">Download History</legend>
               <div class="form-group">
                 <label class="control-label col-lg-3">School Name <span class="text-danger">*</span></label>
                 <div class="col-lg-9">
-                <select id="school" class="select-search" name="quiz_category">
+                <select id="school" class="select-search" name="school" required>
                 </select>
                 </div>
               </div>
-      			</fieldset>
+            </fieldset>
             <div>
               <div class="col-md-4">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-arrow-left13"></i> Close</button>
               </div>
               <div class="col-md-8 text-right">
-                <button type="submit" id="btn-submit" class="btn btn-primary"><i class="icon-download position-left"></i>Download</button>
+                <button type="button" id="btn-submit" class="btn btn-primary"><i class="icon-download position-left"></i>Download</button>
               </div>
-      			</div>
-        	</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -52,6 +52,11 @@ $(document).ready(function(){
         },
         cache : true,
     },
+    });
+
+    $("#btn-submit").on('click', function(){
+      window.location.href = "{{ url('admin/reporting') }}"+"/"+$('#school').val();
+      $('#modal-download-history').modal('hide');
     });
 
 });
