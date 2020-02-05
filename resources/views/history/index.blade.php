@@ -23,6 +23,7 @@
   <!-- State saving -->
 	<div class="panel panel-flat">
     <div style="padding:20px">
+      <button id="btn-download-history" type="button" class="btn btn-primary btn-sm bg-primary"><i class="icon-download position-left"></i> Download History</button>
     	<table class="table" id="table-history" class="display" style="width:100%">
   			<thead>
       		<tr>
@@ -47,12 +48,16 @@
 	<!-- /state saving -->
 </div>
 <!-- /content area -->
-
+@include('history.download')
 @endsection
 @push('after_script')
   <script>
   var history;
     $(document).ready(function(){
+      $("#btn-download-history").on('click', function(){
+          $('#modal-download-history').modal('show');
+          console.log('halo');
+      });
       history = $('#table-history').DataTable({
         processing	: true,
         language: {
@@ -84,15 +89,3 @@
     });
   </script>
 @endpush
-
-<th>Id</th>
-<th>Date</th>
-<th>Category</th>
-<th>Type</th>
-<th>Title Quiz</th>
-<th>Name</th>
-<th>Score</th>
-<th>True</th>
-<th>False</th>
-<th>Score</th>
-<th class="col-md-2">Action</th>
