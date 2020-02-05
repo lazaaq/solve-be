@@ -29,6 +29,7 @@
               <th>Id</th>
               <th>Date</th>
               <th>Name</th>
+              <th>School</th>
               <th>Category</th>
               <th>Type</th>
               <th>Quiz</th>
@@ -69,6 +70,7 @@
             { data: 'id', name:'id', visible:false},
             { data: 'date', name:'date', visible:true},
             { data: 'collager.user.name', name:'name', visible:true},
+            { data: 'collager.user.school.name', name:'school', visible:true},
             { data: 'quiz.quiz_type.quiz_category.name', name:'category', visible:true},
             { data: 'quiz.quiz_type.name', name:'type', visible:true},
             { data: 'quiz.title', name:'quiz', visible:true},
