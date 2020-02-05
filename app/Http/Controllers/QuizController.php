@@ -639,7 +639,6 @@ class QuizController extends Controller
 
   public function api_indexByCode($id){
     $data = Quiz::where('code', $id)
-                  ->whereNull('code')
                   ->where('status', 'active')
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
