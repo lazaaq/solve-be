@@ -25,6 +25,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
 
 class QuizController extends Controller
 {
@@ -464,6 +466,12 @@ class QuizController extends Controller
 
     $spreadsheet = new Spreadsheet();
 
+    $spreadsheet->getActiveSheet()->getStyle('A1:N1')->getFont()->setBold(true);
+    $spreadsheet->getActiveSheet()->getStyle('E1:M1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
+    $spreadsheet->getActiveSheet()->getStyle('C1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
+    $spreadsheet->getActiveSheet()->getStyle('A1:B1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF0000');
+    $spreadsheet->getActiveSheet()->getStyle('N1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFF0000');
+
     $spreadsheet->getActiveSheet()->setCellValue('A1', 'NO');
     $spreadsheet->getActiveSheet()->setCellValue('B1', 'QUESTION');
     $spreadsheet->getActiveSheet()->setCellValue('C1', 'QUESTION PICTURE');
@@ -537,8 +545,17 @@ class QuizController extends Controller
 
         }
     }
+
+    foreach(range('A','N') as $columnID) {
+        $sheet = $spreadsheet->getActiveSheet()->getColumnDimension($columnID)
+            ->setAutoSize(true);
+    }
+
+    header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment;filename="QUIZ '.$quiz->title.'.xlsx"');
+    header('Cache-Control: max-age=0');
     $writer = new Xlsx($spreadsheet);
-    $writer->save('hello_world.xlsx');
+    $writer->save('php://output');
   }
   public function exports($id)
   {
