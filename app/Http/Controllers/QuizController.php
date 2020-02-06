@@ -23,6 +23,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class QuizController extends Controller
@@ -434,23 +435,110 @@ class QuizController extends Controller
 
   public function export($id)
   {
-    return Excel::create('Export Quiz', function($excel)
+
+    $quiz = Quiz::where('id', $id)->first();
+    $question = Question::where('quiz_id', $quiz->id)->get();
+    $content = ['a','b','c','d','e'];
+    $content_pic = ['a_pic','b_pic','c_pic','d_pic','e_pic'];
+    $option  = [];
+    foreach ($question as $key => $item) {
+        $option[$key] = $item->answer()->orderBy('option', 'asc')->get();
+    }
+    $collection = [];
+    foreach ($question as $i => $item) {
+      $collection[$i] = [
+        'id' => $item['id'],
+        'question' => $item['question'],
+        'question_pic' => $item['pic_url'],
+        'isTrueOpt' => $option[$i]->where('isTrue', 1)->first()->option,
+      ];
+      for ($j=0; $j < count($option[$i]); $j++) {
+        $temp[$i][$j] = [
+          $content[$j] => $option[$i]->get($j)->content,
+          $content_pic[$j] => $option[$i]->get($j)->pic_url
+        ];
+        $collection[$i] = array_merge($collection[$i],$temp[$i][$j]);
+      }
+    }
+
+
+    $spreadsheet = new Spreadsheet();
+
+    $spreadsheet->getActiveSheet()->setCellValue('A1', 'NO');
+    $spreadsheet->getActiveSheet()->setCellValue('B1', 'QUESTION');
+    $spreadsheet->getActiveSheet()->setCellValue('C1', 'QUESTION PICTURE');
+    $spreadsheet->getActiveSheet()->setCellValue('D1', 'OPTION A');
+    $spreadsheet->getActiveSheet()->setCellValue('E1', 'OPTION PICTURE A');
+    $spreadsheet->getActiveSheet()->setCellValue('F1', 'OPTION B');
+    $spreadsheet->getActiveSheet()->setCellValue('G1', 'OPTION PICTURE B');
+    $spreadsheet->getActiveSheet()->setCellValue('H1', 'OPTION C');
+    $spreadsheet->getActiveSheet()->setCellValue('I1', 'OPTION PICTURE C');
+    $spreadsheet->getActiveSheet()->setCellValue('J1', 'OPTION D');
+    $spreadsheet->getActiveSheet()->setCellValue('K1', 'OPTION PICTURE D');
+    $spreadsheet->getActiveSheet()->setCellValue('L1', 'OPTION E');
+    $spreadsheet->getActiveSheet()->setCellValue('M1', 'OPTION PICTURE E');
+    $spreadsheet->getActiveSheet()->setCellValue('N1', 'TRUE ANSWER');
+    if (!empty($collection))
     {
-        $excel->sheet('Sheet1', function($sheet)
+        foreach ($collection as $key => $value)
         {
-            // $sheet->cell('A1', function($cell)
-            // {
-                $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
-                $drawing->setName('Logo');
-                $drawing->setDescription('This is my logo');
-                $drawing->setPath(public_path('/storage/images/question/5e3916871f4c2.png'));
-                $drawing->setHeight(90);
-                $drawing->setCoordinates('A1');
-                // dd($drawing);
-                return $drawing;
-            // });
-        });
-    })->download('xlsx');;
+            $i= $key+2;
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$i, $key+1);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$i, $value['question']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$i, @$value['a']);
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$i, @$value['b']);
+            $spreadsheet->getActiveSheet()->setCellValue('H'.$i, @$value['c']);
+            $spreadsheet->getActiveSheet()->setCellValue('J'.$i, @$value['d']);
+            $spreadsheet->getActiveSheet()->setCellValue('L'.$i, @$value['e']);
+            $spreadsheet->getActiveSheet()->setCellValue('N'.$i, $value['isTrueOpt']);
+
+            if (@$value['question_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/question/'.@$value['question_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('C'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+            if (@$value['a_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/option/'.@$value['a_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('E'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+            if (@$value['b_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/option/'.@$value['b_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('G'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+            if (@$value['c_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/option/'.@$value['c_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('I'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+            if (@$value['d_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/option/'.@$value['d_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('K'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+            if (@$value['e_pic']) {
+              $drawing = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
+              $drawing->setPath(public_path('/storage/images/option/'.@$value['e_pic']));
+              $drawing->setHeight(256);
+              $drawing->setCoordinates('M'.$i);
+              $drawing->setWorksheet($spreadsheet->getActiveSheet());
+            }
+
+        }
+    }
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('hello_world.xlsx');
   }
   public function exports($id)
   {
