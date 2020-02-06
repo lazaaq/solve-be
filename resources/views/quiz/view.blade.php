@@ -47,7 +47,7 @@
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create Question</button>
       <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
     @endif
-    	<h6 class="panel-title "><i class="icon-cog3 position-left"></i> Quiz Info</h6>
+    	<h6 class="panel-title" style="width:50%"><i class="icon-cog3 position-left"></i> Quiz Info</h6>
 		</div>
 		<div class="panel-body">
       <div class="col-md-2">
