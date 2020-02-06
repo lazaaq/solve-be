@@ -168,7 +168,12 @@ class SchoolController extends Controller
       if (empty($request->term)) {
         $data = School::select('id','name','district')->limit(15)->get()->sortBy('name');
       } else {
-        $data = School::select('id','name','district')->orWhere('name','like',"%$param%")->get()->sortBy('name');
+        $searchValues = explode(' ', $param);
+        $data = School::select('id','name','district')->orWhere(function ($q) use ($searchValues) {
+            foreach ($searchValues as $value) {
+              $q->where('name', 'like', "%$value%");
+            }
+        })->get()->sortBy('name');
       }
       $list = [];
       foreach ($data as $key => $value) {
