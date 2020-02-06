@@ -50,7 +50,6 @@
     $(document).ready(function(){
       $("#btn-download-history").on('click', function(){
           $('#modal-download-history').modal('show');
-          console.log('halo');
       });
       history = $('#table-history').DataTable({
         processing	: true,
