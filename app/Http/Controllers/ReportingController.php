@@ -32,12 +32,12 @@ class ReportingController extends Controller
             $sheet->setCellValue('A'.$i, $value->name);
             $sheet->setCellValue('B'.$i, $value->school->name);
             foreach (@$value->collager->quizCollager as $key => $value) {
-                // $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
-                // $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
-                // $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
-                // $sheet->setCellValue('F'.$i, $value->quiz->title);
-                // $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
-                // $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
+                $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
+                $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
+                $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
+                $sheet->setCellValue('F'.$i, $value->quiz->title);
+                $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
+                $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
                 $sheet->setCellValue('I'.$i, $value->total_score);
                 $i++;
             }

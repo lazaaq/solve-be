@@ -288,7 +288,7 @@ class QuizController extends Controller
     $file = $request->file('excel');
     $excel = IOFactory::load($file);
     $question_picture = [];
-
+    $question_option = [];
     foreach ($excel->getActiveSheet()->getDrawingCollection() as $value => $drawing) {
       //check if it is instance of drawing
       if ($drawing) {
