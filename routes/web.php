@@ -31,6 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/admin'], function () {
         Route::group(['middleware' => ['role:admin']], function () {
+            Route::resource('role', 'RoleController')->except('destroy');
             Route::resource('answersave', 'AnswerSaveController');
             Route::resource('lecture', 'LectureController');
             Route::resource('collager', 'CollagerController');
@@ -40,6 +41,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::resource('school', 'SchoolController')->except('destroy');
 
             Route::get('user/delete/{id}', 'UserController@destroy')->name('user.destroy');
+            Route::get('role/delete/{id}', 'RoleController@destroy')->name('role.destroy');
 
 
             Route::get('banner/delete/{id}', 'BannerController@destroy')->name('banner.destroy');
@@ -91,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/data-banner', 'BannerController@getData');
             Route::get('/data-version', 'VersionAppController@getData');
             Route::get('/data-school', 'SchoolController@getData');
+            Route::get('/data-role', 'RoleController@getData');
         });
         Route::get('/data-history', 'HistoryController@getData');
         Route::get('/data-history-user/{id}', 'HistoryController@getDataHistoryUser');

@@ -16,6 +16,7 @@
             <li><a href="{{route('school.index')}}"><img src="{{asset('img/web_ic_home.png')}}" alt="" style="height:20px;margin-right:15px"><span>School</span></a></li>
             <li><a href="{{route('version.index')}}"><img src="{{asset('img/web_ic_version.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Version</span></a></li>
             <li><a href="{{route('user.index')}}"><img src="{{asset('img/web_ic_user.png')}}" alt="" style="height:20px;margin-right:15px"> <span>User</span></a></li>
+            <li><a href="{{route('role.index')}}"><img src="{{asset('img/web_ic_user.png')}}" alt="" style="height:20px;margin-right:15px"> <span>Role</span></a></li>
             <!-- /main -->
             @endif
         </ul>
