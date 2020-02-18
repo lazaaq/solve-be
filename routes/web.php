@@ -51,6 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('school/delete/{id}', 'SchoolController@destroy')->name('school.destroy');
 
         });
+        Route::group(['middleware' => ['role:admin school']], function () {
+            Route::resource('lecture', 'LectureController');
+        });
         Route::resource('user', 'UserController')->except('destroy');
         Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
         Route::put('user/profile/password/{id}', 'UserController@updatePassword')->name('user.updatePassword');
@@ -94,6 +97,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/data-version', 'VersionAppController@getData');
             Route::get('/data-school', 'SchoolController@getData');
             Route::get('/data-role', 'RoleController@getData');
+        });
+        Route::group(['middleware' => ['role:admin school']], function () {
+            Route::get('/data-teacher', 'LectureController@getData');
         });
         Route::get('/data-history', 'HistoryController@getData');
         Route::get('/data-history-user/{id}', 'HistoryController@getDataHistoryUser');

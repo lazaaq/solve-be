@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use Auth;
 
 class LectureController extends Controller
 {
@@ -14,7 +16,28 @@ class LectureController extends Controller
    */
   public function index()
   {
-    
+    return view('lecturer.index');
+  }
+
+  public function getData(Request $request)
+  {
+    $data = User::whereHas("roles", function($q) { $q->where("name", 'teacher'); })
+                  ->where('school_id',Auth::user()->school_id)
+                  ->whereNotIn('id',[Auth::id()])->get();
+    return datatables()->of($data)->addColumn('action', function($row){
+          $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+          $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
+          return $btn;
+    })
+    ->addColumn('phone_number', function($row){
+      if ($row->phone_number == NULL) {
+        return '-';
+      } else {
+        return $row->phone_number;
+      }
+    })
+    ->rawColumns(['action'])
+    ->make(true);
   }
 
   /**

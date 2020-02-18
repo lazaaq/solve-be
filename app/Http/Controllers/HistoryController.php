@@ -27,8 +27,11 @@ class HistoryController extends Controller
 
     public function getData()
     {
-        // $data = User::role('student')->get()->sortBy('name');
-        $data = User::role('student')->get()->sortBy('name');
+        if (Auth::user()->hasRole('admin')) {
+            $data = User::role('student')->get()->sortBy('name');
+        } else {
+            $data = User::role('student')->where('school_id',Auth::user()->school_id)->get()->sortBy('name');
+        }
         return datatables()->of($data)
         ->addColumn('school', function($row){
             if ($row->school) {
