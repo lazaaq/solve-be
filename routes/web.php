@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::resource('dashboard', 'DashboardController');
         Route::resource('history', 'HistoryController');
+        Route::resource('history-quiz', 'HistoryQuizController');
         Route::get('history/detail/{id}', 'HistoryController@detailHistory')->name('detailHistory');
         Route::resource('quiztype', 'QuizTypeController')->except('destroy');
         Route::resource('quizcategory', 'QuizCategoryController')->except('destroy');
@@ -84,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('collagerclassroom/reset-class/{id}', 'CollagerClassroomController@resetClass');
 
         Route::get('reporting/{id}', 'ReportingController@reporting')->name('reporting');
+        Route::get('quiz-reporting/{id}', 'ReportingController@reportingQuiz')->name('reporting-quiz');
 
     });
 
@@ -104,6 +106,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-classroom', 'ClassroomController@getData');
         Route::get('/data-collager-classroom/{id}', 'CollagerClassroomController@getData');
         Route::get('/data-collager-classroom-add/{id}/{class_id}', 'CollagerClassroomController@getDataAdd');
+
+        Route::get('/data-history-quiz', 'HistoryQuizController@getData');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {
