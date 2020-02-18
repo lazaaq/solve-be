@@ -112,7 +112,7 @@ class UserController extends Controller
       $addCollager = Collager::create([
         'user_id' => $user->id,
       ]);
-    } elseif ($request->role[0] == '3') {
+    } elseif (Role::find($request->role[0])->name == 'teacher' || Role::find($request->role[0])->name == 'admin school') {
       $addLecture = Lecture::create([
          'user_id' => $user->id,
       ]);

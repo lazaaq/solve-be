@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\School;
 use DataTables;
 use Validator;
+use Auth;
 
 class SchoolController extends Controller
 {
@@ -40,16 +41,20 @@ class SchoolController extends Controller
 
     public function getSelect(Request $request)
     {
-      $param  = strtolower($request->get('term'));
-      $data = School::select('id','name','district')->orWhere(\DB::raw('lower(name)'),'like',"%$param%")->get()->sortBy('name');
-      $list = [];
-        foreach ($data as $key => $value) {
-            $list[] = [
-                'id'=>$value->id,
-                'text'=>$value->name . ' - ' . $value->district
-            ];
+        if (Auth::user()->hasRole('admin')) {
+            $param  = strtolower($request->get('term'));
+            $data = School::select('id','name','district')->orWhere(\DB::raw('lower(name)'),'like',"%$param%")->get()->sortBy('name');
+        } else {
+            $data = School::select('id','name','district')->where('id',Auth::user()->school_id)->get()->sortBy('name');
         }
-        return response()->json($list);
+        $list = [];
+            foreach ($data as $key => $value) {
+                $list[] = [
+                    'id'=>$value->id,
+                    'text'=>$value->name . ' - ' . $value->district
+                ];
+            }
+            return response()->json($list);
     }
 
     public function getPreSelect(Request $request, $id)
