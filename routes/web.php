@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-collager-classroom-add/{id}/{class_id}', 'CollagerClassroomController@getDataAdd');
 
         Route::get('/data-history-quiz', 'HistoryQuizController@getData');
+        Route::get('/data-history-quiz-detail/{id}', 'HistoryQuizController@getDataQuiz');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {
