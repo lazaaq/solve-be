@@ -22,9 +22,9 @@
 <!-- Content area -->
 <div class="content">
   <div class="row">
-@include('dashboard.info')
-
-
+	@if(Auth::user()->hasRole('admin'))
+	@include('dashboard.info')
+	@endif
     <div class="col-lg-12">
 
 			<!-- Traffic sources -->
