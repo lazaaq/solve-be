@@ -18,7 +18,12 @@ class QuizTypeController extends Controller
   public function getData()
   {
     if (Auth::user()->hasRole('admin')) {
-      $data = QuizType::all()->sortBy('name');
+      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+      $admin_id = [];
+      foreach ($admin as $key => $value) {
+        $admin_id[] = $value->id;
+      }
+      $data = QuizType::whereIn('created_by',$admin_id)->get()->sortBy('name');
     } else {
       $school_id = Auth::user()->school_id;
       $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();

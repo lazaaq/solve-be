@@ -17,7 +17,12 @@ class QuizCategoryController extends Controller
   public function getData()
   {
     if (Auth::user()->hasRole('admin')) {
-      $data = QuizCategory::all()->sortBy('name');
+      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+      $admin_id = [];
+      foreach ($admin as $key => $value) {
+        $admin_id[] = $value->id;
+      }
+      $data = QuizCategory::whereIn('created_by',$admin_id)->get()->sortBy('name');
     } else {
       $school_id = Auth::user()->school_id;
       $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
@@ -165,7 +170,22 @@ class QuizCategoryController extends Controller
   public function getSelect(Request $request)
   {
     $param  = $request->get('term');
-    $data = QuizCategory::select('id','name')->orWhere('name','like',"%$param%")->get()->sortBy('name');
+    if (Auth::user()->hasRole('admin')) {
+      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+      $admin_id = [];
+      foreach ($admin as $key => $value) {
+        $admin_id[] = $value->id;
+      }
+      $data = QuizCategory::select('id','name')->whereIn('created_by',$admin_id)->where('name','like',"%$param%")->get()->sortBy('name');
+    } else {
+      $school_id = Auth::user()->school_id;
+      $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+      $teacher_id = [];
+      foreach ($teacher as $key => $value) {
+        $teacher_id[] = $value->id;
+      }
+      $data = QuizCategory::select('id','name')->whereIn('created_by',$teacher_id)->where('name','like',"%$param%")->get()->sortBy('name');
+    }
     $list = [];
       foreach ($data as $key => $value) {
           $list[] = [

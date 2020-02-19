@@ -81,6 +81,24 @@ class QuizController extends Controller
   {
     $quizcategory = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
+    if (Auth::user()->hasRole('admin')) {
+      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+      $admin_id = [];
+      foreach ($admin as $key => $value) {
+        $admin_id[] = $value->id;
+      }
+      $quizcategory = QuizCategory::whereIn('created_by',$admin_id)->get()->sortBy('name');
+      $quiztype = QuizType::whereIn('created_by',$admin_id)->get()->sortBy('name');
+    } else {
+      $school_id = Auth::user()->school_id;
+      $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+      $teacher_id = [];
+      foreach ($teacher as $key => $value) {
+        $teacher_id[] = $value->id;
+      }
+      $quizcategory = QuizCategory::whereIn('created_by',$teacher_id)->get()->sortBy('name');
+      $quiztype = QuizType::whereIn('created_by',$teacher_id)->get()->sortBy('name');
+    }
     return view('quiz.index', compact('quiztype','quizcategory'));
   }
 
