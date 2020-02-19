@@ -26,7 +26,17 @@ class HistoryQuizController extends Controller
 
     public function getData()
     {
-      $data = Quiz::all()->sortBy('title');
+      if (Auth::user()->hasRole('admin')) {
+        $data = Quiz::all()->sortBy('title');
+      } else {
+        $school_id = Auth::user()->school_id;
+        $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+        $teacher_id = [];
+        foreach ($teacher as $key => $value) {
+          $teacher_id[] = $value->id;
+        }
+        $data = Quiz::whereIn('created_by',$teacher_id)->get()->sortBy('title');
+      }
       return datatables()->of($data)
       ->addColumn('action', function($row){
         $btn = '<a href="'.route('history-quiz.show',$row->id).'" title="View Detail" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
