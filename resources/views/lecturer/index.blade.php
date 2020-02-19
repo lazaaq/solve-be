@@ -88,7 +88,7 @@ var tableTeacher;
         .then((willDelete) => {
           if (willDelete) {
             $.ajax({
-              url: "{{ url('admin/teacher/delete') }}"+"/"+data['id'],
+              url: "{{ url('admin/lecture/delete') }}"+"/"+data['id'],
               method: 'get',
               success: function(result){
                 tableTeacher.ajax.reload();

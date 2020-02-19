@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
         Route::group(['middleware' => ['role:admin school']], function () {
-            Route::resource('lecture', 'LectureController');
+            Route::resource('lecture', 'LectureController')->except('destroy');
+            Route::get('lecture/delete/{id}', 'LectureController@destroy')->name('lecture.destroy');
         });
         Route::resource('user', 'UserController')->except('destroy');
         Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
