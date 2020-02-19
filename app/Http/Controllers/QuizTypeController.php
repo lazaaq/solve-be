@@ -7,6 +7,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Input;
 use App\QuizType;
+use App\User;
 use File;
 use Validator;
 use Cache;
@@ -16,7 +17,17 @@ class QuizTypeController extends Controller
 {
   public function getData()
   {
-    $data = QuizType::all()->sortBy('name');
+    if (Auth::user()->hasRole('admin')) {
+      $data = QuizType::all()->sortBy('name');
+    } else {
+      $school_id = Auth::user()->school_id;
+      $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+      $teacher_id = [];
+      foreach ($teacher as $key => $value) {
+        $teacher_id[] = $value->id;
+      }
+      $data = QuizType::whereIn('created_by',$teacher_id)->get()->sortBy('name');
+    }
     return datatables()->of($data)->addColumn('action', function($row){
       $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
