@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\School;
 use App\QuizCollager;
+use Auth;
 use Excel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -59,30 +60,28 @@ class ReportingController extends Controller
     }
 
     public function reportingQuiz($id) {
-
         $quizCol = QuizCollager::where('quiz_id', $id)->get();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $header = ['NAME','SCHOOL','DATE','CATEGORY','TYPE','QUIZ','TRUE','FALSE','SCORE'];
         $sheet->fromArray($header, NULL, 'A1');
-            foreach ($quizCol as $key => $value) {
-                if ($key < 1) {
-                    $i = $key+2;
-                } else {
-                    $i = $i;
-                }
-                $sheet->setCellValue('A'.$i, $value->collager->user->name);
-                $sheet->setCellValue('B'.$i, $value->collager->user->school->name);
-                $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
-                $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
-                $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
-                $sheet->setCellValue('F'.$i, $value->quiz->title);
-                $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
-                $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
-                $sheet->setCellValue('I'.$i, $value->total_score);
-                $i++;
+        foreach ($quizCol as $key => $value) {
+            if ($key < 1) {
+                $i = $key+2;
+            } else {
+                $i = $i;
             }
-        // }
+            $sheet->setCellValue('A'.$i, $value->collager->user->name);
+            $sheet->setCellValue('B'.$i, $value->collager->user->school->name);
+            $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
+            $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
+            $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
+            $sheet->setCellValue('F'.$i, $value->quiz->title);
+            $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
+            $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
+            $sheet->setCellValue('I'.$i, $value->total_score);
+            $i++;
+        }
 
         foreach(range('A','I') as $columnID) {
             $sheet = $spreadsheet->getActiveSheet()->getColumnDimension($columnID)

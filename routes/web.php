@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
         Route::group(['middleware' => ['role:admin school']], function () {
-            Route::resource('lecture', 'LectureController');
+            Route::resource('lecture', 'LectureController')->except('destroy');
+            Route::get('lecture/delete/{id}', 'LectureController@destroy')->name('lecture.destroy');
         });
         Route::resource('user', 'UserController')->except('destroy');
         Route::put('user/profile/{id}', 'UserController@updateProfil')->name('user.updateProfil');
@@ -114,6 +115,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-collager-classroom-add/{id}/{class_id}', 'CollagerClassroomController@getDataAdd');
 
         Route::get('/data-history-quiz', 'HistoryQuizController@getData');
+        Route::get('/data-history-quiz-detail/{id}', 'HistoryQuizController@getDataQuiz');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {

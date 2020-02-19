@@ -39,8 +39,8 @@ class HistoryQuizController extends Controller
       }
       return datatables()->of($data)
       ->addColumn('action', function($row){
-        $btn = '<a href="'.route('reporting-quiz',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
-        // admin/reporting') }}"+"/"+$('#school').val()
+        $btn = '<a href="'.route('history-quiz.show',$row->id).'" title="View Detail" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
+        $btn = $btn.'  <a href="'.route('reporting-quiz',$row->id).'" title="Download Excel" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="glyphicon glyphicon-download-alt"></i></a>';
         return $btn;
       })
       ->rawColumns(['action'])
@@ -49,6 +49,19 @@ class HistoryQuizController extends Controller
       })
       ->addColumn('quiz_type', function($row){
         return $row->quizType->name;
+      })
+      ->make(true);
+    }
+
+    public function getDataQuiz($id)
+    {
+      $data = QuizCollager::where('quiz_id',$id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+      return datatables()->of($data)
+      ->addColumn('isTrue', function($row){
+        return $row->answerSave->where('isTrue',1)->count();
+      })
+      ->addColumn('isFalse', function($row){
+        return $row->answerSave->where('isTrue',0)->count();
       })
       ->make(true);
     }
@@ -82,7 +95,8 @@ class HistoryQuizController extends Controller
      */
     public function show($id)
     {
-        //
+        $quiz = Quiz::find($id);
+        return view('history-quiz.view', compact('quiz'));
     }
 
     /**
