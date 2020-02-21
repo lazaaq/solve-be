@@ -27,12 +27,23 @@ class HistoryQuizController extends Controller
     public function getData()
     {
       if (Auth::user()->hasRole('admin')) {
-        $data = Quiz::all()->sortBy('title');
+        $user = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $user_id = [];
+        foreach ($user as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $data = Quiz::whereIn('created_by',$user_id)->get()->sortBy('title');
       } else {
         $school_id = Auth::user()->school_id;
         $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
         $teacher_id = [];
+
         foreach ($teacher as $key => $value) {
+          $teacher_id[] = $value->id;
+        }
+        
+        $user = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        foreach ($user as $key => $value) {
           $teacher_id[] = $value->id;
         }
         $data = Quiz::whereIn('created_by',$teacher_id)->get()->sortBy('title');

@@ -10,6 +10,8 @@ use App\Quiz;
 use App\QuizType;
 use Illuminate\Support\Carbon;
 use App\QuizCollager;
+use Auth;
+use App\User;
 
 class DashboardController extends Controller
 {
@@ -29,10 +31,43 @@ class DashboardController extends Controller
       $totalQuizType    = QuizType::all()->count();
       $totalGamePlayed  = QuizCollager::whereBetween('created_at',[Carbon::today(),Carbon::today()->addDay(1)])->count();
       $totalGamePlayedBefore  = QuizCollager::whereBetween('created_at',[Carbon::today()->addDay(-1),Carbon::today()])->count();
-      $quiz = Quiz::all()->sortBy('quiz_type_id');
-      $totalQuiz = $quiz->count();
+      
+      if (Auth::user()->hasRole('admin')) {
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $admin_id = [];
+        foreach ($admin as $key => $value) {
+          $admin_id[] = $value->id;
+        }
 
-      $score = QuizCollager::all();
+        $quiz = Quiz::whereIn('created_by',$admin_id)->get()->sortBy('quiz_type_id');
+        $quiz_id = [];
+        $totalQuiz = $quiz->count();
+        foreach ($quiz as $key => $value) {
+          $quiz_id[] = $value->id;
+        }
+        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->get();
+      } else {
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $user_id = [];
+        foreach ($admin as $key => $value) {
+          $user_id[] = $value->id;
+        }
+
+        $school_id = Auth::user()->school_id;
+        $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+        foreach ($teacher as $key => $value) {
+          $user_id[] = $value->id;
+        }
+
+        $quiz = Quiz::whereIn('created_by',$user_id)->get()->sortBy('quiz_type_id');
+        $quiz_id = [];
+        $totalQuiz = $quiz->count();
+        foreach ($quiz as $key => $value) {
+          $quiz_id[] = $value->id;
+        }
+        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->get();
+      }
+
       $collection = [];
       foreach ($quiz as $i => $quizs) {
         $collection[$i] = [
