@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\School;
+use App\Quiz;
 use App\QuizCollager;
 use Auth;
 use Excel;
@@ -53,16 +54,16 @@ class ReportingController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$sekolah->name.'.xlsx"');
+        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ '.$sekolah->name.'.xlsx"');
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
     }
 
     public function reportingQuiz($id) {
-
+        $quiz = Quiz::find($id);
         if (Auth::user()->hasRole('admin')) { 
-            $user = User::with('collager')->get();
+            $user = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
         } else {
             $sekolah = Auth::user()->school_id;
             $user = User::with('collager')->where('school_id', $sekolah)->get();
@@ -81,7 +82,7 @@ class ReportingController extends Controller
             }
             $sheet->setCellValue('A'.$i, $value->name);
             $sheet->setCellValue('B'.$i, $value->school->name);
-            foreach (@$value->collager->quizCollager->where('quiz_id', $id)->get() as $key => $value) {
+            foreach (@$value->collager->quizCollager->where('quiz_id', $id) as $key => $value) {
                 $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
                 $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
                 $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
@@ -101,7 +102,7 @@ class ReportingController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$user[0]->quiz->name.'.xlsx"');
+        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$quiz->title.'.xlsx"');
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
