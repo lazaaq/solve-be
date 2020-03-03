@@ -62,7 +62,7 @@ class ReportingController extends Controller
     public function reportingQuiz($id) {
 
         if (Auth::user()->hasRole('admin')) { 
-            $user = User::with('collager')->where('school_id', $sekolah)->get();
+            $user = User::with('collager')->get();
         } else {
             $sekolah = Auth::user()->school_id;
             $user = User::with('collager')->where('school_id', $sekolah)->get();
@@ -81,7 +81,7 @@ class ReportingController extends Controller
             }
             $sheet->setCellValue('A'.$i, $value->name);
             $sheet->setCellValue('B'.$i, $value->school->name);
-            foreach ($value->collager->quizCollager->where('quiz_id', $id)->get() as $key => $value) {
+            foreach (@$value->collager->quizCollager->where('quiz_id', $id)->get() as $key => $value) {
                 $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
                 $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
                 $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
