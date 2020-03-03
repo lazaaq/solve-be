@@ -20,7 +20,7 @@ class ReportingController extends Controller
     public function reporting($id) {
 
         $sekolah = School::find($id);
-        $user = User::with('collager')->where('school_id', $id)->get();
+        $user = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->where('school_id', $id)->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -66,7 +66,7 @@ class ReportingController extends Controller
             $user = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
         } else {
             $sekolah = Auth::user()->school_id;
-            $user = User::with('collager')->where('school_id', $sekolah)->get();
+            $user = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->where('school_id', $sekolah)->get();
         }
         
         $spreadsheet = new Spreadsheet();
@@ -102,7 +102,7 @@ class ReportingController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$quiz->title.'.xlsx"');
+        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ '.$quiz->title.'.xlsx"');
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
