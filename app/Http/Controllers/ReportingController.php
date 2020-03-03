@@ -60,27 +60,37 @@ class ReportingController extends Controller
     }
 
     public function reportingQuiz($id) {
-        $quizCol = QuizCollager::where('quiz_id', $id)->get();
+
+        if (Auth::user()->hasRole('admin')) { 
+            $user = User::with('collager')->where('school_id', $sekolah)->get();
+        } else {
+            $sekolah = Auth::user()->school_id;
+            $user = User::with('collager')->where('school_id', $sekolah)->get();
+        }
+        
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $header = ['NAME','SCHOOL','DATE','CATEGORY','TYPE','QUIZ','TRUE','FALSE','SCORE'];
         $sheet->fromArray($header, NULL, 'A1');
-        foreach ($quizCol as $key => $value) {
+
+        foreach ($user as $key => $value) {
             if ($key < 1) {
                 $i = $key+2;
             } else {
                 $i = $i;
             }
-            $sheet->setCellValue('A'.$i, $value->collager->user->name);
-            $sheet->setCellValue('B'.$i, $value->collager->user->school->name);
-            $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
-            $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
-            $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
-            $sheet->setCellValue('F'.$i, $value->quiz->title);
-            $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
-            $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
-            $sheet->setCellValue('I'.$i, $value->total_score);
-            $i++;
+            $sheet->setCellValue('A'.$i, $value->name);
+            $sheet->setCellValue('B'.$i, $value->school->name);
+            foreach (@$value->collager->quizCollager->where('quiz_id', $id) as $key => $value) {
+                $sheet->setCellValue('C'.$i, $value->created_at->format('j F Y'));
+                $sheet->setCellValue('D'.$i, $value->quiz->quizType->quizCategory->name);
+                $sheet->setCellValue('E'.$i, $value->quiz->quizType->name);
+                $sheet->setCellValue('F'.$i, $value->quiz->title);
+                $sheet->setCellValue('G'.$i, $value->answerSave->where('isTrue',1)->count());
+                $sheet->setCellValue('H'.$i, $value->answerSave->where('isTrue',0)->count());
+                $sheet->setCellValue('I'.$i, $value->total_score);
+                $i++;
+            }
         }
 
         foreach(range('A','I') as $columnID) {
@@ -91,7 +101,7 @@ class ReportingController extends Controller
         $spreadsheet->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setARGB('FFFFE699');
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$quizCol[0]->quiz->name.'.xlsx"');
+        header('Content-Disposition: attachment;filename="LAPORAN HASIL PENGERJAAN QUIZ'.$user[0]->quiz->name.'.xlsx"');
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
