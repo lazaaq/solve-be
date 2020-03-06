@@ -57,7 +57,7 @@
 <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>RUKO - Rumah Korea</title>
+	<title>SOLVE - JOGJA SCIENCE TRAINING</title>
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -129,7 +129,7 @@
 							</div>
 
 							<div class="form-group">
-								<button type="submit" class="btn btn-primary btn-block">Reset Password <i class="icon-circle-right2 position-right"></i></button>
+								<button type="submit" class="btn bg-pink-400 btn-block">Reset Password <i class="icon-circle-right2 position-right"></i></button>
 							</div>
 
 							<!-- <div class="text-center">
