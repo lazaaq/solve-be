@@ -125,7 +125,7 @@
         					<div class="col-lg-9">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="code" class="styled">
+												<input type="checkbox" name="code">
 												Check this if you want add "code" to this quiz.
 											</label>
 										</div>
