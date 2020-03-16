@@ -154,14 +154,18 @@
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">
-										<i class="icon-eye8 text-size-small"></i> &nbsp;{{Auth::user()->getRoleNames()}}
+										@php
+										$role = Auth::user()->getRoleNames()->toArray();
+										$role = implode(', ',$role);
+										@endphp
+										<i class="icon-eye8 text-size-small"></i> &nbsp;{{$role}}
 									</div>
 								</div>
 
 								<div class="media-right media-middle">
 									<ul class="icons-list">
 										<li>
-											<a href="#"><i class="icon-cog3"></i></a>
+											<a href="{{route('user.show',Auth::id())}}"><i class="icon-cog3"></i></a>
 										</li>
 									</ul>
 								</div>
