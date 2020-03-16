@@ -154,7 +154,7 @@
 								<div class="media-body">
 									<span class="media-heading text-semibold">{{Auth::user()->name}}</span>
 									<div class="text-size-mini text-muted">
-										<i class="icon-pin text-size-small"></i> &nbsp;Sekip 3, UGM
+										<i class="icon-eye8 text-size-small"></i> &nbsp;{{Auth::user()->getRoleNames()}}
 									</div>
 								</div>
 
