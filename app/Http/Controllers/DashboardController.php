@@ -54,6 +54,13 @@ class DashboardController extends Controller
 
         $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
       } else {
+        
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $user_id = [];
+        foreach ($admin as $key => $value) {
+          $user_id[] = $value->id;
+        }
+
         $school_id = Auth::user()->school_id;
         $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
         foreach ($teacher as $key => $value) {
