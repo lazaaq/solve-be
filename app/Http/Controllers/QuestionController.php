@@ -220,9 +220,9 @@ class QuestionController extends Controller
               $option = Answer::find($data->answer->get($j)->id);
               Storage::delete('public/images/option/'.$data->answer->get($j)->pic_url);
               $option->delete();
-            } 
-            
-          }         
+            }
+
+          }
         }
       } elseif ($data->answer->count() < $request->jumlah+1) {
         #tambah
@@ -253,7 +253,7 @@ class QuestionController extends Controller
     //       $value2->save();
     //   }
     // }
-    
+
     DB::commit();
     for ($i=0; $i<=$request->jumlah; $i++) {
       if (!empty($request->picture_choice[$i])) {
@@ -266,7 +266,7 @@ class QuestionController extends Controller
         }
         Storage::put('public/images/option/' . $filenameChoice[$i], $imgChoice[$i]->encode());
         $data->answer->get($i)->pic_url = $filenameChoice[$i];
-        $data->answer->get($i)->save();    
+        $data->answer->get($i)->save();
       }
     }
     return redirect()->route('quiz.show',$data->quiz_id);
@@ -309,6 +309,17 @@ class QuestionController extends Controller
     }
     DB::commit();
     return redirect()->route('quiz.show',$quiz->id);
+  }
+
+  public function destroyPic($id)
+  {
+    DB::beginTransaction();
+    $data = Question::find($id);
+    Storage::delete('public/images/question/'.$data->pic_url);
+    $data->pic_url = '';
+    $data->save();
+    DB::commit();
+    return redirect()->route('question.edit',$data->id);
   }
 
   public function picture($id)

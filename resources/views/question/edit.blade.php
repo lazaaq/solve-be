@@ -44,6 +44,8 @@
           <div class="form-group">
             <label><b>Picture</b></label>
             @if(!empty($data->pic_url))
+            (<a id="delete-pic-question">delete</a>)
+            <!-- <a class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a> -->
             <img style="padding:10px" class="img-responsive" src="{{route('question.picture',$data->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
             @endif
             <input type="file" name="picture" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
@@ -163,7 +165,7 @@
 @push('after_script')
   <script>
     $(document).ready(function(){
-        var id = parseInt('{{$data->answer->count()}}') - 1; 
+        var id = parseInt('{{$data->answer->count()}}') - 1;
         var array = [1,2,3,4];
         var jumlah = parseInt('{{$data->answer->count()}}') - 1;
         $('input[name=jumlah]').val(jumlah)
@@ -255,24 +257,49 @@
         $('input[name=jumlah]').val(jumlah)
       });
 
-      
+
       function button1(id) {return "<div class='col-md-12' id='button"+id+"'>"+
                   "<div class='btn-group' role='group'>"+
                   "<button type='button' value='"+id+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
                   "</div>"+
-                  "</div>"}; 
+                  "</div>"};
 
       function button2(id) {return "<div class='col-md-12' id='button"+id+"'>"+
                   "<div class='btn-group' role='group'>"+
                   "<button type='button' value='"+id+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
                   "<button type='button' value='"+id+"' class='btn btn-default addButton'><i class='fa fa-plus'></i></button>"+
                   "</div>"+
-                  "</div>"}; 
+                  "</div>"};
 
       function button3(id) {return "<div class='col-md-12' id='button"+id+"'>"+
                   "<button type='button' value='"+id+"' class='btn btn-default removeButton'><i class='fa fa-minus'></i></button>"+
                   "</div>"+
-                  "</div>"}; 
+                  "</div>"};
+
+      $('#delete-pic-question').on( 'click', function () {
+        swal({
+          // title: "Are you sure?",
+          text: "Are you sure to delete picture?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.ajax({
+              url: "{{ url('admin/question-pic/delete/'.$data->id.'') }}",
+              method: 'get',
+              success: function(result){
+                toastr.success('Successfully deleted data!', 'Success', {timeOut: 5000});
+                location.reload();
+                // swal("Poof! Your imaginary file has been deleted!", {
+                //   icon: "success",
+                // });
+              }
+            });
+          }
+        });
+      });
     });
   </script>
 @endpush
