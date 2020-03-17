@@ -200,6 +200,9 @@ var tableQuiz;
       $(document).on('keyup', '#search', function(){
         var query = $('#search').val();
         var page = $('#hidden_page').val();
+        if (parseInt(page) > 1) {
+          page = '1';
+        }
         fetch_data(page, query);
       });
 

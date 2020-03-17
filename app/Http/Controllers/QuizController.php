@@ -188,7 +188,7 @@ class QuizController extends Controller
   public function show($id)
   {
     $quiz = Quiz::where('id', $id)->first();
-    $question = Question::where('quiz_id', $quiz->id)->paginate(10);
+    $question = Question::where('quiz_id', $quiz->id)->paginate(3);
     $number = $question->firstItem();
     // $question = DB::table('questions')->where('quiz_id', $quiz->id)->paginate(3);
     return view('quiz.view', compact('quiz','question','number'));
@@ -201,7 +201,7 @@ class QuizController extends Controller
       $quiz = Quiz::where('id', $id)->first();
       $query = $request->get('query');
       $query = str_replace(" ", "%", $query);
-      $question = Question::where('quiz_id', $quiz->id)->where('question', 'like', '%'.$query.'%')->paginate(10);
+      $question = Question::where('quiz_id', $quiz->id)->where('question', 'like', '%'.$query.'%')->paginate(3);
       $number = $question->firstItem();
       return view('quiz.view_data', compact('quiz','question','number'))->render();
      }
