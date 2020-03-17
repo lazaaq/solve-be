@@ -1,7 +1,7 @@
 @foreach ($collection as $key => $value)
 <div class="col-md-4">
   <!-- Simple list -->
-    <div class="panel panel-flat" style="height:400px;overflow:scroll;">
+    <div class="panel panel-flat" style="height:400px;overflow-y:scroll;">
       <div class="panel-heading">
         <h5 class="panel-title">{{$value['title']}}</h5>
         <div class="heading-elements">
