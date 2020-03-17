@@ -66,13 +66,13 @@
         <label class="col-md-8">: {{$quiz->title}}</label>
 
         <label class="text-bold col-md-4">Total Question</label>
-        <label class="col-md-8">: {{$quiz->sum_question}}</label>
+        <label class="col-md-8">: {{$quiz->sum_question}} question</label>
 
         <label class="text-bold col-md-4">Total Visible Question</label>
-        <label class="col-md-8">: {{$quiz->tot_visible}}</label>
+        <label class="col-md-8">: {{$quiz->tot_visible}} question</label>
 
         <label class="text-bold col-md-4">Time</label>
-        <label class="col-md-8">: {{$quiz->time}}</label>
+        <label class="col-md-8">: {{$quiz->time}} minute</label>
 
         <label class="text-bold col-md-4">Start Time</label>
         <label class="col-md-8">: {{\Carbon\Carbon::parse($quiz->start_time)->format('j F Y, H:i:s')}}</label>
