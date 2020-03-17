@@ -75,7 +75,6 @@ class DashboardController extends Controller
         }
 
         $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
-        dd($student);
         $collager_id = [];
         foreach ($student as $key => $value) {
           $collager_id[] = $value->collager->id;
@@ -88,7 +87,7 @@ class DashboardController extends Controller
       foreach ($quiz as $i => $quizs) {
         $collection[$i] = [
           'quiz_id'     => $quizs['id'],
-          'title'  => $quizs['title'],
+          'title'   => $quizs['title'],
           'type'        => $quizs->quizType['name'],
           'category'    => $quizs->quizType->QuizCategory['name'],
           'leaderboard' => [],
@@ -97,6 +96,7 @@ class DashboardController extends Controller
           if ($scores->quiz_id == $quizs['id']) {
             $leaderboard = $scores->leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
                                   ->leftJoin('users', 'collagers.user_id', 'users.id')
+                                  ->whereIn('collager_id',$collager_id)
                                   ->groupBy('quiz_collagers.collager_id','users.username', 'users.name','users.id','users.picture', 'quiz_collagers.quiz_id')
                                   ->where('quiz_collagers.quiz_id', $quizs['id'])
                                   ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, users.picture, max(quiz_collagers.total_score) as total_score, users.name, quiz_collagers.quiz_id')
