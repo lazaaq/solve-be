@@ -93,7 +93,7 @@
             { data: 'sum_question', name:'sum_question', visible:true},
             { data: 'tot_visible', name:'tot_visible', visible:true},
             { data: 'time', name:'time', visible:true},
-            { data: 'status', name:'status', visible:true},
+            { data: 'status_quiz', name:'status_quiz', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });

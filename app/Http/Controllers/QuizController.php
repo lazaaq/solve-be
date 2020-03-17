@@ -54,7 +54,7 @@ class QuizController extends Controller
       // $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
-    ->addColumn('status', function($row){
+    ->addColumn('status_quiz', function($row){
         if ($row->status == 'active') {
           $btn = '<button id="change-status" title="Change to inactive" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i> Active</button>';
         }else {
@@ -62,7 +62,7 @@ class QuizController extends Controller
         }
         return $btn;
     })
-    ->rawColumns(['action','status'])
+    ->rawColumns(['action','status_quiz'])
     ->addColumn('quiz_category', function($row){
       return $row->quizType->quizCategory->name;
     })
@@ -385,7 +385,7 @@ class QuizController extends Controller
       $messages_error[$key.'.question.distinct'] = "Question field number ".($key+1)." has duplicate value.";
       $messages_error[$key.'.question.unique'] = "Question field number ".($key+1)." has already been taken.";
       $messages_error[$key.'.option_a.required'] = "Option A field number ".($key+1)." is empty.";
-      $messages_error[$key.'.true_answer.required'] = "Question field number ".($key+1)." is empty.";
+      $messages_error[$key.'.true_answer.required'] = "True answer field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_b.required'] = "Option B field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_c.required'] = "Option C field number ".($key+1)." is empty.";
       // $messages_error[$key.'.option_d.required'] = "Option D field number ".($key+1)." is empty.";
@@ -393,7 +393,7 @@ class QuizController extends Controller
     }
 
     $validator = Validator::make($import_data_filter,[
-      // '*.question' => 'required|distinct|unique:questions,question,NULL,id,deleted_at,NULL',
+      '*.question' => 'required|distinct|unique:questions,question,NULL,id,deleted_at,NULL',
       '*.true_answer' => 'required',
       // '*.option_a' => 'required',
       // '*.option_b' => 'required',
@@ -784,10 +784,12 @@ class QuizController extends Controller
         'message'=>'Not found quiz data.'
       ]);
     }
-    if ($data[0]->status == 'inactive' || Carbon::now() >= $data[0]->end_time || Carbon::now() <= $data[0]->start_time) {
+    date_default_timezone_set('Asia/Jakarta');
+    $date = date('Y-m-d H:i:s');
+    if ($data[0]->status == 'inactive' || $date >= $data[0]->end_time || $date <= $data[0]->start_time) {
       return response()->json([
         'status'=>'failed',
-        'message'=>'Quis is currently unavailable.'
+        'message'=>'Quiz is currently unavailable.'
       ]);
     }
 
