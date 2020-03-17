@@ -35,7 +35,12 @@ class QuizController extends Controller
   public function getData()
   {
     if (Auth::user()->hasRole('admin')) {
-      $data = Quiz::all()->sortBy('title');
+      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+      $admin_id = [];
+      foreach ($admin as $key => $value) {
+        $admin_id[] = $value->id;
+      }
+      $data = Quiz::whereIn('created_by',$admin_id)->get()->sortBy('title');
     } else {
       $school_id = Auth::user()->school_id;
       $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
