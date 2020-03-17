@@ -31,7 +31,7 @@ class DashboardController extends Controller
       $totalQuizType    = QuizType::all()->count();
       $totalGamePlayed  = QuizCollager::whereBetween('created_at',[Carbon::today(),Carbon::today()->addDay(1)])->count();
       $totalGamePlayedBefore  = QuizCollager::whereBetween('created_at',[Carbon::today()->addDay(-1),Carbon::today()])->count();
-      
+
       if (Auth::user()->hasRole('admin')) {
         $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
         $admin_id = [];
@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
         $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
       } else {
-        
+
         $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
         $user_id = [];
         foreach ($admin as $key => $value) {
@@ -67,7 +67,7 @@ class DashboardController extends Controller
           $user_id[] = $value->id;
         }
 
-        $quiz = Quiz::whereIn('created_by',$user_id)->get()->sortBy('quiz_type_id');
+        $quiz = Quiz::where('created_by',$user_id)->get()->sortBy('quiz_type_id');
         $quiz_id = [];
         $totalQuiz = $quiz->count();
         foreach ($quiz as $key => $value) {
@@ -75,6 +75,7 @@ class DashboardController extends Controller
         }
 
         $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
+        dd($student);
         $collager_id = [];
         foreach ($student as $key => $value) {
           $collager_id[] = $value->collager->id;
