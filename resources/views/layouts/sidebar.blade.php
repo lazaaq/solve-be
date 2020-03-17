@@ -5,7 +5,7 @@
             <!-- Main -->
             <li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
             <li><a href="{{url('admin/dashboard')}}"><i class="icon-home4"></i><span>Dashboard</span></a></li>
-            <li><a href="{{route('classroom.index')}}"><i class="icon-users4"></i><span>Classroom</span></a></li>
+            <!-- <li><a href="{{route('classroom.index')}}"><i class="icon-users4"></i><span>Classroom</span></a></li> -->
             <li>
                 <a href="#"><i class="icon-history"></i><span>History</span></a>
                 <ul>
