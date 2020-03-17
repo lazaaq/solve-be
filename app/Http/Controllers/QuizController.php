@@ -751,7 +751,7 @@ class QuizController extends Controller
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
-                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status', 'quizs.time')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
@@ -766,11 +766,7 @@ class QuizController extends Controller
     //     $value->pic_url = route('quiz.picture',$value->id);
     //   }
     // }
-    foreach ($data as $key => $value) {
-      $jam = date('H', strtotime($value->time)) * 60;
-      $menit = date('i', strtotime($value->time)) * 1;
-      $value->time = $jam+$menit;
-    }
+
     return response()->json([
       'status'=>'success',
       'result'=>$data
@@ -783,7 +779,7 @@ class QuizController extends Controller
                   ->where('status', 'active')
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
-                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status' ,'quizs.start_time', 'quizs.end_time')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status' ,'quizs.start_time', 'quizs.end_time', 'quizs.time')
                   ->get();
     if (empty($data[0])) {
       return response()->json([
@@ -798,12 +794,6 @@ class QuizController extends Controller
         'status'=>'failed',
         'message'=>'Quiz is currently unavailable.'
       ]);
-    }
-
-    foreach ($data as $key => $value) {
-      $jam = date('H', strtotime($value->time)) * 60;
-      $menit = date('i', strtotime($value->time)) * 1;
-      $value->time = $jam+$menit;
     }
 
     return response()->json([

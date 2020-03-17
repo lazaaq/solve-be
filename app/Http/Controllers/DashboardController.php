@@ -45,14 +45,15 @@ class DashboardController extends Controller
         foreach ($quiz as $key => $value) {
           $quiz_id[] = $value->id;
         }
-        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->get();
-      } else {
-        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-        $user_id = [];
-        foreach ($admin as $key => $value) {
-          $user_id[] = $value->id;
+
+        $student = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
+        $collager_id = [];
+        foreach ($student as $key => $value) {
+          $collager_id[] = $value->collager->id;
         }
 
+        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
+      } else {
         $school_id = Auth::user()->school_id;
         $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
         foreach ($teacher as $key => $value) {
@@ -65,7 +66,14 @@ class DashboardController extends Controller
         foreach ($quiz as $key => $value) {
           $quiz_id[] = $value->id;
         }
-        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->get();
+
+        $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
+        $collager_id = [];
+        foreach ($student as $key => $value) {
+          $collager_id[] = $value->collager->id;
+        }
+
+        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
       }
 
       $collection = [];
@@ -85,7 +93,7 @@ class DashboardController extends Controller
                                   ->where('quiz_collagers.quiz_id', $quizs['id'])
                                   ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, users.picture, max(quiz_collagers.total_score) as total_score, users.name, quiz_collagers.quiz_id')
                                   ->orderBy('total_score','DESC')
-                                  // ->limit(5)
+                                  ->limit(10)
                                   ->get();
             $collection[$i]['leaderboard'] = $leaderboard;
           }

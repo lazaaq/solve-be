@@ -66,7 +66,22 @@ class HistoryQuizController extends Controller
 
     public function getDataQuiz($id)
     {
-      $data = QuizCollager::where('quiz_id',$id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+      if (Auth::user()->hasRole('admin')) {
+        $student = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
+        $collager_id = [];
+        foreach ($student as $key => $value) {
+          $collager_id[] = $value->collager->id;
+        }
+        $data = QuizCollager::where('quiz_id',$id)->whereIn('collager_id',$collager_id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+      } else {
+        $school_id = Auth::user()->school_id;
+        $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
+        $collager_id = [];
+        foreach ($student as $key => $value) {
+          $collager_id[] = $value->collager->id;
+        }
+        $data = QuizCollager::where('quiz_id',$id)->whereIn('collager_id',$collager_id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+      }
       return datatables()->of($data)
       ->addColumn('isTrue', function($row){
         return $row->answerSave->where('isTrue',1)->count();

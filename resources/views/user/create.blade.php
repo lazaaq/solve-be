@@ -109,8 +109,8 @@
                 <div class="form-group">
                     <label class="control-label col-lg-3">Role <span class="text-danger">*</span></label>
                     <div class="col-lg-9">
-                        <div class="multi-select-full">
-                            <select name="role[]" class="multiselect" multiple="multiple">
+                        <div class="multi-select-full" id="select-role">
+                            <select id="role" name="role[]" class="multiselect" multiple="multiple">
                                 @foreach($role as $data)
                                 <option value="{{$data->id}}" {{ (collect(old('role'))->contains($data->id)) ? 'selected':'' }}>{{$data->name}}</option>
                                 @endforeach
@@ -171,6 +171,17 @@
             },
             cache : true,
         },
+        });
+
+        $("#role").change(function() {
+        var role = $('#role option').filter(':selected').text();
+        var teacher = $('#role option:contains("teacher")').val();
+        var admin_school = $('#role option:contains("admin school")').val();        
+        if (role == 'admin school') {
+            $('#role').val([teacher,admin_school]);
+            $('#select-role').last().find('ul li:contains("teacher")').addClass('active');
+            $('#select-role').last().find('ul li:contains("teacher") span').addClass('checked');
+        }
         });
     });
 </script>

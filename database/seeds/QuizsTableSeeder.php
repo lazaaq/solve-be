@@ -30,7 +30,6 @@ class QuizsTableSeeder extends Seeder
                 'status' => 'active',
                 'start_time' => '2019-12-01 00:00:00',
                 'end_time' => '2019-12-31 23:59:00',
-                'time' => '01:00:00',
                 'created_at' => '2019-12-18 11:20:37',
                 'updated_at' => '2019-12-20 06:17:22',
                 'deleted_at' => NULL,

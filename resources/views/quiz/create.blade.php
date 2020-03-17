@@ -103,9 +103,9 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Time <span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">Time(minutes) <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <input type="time" class="form-control" name="time" id="time" value="{{ old('time') }}" placeholder="">
+                    <input type="number" min="0" class="form-control" name="time" id="time" value="{{ old('time') }}" placeholder="">
                       @if ($errors->has('time'))
                       <label style="padding-top:7px;color:#F44336;">
                           <strong><i class="fa fa-times-circle"></i>{{ $errors->first('time') }}</strong>

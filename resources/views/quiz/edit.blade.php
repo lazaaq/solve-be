@@ -71,9 +71,9 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Time <span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">Time(minutes) <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <input type="time" class="form-control" name="time_edit" id="time_edit" value="" placeholder="">
+                    <input type="number" min="0" class="form-control" name="time_edit" id="time_edit" value="" placeholder="">
                   </div>
                 </div>
                 <div class="form-group">
@@ -131,7 +131,6 @@ $(document).ready(function(){
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
-							console.log(data);
 							if(data.success){
                 $('#modal-edit').modal('hide');
 								toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
