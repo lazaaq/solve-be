@@ -67,7 +67,7 @@ class DashboardController extends Controller
           $user_id[] = $value->id;
         }
 
-        $quiz = Quiz::where('created_by',$user_id)->get()->sortBy('quiz_type_id');
+        $quiz = Quiz::whereIn('created_by',$user_id)->get()->sortBy('quiz_type_id');
         $quiz_id = [];
         $totalQuiz = $quiz->count();
         foreach ($quiz as $key => $value) {
