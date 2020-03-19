@@ -333,9 +333,6 @@ class QuestionController extends Controller
   {
       $quiz = Quiz::where('id', $id)->first();
       if(!empty($quiz)){
-          $jam = date('H', strtotime($quiz->time)) * 60;
-          $menit = date('i', strtotime($quiz->time)) * 1;
-          $quiz->time = $jam+$menit;
           $question = Question::where('quiz_id', $quiz->id)->with('answer')->get();
           // return $question;
 
