@@ -127,7 +127,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 });
 
-Route::group(['middleware' => ['role:admin'],'prefix' => '/search'], function () {
+Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/search'], function () {
     Route::get('/quiz/{id}', 'QuizController@search')->name('search.action');
 });
 

@@ -3,7 +3,7 @@
   <!-- Simple list -->
     <div class="panel panel-flat" style="height:400px;overflow-y:scroll;">
       <div class="panel-heading">
-        <h5 class="panel-title">{{$value['title']}}</h5>
+      <marquee behavior="scroll" style="color:#000" direction="left"><h5 class="panel-title">{{$value['title']}}</h5></marquee>
         <div class="heading-elements">
           <ul class="icons-list">
             <li><a data-action="collapse"></a></li>
