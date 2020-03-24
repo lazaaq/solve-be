@@ -139,7 +139,7 @@ class QuizCategoryController extends Controller
       $data->description=$request->description_edit;
       $data->pic_url=$filename;
       $data->pic_url_2=$filename2;
-      $data->created_by=Auth::id();
+      $data->updated_by=Auth::id();
       $data->save();
       return response()->json(['success'=>'Data updated successfully']);
       // return redirect()->route('quizcategory.index');

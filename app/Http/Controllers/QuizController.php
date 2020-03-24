@@ -279,7 +279,7 @@ class QuizController extends Controller
     $data->start_time = $request->start_time_edit;
     $data->end_time = $request->end_time_edit;
     $data->time=$request->time_edit;
-    $data->created_by=Auth::id();
+    $data->updated_by=Auth::id();
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
     // return redirect()->route('quiz.index');
