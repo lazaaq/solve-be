@@ -240,6 +240,7 @@ class HistoryController extends Controller
             'question_id' => $item['question_id'],
             'question' => $item->question['question'],
             'pic_question' => $item->question['pic_url'],
+            'review' => $item->question['review'],
             'trueAnswer' => $item->question->answer()->get()->where('isTrue', 1)->first()->option,
             'trueAnswerContent' => $item->question->answer()->get()->where('isTrue', 1)->first()->content,
             'trueAnswerPic' => $item->question->answer()->get()->where('isTrue', 1)->first()->pic_url,

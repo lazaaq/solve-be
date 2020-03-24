@@ -160,9 +160,9 @@
                         <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.4')}}</strong>
                     </label>
                   @endif   
-              </div>
-						</div>
-
+                </div>
+						  </div>
+            </div>
             <div class="col-md-12">
 							<div class="form-group" id="option{{$i}}">
 								<label class="display-block">True Answer:</label>
@@ -197,6 +197,18 @@
                   </label>
                 </div>
 							</div>
+              <br><br>
+						</div>
+            <div class="col-md-12">
+							<div class="form-group">
+								<label>Review:</label>
+                <textarea type="text" name="review[]" rows="3" class="form-control"  placeholder="">{{ old('review.'.$i) }}</textarea>
+                @if ($errors->has('review.'.$i))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{ $errors->first('review.'.$i) }}</strong>
+                  </label>
+                @endif
+              </div>
 						</div>
 					</div>
 				</fieldset>

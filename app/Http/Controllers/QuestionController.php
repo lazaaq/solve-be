@@ -90,6 +90,7 @@ class QuestionController extends Controller
             'quiz_id'       => $request->quiz_id,
             'question'      => $request->question[$i],
             'pic_url'       => $filename[$i],
+            'review'        => $request->review[$i]
         ];
 
     }
@@ -203,6 +204,7 @@ class QuestionController extends Controller
         $data->pic_url=$filename;
     }
     $data->question=$request->question;
+    $data->review=$request->review;
     $data->save();
     if (!$data) {
       DB::rollback();
@@ -333,9 +335,9 @@ class QuestionController extends Controller
   {
       $quiz = Quiz::where('id', $id)->first();
       if(!empty($quiz)){
-          $jam = date('H', strtotime($quiz->time)) * 60;
-          $menit = date('i', strtotime($quiz->time)) * 1;
-          $quiz->time = $jam+$menit;
+          // $jam = date('H', strtotime($quiz->time)) * 60;
+          // $menit = date('i', strtotime($quiz->time)) * 1;
+          // $quiz->time = $jam+$menit;
           $question = Question::where('quiz_id', $quiz->id)->with('answer')->get();
           // return $question;
 
@@ -393,6 +395,7 @@ class QuestionController extends Controller
         $collection[$i] = [
           'id' => $item['id'],
           'question' => $item['question'],
+          'review' => $item['review'],
           'type' => $type,
           'pic_question' => $item['pic_url'],
           'duration' => $item['time'],

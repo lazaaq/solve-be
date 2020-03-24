@@ -144,6 +144,16 @@
             @endif
             @endfor
           </div>
+          <br><br>
+          <div class="form-group">
+  					<label><b>Review:</b></label>
+            <textarea name="review" rows="3" class="form-control"  placeholder="">{{ $data->review }}</textarea>
+            @if ($errors->has('review'))
+              <label style="padding-top:7px;color:#F44336;">
+                  <strong><i class="fa fa-times-circle"></i> {{ $errors->first('review') }}</strong>
+              </label>
+            @endif
+  				</div>
         </fieldset>
         <div>
           <div class="col-md-4">
