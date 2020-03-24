@@ -25,35 +25,38 @@
     <hr style="margin-top:0">
     <div>
         <div id="option{{$value->id}}" class="panel-body hide">
-        @foreach ($value->answer as $key2 => $value2)
-        <div class="col-sm-6 form-group">
-        @if ($value2->isTrue == '1')
-            <div class="col-md-1">
-            <p class="pull-right"><i style="color:#4CAF50;" class="fa fa-check-circle position-left"></i></p>
-            </div>
-            <div class="col-md-11">
-            @if(!empty($value2->pic_url))
-            <div class="col-md-3">
-                <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-            </div>
-            @endif
-            <p>{{ $value2->content }}</p>
-            </div>
-        @else
-            <div class="col-md-1">
-            <p class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
-            </div>
-            <div class="col-md-11">
-            @if(!empty($value2->pic_url))
-            <div class="col-md-3">
-                <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
-            </div>
-            @endif
-            <p>{{ $value2->content }}</p>
-            </div>
-        @endif
-                </div>
-        @endforeach
+          @foreach ($value->answer as $key2 => $value2)
+          <div class="col-sm-6 form-group">
+          @if ($value2->isTrue == '1')
+              <div class="col-md-1">
+              <p class="pull-right"><i style="color:#4CAF50;" class="fa fa-check-circle position-left"></i></p>
+              </div>
+              <div class="col-md-11">
+              @if(!empty($value2->pic_url))
+              <div class="col-md-3">
+                  <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+              </div>
+              @endif
+              <p>{{ $value2->content }}</p>
+              </div>
+          @else
+              <div class="col-md-1">
+              <p class="pull-right"><i style="color:#F44336;" class="fa fa-times-circle position-left"></i></p>
+              </div>
+              <div class="col-md-11">
+              @if(!empty($value2->pic_url))
+              <div class="col-md-3">
+                  <img class="img-responsive" src="{{route('answer.picture',$value2->id)}}" alt="Quiz Type" title="Change the quiz type picture" width="100" height="50">
+              </div>
+              @endif
+              <p>{{ $value2->content }}</p>
+              </div>
+          @endif
+          </div>
+          @endforeach
+          <div class="col-md-12">
+                <a></a>Discussion : {{$value->review}}
+          </div>
         </div>
     </div>
 </div>
@@ -79,7 +82,7 @@
             } else {
                 $('#show-hide-option[value="'+id+'"]').empty();
                 $('#show-hide-option[value="'+id+'"]').append("<i class='icon-eye position-left'></i>Show");
-                $('#option'+id).addClass('hide');   
+                $('#option'+id).addClass('hide');
             }
         });
     });
