@@ -77,6 +77,7 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         $rules = [
+            'category' => 'required',
             'name' => 'required',
             'address' => 'required',
             'province' => 'required',
@@ -90,6 +91,7 @@ class SchoolController extends Controller
           }else{
              $data = School::create(
                [
+                 'category'=>request('category'),
                  'name'=>request('name'),
                  'address'=>request('address'),
                  'province'=>request('province'),
@@ -135,6 +137,7 @@ class SchoolController extends Controller
     {
         $data= School::find($id);
         $rules = [
+            'category_edit' => 'required',
             'name_edit' => 'required',
             'address_edit' => 'required',
             'province_edit' => 'required',
@@ -145,6 +148,7 @@ class SchoolController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
+        $data->category=$request->category_edit;
         $data->name=$request->name_edit;
         $data->address=$request->address_edit;
         $data->province=$request->province_edit;

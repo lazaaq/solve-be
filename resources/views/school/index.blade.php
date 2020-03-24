@@ -29,6 +29,7 @@
   			<thead>
       		<tr>
              <th>Id</th>
+             <th>Category</th>
              <th>School Name</th>
              <th>Province</th>
              <th>Regency</th>
@@ -77,6 +78,7 @@
         },
         columns: [
             { data: 'id', name:'id', visible:false},
+            { data: 'category', name:'category', visible:true},
             { data: 'name', name:'name', visible:true},
             { data: 'province', name:'province', visible:true},
             { data: 'region', name:'region', visible:true},
@@ -120,6 +122,7 @@
             $('input[name=_method]').val('PUT');
             $('input[name=_token]').val(token);
             $('input[name=id_edit]').val(data['data']['id']);
+            $('select[name=category_edit]').val(data['data']['category']).trigger('change');
             $('input[name=name_edit]').val(data['data']['name']);
             $('input[name=province_edit]').val(data['data']['province']);
             $('input[name=regency_edit]').val(data['data']['region']);
