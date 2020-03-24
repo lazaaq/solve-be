@@ -407,10 +407,12 @@ class QuestionController extends Controller
 
       $data = Arr::random($collection, $quiz->tot_visible);
       shuffle($data);
+      $status_review = $quiz->status_review;
       return response()->json([
-          'status' => 'success',
-          'quiz'   => $quiz,
-          'question'   => $data
+          'status'        => 'success',
+          'status_review' => $status_review,
+          'quiz'          => $quiz,
+          'question'      => $data
       ]);
   }
 

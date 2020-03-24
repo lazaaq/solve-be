@@ -251,10 +251,13 @@ class HistoryController extends Controller
           ];
         }
 
+        $status_review = Quiz::find($data->quiz_id)->status_review;
+
         return response()->json([
-            'status'   => 'success',
-            'result'   => $data,
-            'question' => $collection,
+            'status'           => 'success',
+            'status_review'    => $status_review,
+            'result'           => $data,
+            'question'         => $collection,
         ]);
 
     }
