@@ -46,6 +46,7 @@
              <th>Visible Question</th>
              <th>Time</th>
              <th>Status</th>
+             <th>Status Review</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -94,6 +95,7 @@
             { data: 'tot_visible', name:'tot_visible', visible:true},
             { data: 'time', name:'time', visible:true},
             { data: 'status_quiz', name:'status_quiz', visible:true},
+            { data: 'review_status', name:'review_status', visible:true},
             { data: 'action', name:'action', visible:true},
         ],
       });
@@ -170,71 +172,139 @@
 
         /* START OF CHANGE IS VIEW DATA */
         $('#table-quiz tbody').on( 'click', '#change-status', function () {
+          var type = $(this).data('target');
           var data = tableQuiz.row( $(this).parents('tr') ).data();
           var formData = new FormData();
           formData.append('_token', "{{ csrf_token() }}");
           formData.append('id', data['id']);
-          if (data['status'] == 'active') {
-            swal(
-              {
-                // title: "Are you sure?",
-                text: "Are you sure to inactive quiz?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-              }
-            ).then((willDelete) => {
-              if (willDelete) {
-                $.ajax({
-                  url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
-                  method: 'post',
-                  processData: false,
-                  contentType: false,
-                  dataType: 'JSON',
-                  data: formData,
-                  success: function(data){
-                    if(data.success){
-                      tableQuiz.ajax.reload();
-                      toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
-                    }else{
-                      for(var count = 0; count < data.errors.length; count++){
+          formData.append('type',type);
+          
+          if (type == 'status') {
+            if (data['status'] == 'active') {
+              swal(
+                {
+                  // title: "Are you sure?",
+                  text: "Are you sure to inactive quiz?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                }
+              ).then((willDelete) => {
+                if (willDelete) {
+                  $.ajax({
+                    url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
+                    method: 'post',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    data: formData,
+                    success: function(data){
+                      if(data.success){
+                        tableQuiz.ajax.reload();
+                        toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                      }else{
+                        for(var count = 0; count < data.errors.length; count++){
+                          toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                        }
+                      }
+                    },
+                  });
+                }
+              });
+            } else {
+              swal(
+                {
+                  text: "Are you sure to active quiz?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                }
+              ).then((willDelete) => {
+                if (willDelete) {
+                  $.ajax({
+                    url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
+                    method: 'post',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    data: formData,
+                    success: function(data){
+                      if(data.success){
+                        tableQuiz.ajax.reload();
+                        toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                      }else{
+                        for(var count = 0; count < data.errors.length; count++){
                         toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                        }
                       }
-                    }
-                  },
-                });
-              }
-            });
+                    },
+                  });
+                }
+              });
+            }
           } else {
-            swal(
-              {
-                text: "Are you sure to active quiz?",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-              }
-            ).then((willDelete) => {
-              if (willDelete) {
-                $.ajax({
-                  url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
-                  method: 'post',
-                  processData: false,
-                  contentType: false,
-                  dataType: 'JSON',
-                  data: formData,
-                  success: function(data){
-                    if(data.success){
-                      tableQuiz.ajax.reload();
-                      toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
-                    }else{
-                      for(var count = 0; count < data.errors.length; count++){
-                      toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+            if (data['status_review'] == 'active') {
+              swal(
+                {
+                  // title: "Are you sure?",
+                  text: "Are you sure to inactive review?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                }
+              ).then((willDelete) => {
+                if (willDelete) {
+                  $.ajax({
+                    url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
+                    method: 'post',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    data: formData,
+                    success: function(data){
+                      if(data.success){
+                        tableQuiz.ajax.reload();
+                        toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                      }else{
+                        for(var count = 0; count < data.errors.length; count++){
+                          toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                        }
                       }
-                    }
-                  },
-                });
-              }
-            });
+                    },
+                  });
+                }
+              });
+            } else {
+              swal(
+                {
+                  text: "Are you sure to active review?",
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: true,
+                }
+              ).then((willDelete) => {
+                if (willDelete) {
+                  $.ajax({
+                    url: "{{ url('admin/quiz/change-status') }}"+"/"+data['id'],
+                    method: 'post',
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                    data: formData,
+                    success: function(data){
+                      if(data.success){
+                        tableQuiz.ajax.reload();
+                        toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
+                      }else{
+                        for(var count = 0; count < data.errors.length; count++){
+                        toastr.error(data.errors[count], 'Error', {timeOut: 5000});
+                        }
+                      }
+                    },
+                  });
+                }
+              });
+            }
           }
         });
         /* END OF CHANGE IS VIEW DATA*/
