@@ -135,6 +135,7 @@
             if (data['data']['code'] != null) {
               $('#code_edit').prop('checked',true);
               $('input[name="code_edit"]').val('checked');
+              $('input[name="code_container"]').val(data['data']['code']);
             } else {
               $('input[name="code_edit"]').val('unchecked');
             }

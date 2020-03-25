@@ -91,6 +91,7 @@
 											<label>
 												<input type="checkbox" name="" id="code_edit">
                         <input type="hidden" name="code_edit">
+                        <input type="hidden" name="code_container">
 												Check this if you want add "code" to this quiz.
 											</label>
 										</div>

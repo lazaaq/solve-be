@@ -259,12 +259,16 @@ class QuizController extends Controller
            $filename=$data->pic_url;
       }
       if ($request->code_edit == 'checked') {
-        $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
-        $validation = Quiz::where('code', $code)->first();
-        if (!empty($validation)) {
-          $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+        if ($request->code_container == NULL) {
+            $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+            $validation = Quiz::where('code', $code)->first();
+            if (!empty($validation)) {
+              $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
+            } else {
+              $code = $code;
+            }
         } else {
-          $code = $code;
+          $code = $request->code_container;
         }
       } else {
         $code = NULL;
