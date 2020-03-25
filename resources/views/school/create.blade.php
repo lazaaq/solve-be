@@ -12,6 +12,17 @@
               <fieldset class="content-group">
         				<legend class="text-bold">Create School</legend>
                 <div class="form-group">
+                  <label class="control-label col-lg-3">Category<span class="text-danger">*</span></label>
+                  <div class="col-lg-9">
+                  <select class="form-control" name="category" id="category">
+                    <option value="Lain-lain">Lain-lain</option>
+                    <option value="SMA">SMA</option>
+                    <option value="SMP">SMP</option>
+                    <option value="SD">SD</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="control-label col-lg-3">School Name<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
                   <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="">

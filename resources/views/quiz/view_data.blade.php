@@ -55,7 +55,7 @@
           </div>
           @endforeach
           <div class="col-md-12">
-                <a></a>Discussion : {{$value->review}}
+                <a></a>Review : {{$value->review}}
           </div>
         </div>
     </div>

@@ -181,7 +181,7 @@ class QuizTypeController extends Controller
     $data->quiz_category_id=$request->quiz_category_edit;
     $data->description=$request->description_edit;
     $data->pic_url=$filename;
-    $data->created_by=Auth::id();
+    $data->updated_by=Auth::id();
     $data->save();
 
     Cache::forget('quiztype'.$id);

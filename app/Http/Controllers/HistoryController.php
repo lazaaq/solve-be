@@ -210,7 +210,8 @@ class HistoryController extends Controller
         $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->first();
         $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
         $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
-
+        $data->quiz = Quiz::find($data->quiz_id)->title;
+        
         $answerSave = AnswerSave::where('quiz_collager_id',$data->id)->get();
         $collection = [];
         foreach ($answerSave as $i => $item) {
@@ -251,10 +252,13 @@ class HistoryController extends Controller
           ];
         }
 
+        $status_review = Quiz::find($data->quiz_id)->status_review;
+
         return response()->json([
-            'status'   => 'success',
-            'result'   => $data,
-            'question' => $collection,
+            'status'           => 'success',
+            'status_review'    => $status_review,
+            'result'           => $data,
+            'question'         => $collection,
         ]);
 
     }

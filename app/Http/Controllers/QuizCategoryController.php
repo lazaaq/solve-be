@@ -139,7 +139,7 @@ class QuizCategoryController extends Controller
       $data->description=$request->description_edit;
       $data->pic_url=$filename;
       $data->pic_url_2=$filename2;
-      $data->created_by=Auth::id();
+      $data->updated_by=Auth::id();
       $data->save();
       return response()->json(['success'=>'Data updated successfully']);
       // return redirect()->route('quizcategory.index');
@@ -208,24 +208,45 @@ class QuizCategoryController extends Controller
 
   function api_index(Request $request){
     $school = School::find($request->get('school_id'));
-    if ($school->name == 'Lain-lain') {
-      $user = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-      $user_id = [];
-      foreach ($user as $key => $value) {
-        $user_id[] = $value->id;
-      }
-      $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
-    } else {
-      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-      $user_id = [];
-      foreach ($admin as $key => $value) {
-        $user_id[] = $value->id;
-      }
-      $user = User::where('school_id',$school->id)->get();
-      foreach ($user as $key => $value) {
-        $user_id[] = $value->id;
-      }
-      $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
+    switch ($school->category) {
+      case 'Lain-lain':
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $user_id = [];
+        foreach ($admin as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $user = User::where('school_id',$school->id)->get();
+        foreach ($user as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
+        break;
+      case 'SMA':
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $user_id = [];
+        foreach ($admin as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $user = User::where('school_id',$school->id)->get();
+        foreach ($user as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
+        break;
+      case 'SMP':
+        $user = User::where('school_id',$school->id)->get();
+        foreach ($user as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
+        break;
+      case 'SD':
+        $user = User::where('school_id',$school->id)->get();
+        foreach ($user as $key => $value) {
+          $user_id[] = $value->id;
+        }
+        $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
+        break;
     }
     return response()->json([
       'status'=>'success',

@@ -43,17 +43,19 @@ class SchoolController extends Controller
     {
         if (Auth::user()->hasRole('admin')) {
             $param  = strtolower($request->get('term'));
-            $data = School::select('id','name','district')->orWhere(\DB::raw('lower(name)'),'like',"%$param%")->get()->sortBy('name');
+            $data = School::select('id','name','district','region')->orWhere(\DB::raw('lower(name)'),'like',"%$param%")->get()->sortBy('name');
         } else {
-            $data = School::select('id','name','district')->where('id',Auth::user()->school_id)->get()->sortBy('name');
+            $data = School::select('id','name','district','region')->where('id',Auth::user()->school_id)->get()->sortBy('name');
         }
         $list = [];
             foreach ($data as $key => $value) {
                 $list[] = [
                     'id'=>$value->id,
-                    'text'=>$value->name . ' - ' . $value->district
+                    'text'=>$value->name . ' - ' . $value->region .', '. $value->district
                 ];
             }
+            $id = array_search('LAIN-LAIN - -, LAIN-LAIN', array_column($list, 'text'));
+            $list[$id]['text'] = 'LAIN-LAIN';
             return response()->json($list);
     }
 
@@ -77,6 +79,7 @@ class SchoolController extends Controller
     public function store(Request $request)
     {
         $rules = [
+            'category' => 'required',
             'name' => 'required',
             'address' => 'required',
             'province' => 'required',
@@ -90,6 +93,7 @@ class SchoolController extends Controller
           }else{
              $data = School::create(
                [
+                 'category'=>request('category'),
                  'name'=>request('name'),
                  'address'=>request('address'),
                  'province'=>request('province'),
@@ -135,6 +139,7 @@ class SchoolController extends Controller
     {
         $data= School::find($id);
         $rules = [
+            'category_edit' => 'required',
             'name_edit' => 'required',
             'address_edit' => 'required',
             'province_edit' => 'required',
@@ -145,6 +150,7 @@ class SchoolController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
+        $data->category=$request->category_edit;
         $data->name=$request->name_edit;
         $data->address=$request->address_edit;
         $data->province=$request->province_edit;
@@ -171,10 +177,10 @@ class SchoolController extends Controller
     {
       $param  = $request->get('term');
       if (empty($request->term)) {
-        $data = School::select('id','name','district')->limit(15)->get()->sortBy('name');
+        $data = School::select('id','name','district','region')->limit(15)->get()->sortBy('name');
       } else {
         $searchValues = explode(' ', $param);
-        $data = School::select('id','name','district')->orWhere(function ($q) use ($searchValues) {
+        $data = School::select('id','name','district','region')->orWhere(function ($q) use ($searchValues) {
             foreach ($searchValues as $value) {
               $q->where('name', 'like', "%$value%");
             }
@@ -184,9 +190,12 @@ class SchoolController extends Controller
       foreach ($data as $key => $value) {
           $list[] = [
               'id'=>$value->id,
-              'text'=>$value->name . ' - ' . $value->district
-          ];
+              'text'=>$value->name . ' - ' . $value->region .', '. $value->district
+            ];
       }
+      $id = array_search('LAIN-LAIN - -, LAIN-LAIN', array_column($list, 'text'));
+      $list[$id]['text'] = 'LAIN-LAIN';
+
       return response()->json([
           'status' => 'success',
           'result'   => $list

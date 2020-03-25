@@ -54,20 +54,26 @@ class QuizController extends Controller
     ->addColumn('action', function($row){
       $btn = '<a href="'.route('quiz.show',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
       $btn = $btn.'  <a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-      // $btn = $btn.'  <a href="'.route('quiz.edit',$row->id).'" title="Edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
-      // $btn = $btn.'  <a href="'.route('quiz.destroy',$row->id).'" title="Delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></a>';
       return $btn;
     })
     ->addColumn('status_quiz', function($row){
         if ($row->status == 'active') {
-          $btn = '<button id="change-status" title="Change to inactive" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i> Active</button>';
+          $btn = '<button id="change-status" title="Change to inactive" data-target="status" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i> Active</button>';
         }else {
-          $btn = '<button id="change-status" title="Change to active" class="btn border-default btn-xs text-default btn-flat btn-icon"><i class="fa fa-toggle-off"></i> Inactive</button>';
+          $btn = '<button id="change-status" title="Change to active" data-target="status" class="btn border-default btn-xs text-default btn-flat btn-icon"><i class="fa fa-toggle-off"></i> Inactive</button>';
         }
         return $btn;
     })
-    ->rawColumns(['action','status_quiz'])
+    ->addColumn('review_status', function($row){
+      if ($row->status_review == 'active') {
+        $btn = '<button id="change-status" title="Change to inactive" data-target="review" class="btn border-success btn-xs text-success btn-flat btn-icon"><i class="fa fa-toggle-on"></i> Active</button>';
+      }else {
+        $btn = '<button id="change-status" title="Change to active" data-target="review" class="btn border-default btn-xs text-default btn-flat btn-icon"><i class="fa fa-toggle-off"></i> Inactive</button>';
+      }
+      return $btn;
+    })
+    ->rawColumns(['action','status_quiz','review_status'])
     ->addColumn('quiz_category', function($row){
       return $row->quizType->quizCategory->name;
     })
@@ -252,7 +258,7 @@ class QuizController extends Controller
       }else{
            $filename=$data->pic_url;
       }
-      if ($request->code == 'checked') {
+      if ($request->code_edit == 'checked') {
         $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
         $validation = Quiz::where('code', $code)->first();
         if (!empty($validation)) {
@@ -273,7 +279,7 @@ class QuizController extends Controller
     $data->start_time = $request->start_time_edit;
     $data->end_time = $request->end_time_edit;
     $data->time=$request->time_edit;
-    $data->created_by=Auth::id();
+    $data->updated_by=Auth::id();
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
     // return redirect()->route('quiz.index');
@@ -802,13 +808,22 @@ class QuizController extends Controller
     ]);
   }
 
-  public function changeStatus($id){
+  public function changeStatus(Request $request, $id){
     $data = Quiz::find($id);
-    if ($data->status == 'active') {
-      $data->status = 'inactive';
-    }else {
-      $data->status = 'active';
+    if ($request->type == 'status') {
+      if ($data->status == 'active') {
+        $data->status = 'inactive';
+      }else {
+        $data->status = 'active';
+      }
+    } else {
+      if ($data->status_review == 'active') {
+        $data->status_review = 'inactive';
+      }else {
+        $data->status_review = 'active';
+      }
     }
+    
     $data->save();
     return response()->json(['success'=>'Data changed successfully','data'=>$data]);
   }
