@@ -43,6 +43,12 @@
   				<span class="text-semibold">Oops!</span> {{session('dbTransactionError')}}
 		    </div>
       @endif
+      @if ($quiz->tot_visible > $quiz->sum_question)
+        <div class="alert alert-danger alert-styled-left alert-bordered">
+          <span class="text-semibold">Oops!</span> Total questions is only {{$quiz->sum_question}}, but Total Visible Questions is {{$quiz->tot_visible}}. Please make more questions until Total Question equal to Total Visible Question.
+          <br>You must make {{$quiz->tot_visible - $quiz->sum_question}} question again, or quiz can not show in mobile apps.
+		    </div>
+      @endif
     @if ($quiz->sum_question == 0)
       <button style="margin-top:-6px" class="add-modal btn btn-primary btn-sm pull-right"><span class="icon-add position-left"></span>Create Question</button>
       <button style="margin-top:-6px;margin-right:6px" type="button" class="btn btn-primary btn-sm bg-primary pull-right" data-toggle="modal" data-target="#import"><i class="icon-upload position-left"></i> Import Question</button>
