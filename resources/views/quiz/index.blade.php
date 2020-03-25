@@ -105,6 +105,7 @@
       $("#table-quiz tbody").on('click','#btn-edit', function(){
           $('.fileinput-remove-button').click();
           $("#quiz-edit :input").val('');
+          $('#code_edit').prop('checked',false);
           $('#modal-edit').modal('show');
           var data = tableQuiz.row( $(this).parents('tr') ).data();
           var id = data['id'];
@@ -132,9 +133,11 @@
             $('input[name=end_time_edit]').val(data['data']['end_time']);
             $('input[name=time_edit]').val(data['data']['time']);
             if (data['data']['code'] != null) {
-              $('input[name=code]').val('checked').parent().addClass('checked',true).trigger('change');
+              $('#code_edit').prop('checked',true);
+              $('input[name="code_edit"]').val('checked');
+            } else {
+              $('input[name="code_edit"]').val('unchecked');
             }
-            $('input[name=code]').val('checked');
             $('select[name=quiz_category_edit]').val(data['data']['quiz_category_id']).trigger('change');
             $('select[name=quiz_type_edit]').val(data['data']['quiz_type_id']).trigger('change');
           });

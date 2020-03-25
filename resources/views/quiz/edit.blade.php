@@ -89,7 +89,8 @@
         					<div class="col-lg-9">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="code" class="styled">
+												<input type="checkbox" name="" id="code_edit">
+                        <input type="hidden" name="code_edit">
 												Check this if you want add "code" to this quiz.
 											</label>
 										</div>
@@ -118,6 +119,14 @@
 <script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+  $('#code_edit').click(function(){
+      if($(this).prop("checked") == true){
+          $('input[name="code_edit"]').val('checked');
+      }
+      else if($(this).prop("checked") == false){
+          $('input[name="code_edit"]').val('unchecked');
+      }
+  });
 	$("#type-edit").chained("#category-edit");
     /* START OF SAVE DATA */
 		$('#quiz-edit').on('submit', function (e) {

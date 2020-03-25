@@ -258,7 +258,7 @@ class QuizController extends Controller
       }else{
            $filename=$data->pic_url;
       }
-      if ($request->code == 'checked') {
+      if ($request->code_edit == 'checked') {
         $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
         $validation = Quiz::where('code', $code)->first();
         if (!empty($validation)) {
