@@ -54,8 +54,11 @@ class SchoolController extends Controller
                     'text'=>$value->name . ' - ' . $value->region .', '. $value->district
                 ];
             }
-            $id = array_search('LAIN-LAIN - -, LAIN-LAIN', array_column($list, 'text'));
-            $list[$id]['text'] = 'LAIN-LAIN';
+            
+            $id = array_keys(array_column($list, 'text'), 'LAIN-LAIN - -, LAIN-LAIN');
+            if ($id != NULL) {
+                $list[$id[0]]['text'] = 'LAIN-LAIN';
+            }
             return response()->json($list);
     }
 
@@ -175,31 +178,33 @@ class SchoolController extends Controller
     // START OF API
     public function api_index(Request $request)
     {
-      $param  = $request->get('term');
-      if (empty($request->term)) {
-        $data = School::select('id','name','district','region')->limit(15)->get()->sortBy('name');
-      } else {
-        $searchValues = explode(' ', $param);
-        $data = School::select('id','name','district','region')->orWhere(function ($q) use ($searchValues) {
-            foreach ($searchValues as $value) {
-              $q->where('name', 'like', "%$value%");
-            }
-        })->get()->sortBy('name');
-      }
-      $list = [];
-      foreach ($data as $key => $value) {
-          $list[] = [
-              'id'=>$value->id,
-              'text'=>$value->name . ' - ' . $value->region .', '. $value->district
-            ];
-      }
-      $id = array_search('LAIN-LAIN - -, LAIN-LAIN', array_column($list, 'text'));
-      $list[$id]['text'] = 'LAIN-LAIN';
+        $param  = $request->get('term');
+        if (empty($request->term)) {
+            $data = School::select('id','name','district','region')->limit(15)->get()->sortBy('name');
+        } else {
+            $searchValues = explode(' ', $param);
+            $data = School::select('id','name','district','region')->orWhere(function ($q) use ($searchValues) {
+                foreach ($searchValues as $value) {
+                $q->where('name', 'like', "%$value%");
+                }
+            })->get()->sortBy('name');
+        }
+        $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'id'=>$value->id,
+                'text'=>$value->name . ' - ' . $value->region .', '. $value->district
+                ];
+        }
+        $id = array_keys(array_column($list, 'text'), 'LAIN-LAIN - -, LAIN-LAIN');
+        if ($id != NULL) {
+            $list[$id[0]]['text'] = 'LAIN-LAIN';
+        }
 
-      return response()->json([
-          'status' => 'success',
-          'result'   => $list
-      ]);
+        return response()->json([
+            'status' => 'success',
+            'result'   => $list
+        ]);
     }
 
 
