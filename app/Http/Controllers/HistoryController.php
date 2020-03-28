@@ -238,6 +238,7 @@ class HistoryController extends Controller
             }
           }
           $collection[$i] = [
+            'quiz' => Quiz::find($data->quiz_id)->title,
             'question_id' => $item['question_id'],
             'question' => $item->question['question'],
             'pic_question' => $item->question['pic_url'],
