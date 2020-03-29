@@ -758,7 +758,7 @@ class QuizController extends Controller
                   ->where('status', 'active')
                   ->where('start_time', '<=', $date)
                   ->where('end_time', '>=', $date)
-                  ->where('sum_question', '<=', 'tot_visible')
+                  ->whereRaw('sum_question >= tot_visible')
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
                   // ->select('quizs.id', 'quizs.title', 'quizs.description', 'quizs.sum_question','quizs.pic_url')
