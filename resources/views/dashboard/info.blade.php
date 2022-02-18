@@ -26,7 +26,7 @@
       </div>
 
       <h3 class="no-margin">{{$totalGamePlayed}}</h3>
-      Game Played
+      Quiz Taken
       @if ($totalGamePlayed == 0 || $totalGamePlayedBefore == 0)
         <div class="text-muted text-size-small">0% compared to the previous day</div>
       @else
@@ -49,8 +49,8 @@
       <div class="heading-elements">
       </div>
       <h3 class="no-margin">{{$totalQuiz}}</h3>
-      Total Game
-      <div class="text-muted text-size-small">from {{$totalQuizType}} type game</div>
+      Total Quiz
+      <div class="text-muted text-size-small">from {{$totalQuizType}} type quizzes</div>
     </div>
 
     <div id="today-revenue"></div>

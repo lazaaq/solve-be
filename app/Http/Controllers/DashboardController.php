@@ -64,7 +64,7 @@ class DashboardController extends Controller
           'title'   => $quizs['title'],
           'type'        => $quizs->quizType->name,
           'category'    => $quizs->quizType->QuizCategory->name,
-          'leaderboard' => $quizs->quizCollager->sortByDesc('total_score')->take(10),
+          'leaderboard' => $quizs->quizCollager->sortByDesc('total_score')->unique('collager_id')->take(10),
         ];
       }
       return view('index', compact ('quiz','memberOnline','totalMember','totalQuiz','totalQuizType','totalGamePlayed','totalGamePlayedBefore','collection'));
