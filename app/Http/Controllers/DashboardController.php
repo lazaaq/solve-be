@@ -33,83 +33,40 @@ class DashboardController extends Controller
       $totalGamePlayedBefore  = QuizCollager::whereBetween('created_at',[Carbon::today()->addDay(-1),Carbon::today()])->count();
 
       if (Auth::user()->hasRole('admin')) {
-        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-        $admin_id = [];
-        foreach ($admin as $key => $value) {
-          $admin_id[] = $value->id;
-        }
+        $user_id = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->pluck('id')->toArray();
 
-        $quiz = Quiz::whereIn('created_by',$admin_id)->get()->sortBy('quiz_type_id');
-        $quiz_id = [];
-        $totalQuiz = $quiz->count();
-        foreach ($quiz as $key => $value) {
-          $quiz_id[] = $value->id;
-        }
+        $quiz_id = Quiz::whereIn('created_by',$user_id)->pluck('id')->toArray();
+        $totalQuiz = count($quiz_id);
 
-        $student = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
-        $collager_id = [];
-        foreach ($student as $key => $value) {
-          $collager_id[] = $value->collager->id;
-        }
+        $collager_id = Collager::whereHas('user.roles', function($q) { $q->where('name', 'student'); })->pluck('id')->toArray();
 
-        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
       } else {
 
-        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-        $user_id = [];
-        foreach ($admin as $key => $value) {
-          $user_id[] = $value->id;
-        }
-
+        $admin_id = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->pluck('id')->toArray();
+        $teacher_id = User::where('school_id',$school_id)->whereHas('lecture')->pluck('id')->toArray();
         $school_id = Auth::user()->school_id;
-        $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
-        foreach ($teacher as $key => $value) {
-          $user_id[] = $value->id;
-        }
 
-        $quiz = Quiz::whereIn('created_by',$user_id)->get()->sortBy('quiz_type_id');
-        $quiz_id = [];
-        $totalQuiz = $quiz->count();
-        foreach ($quiz as $key => $value) {
-          $quiz_id[] = $value->id;
-        }
+        $user_id = array_merge($teacher_id,$admin_id);
 
-        $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
-        $collager_id = [];
-        foreach ($student as $key => $value) {
-          $collager_id[] = $value->collager->id;
-        }
+        $quiz_id = Quiz::whereIn('created_by',$user_id)->pluck('id')->toArray();
+        $totalQuiz = count($quiz_id);
 
-        $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
+        $collager_id = Collager::whereHas('user.roles', function($q) { $q->where('name', 'student'); })->whereHas('user', function($q) use ($school_id) { $q->where('school_id',$school_id); })->pluck('id')->toArray();
       }
 
+      $score = QuizCollager::whereIn('quiz_id',$quiz_id)->whereIn('collager_id',$collager_id)->get();
+
+      $quiz = Quiz::with('quizType.QuizCategory','quizCollager.collager.user')->whereIn('created_by',$user_id)->get()->sortBy('quiz_type_id');
       $collection = [];
       foreach ($quiz as $i => $quizs) {
         $collection[$i] = [
           'quiz_id'     => $quizs['id'],
           'title'   => $quizs['title'],
-          'type'        => $quizs->quizType['name'],
-          'category'    => $quizs->quizType->QuizCategory['name'],
-          'leaderboard' => [],
+          'type'        => $quizs->quizType->name,
+          'category'    => $quizs->quizType->QuizCategory->name,
+          'leaderboard' => $quizs->quizCollager->sortByDesc('total_score')->take(10),
         ];
-        foreach ($score as $j => $scores) {
-          if ($scores->quiz_id == $quizs['id']) {
-            $leaderboard = $scores->leftJoin('collagers', 'quiz_collagers.collager_id', 'collagers.id')
-                                  ->leftJoin('users', 'collagers.user_id', 'users.id')
-                                  ->whereIn('collager_id',$collager_id)
-                                  ->groupBy('quiz_collagers.collager_id','users.username', 'users.name','users.id','users.picture', 'quiz_collagers.quiz_id')
-                                  ->where('quiz_collagers.quiz_id', $quizs['id'])
-                                  ->selectRaw('users.id as user_id, quiz_collagers.collager_id, users.username, users.picture, max(quiz_collagers.total_score) as total_score, users.name, quiz_collagers.quiz_id')
-                                  ->orderBy('total_score','DESC')
-                                  ->limit(10)
-                                  ->get();
-            $collection[$i]['leaderboard'] = $leaderboard;
-          }
-        }
       }
-      // dd($collection);
-      // return response()->json($collection);
-
       return view('index', compact ('quiz','memberOnline','totalMember','totalQuiz','totalQuizType','totalGamePlayed','totalGamePlayedBefore','collection'));
     }
 

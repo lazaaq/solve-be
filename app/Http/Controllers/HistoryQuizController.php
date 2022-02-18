@@ -27,27 +27,13 @@ class HistoryQuizController extends Controller
     public function getData()
     {
       if (Auth::user()->hasRole('admin')) {
-        $user = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-        $user_id = [];
-        foreach ($user as $key => $value) {
-          $user_id[] = $value->id;
-        }
-        $data = Quiz::whereIn('created_by',$user_id)->get()->sortBy('title');
+        $user_id = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->pluck('id')->toArray();
       } else {
         $school_id = Auth::user()->school_id;
-        $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
-        $teacher_id = [];
-
-        foreach ($teacher as $key => $value) {
-          $teacher_id[] = $value->id;
-        }
-        
-        $user = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-        foreach ($user as $key => $value) {
-          $teacher_id[] = $value->id;
-        }
-        $data = Quiz::whereIn('created_by',$teacher_id)->get()->sortBy('title');
+        $user_id = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->orWhere('school_id',$school_id)->pluck('id')->toArray();
       }
+      $data = Quiz::whereIn('created_by',$user_id)->get()->sortBy('title');
+
       return datatables()->of($data)
       ->addColumn('action', function($row){
         $btn = '<a href="'.route('history-quiz.show',$row->id).'" title="View Detail" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';
@@ -67,21 +53,13 @@ class HistoryQuizController extends Controller
     public function getDataQuiz($id)
     {
       if (Auth::user()->hasRole('admin')) {
-        $student = User::whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
-        $collager_id = [];
-        foreach ($student as $key => $value) {
-          $collager_id[] = $value->collager->id;
-        }
-        $data = QuizCollager::where('quiz_id',$id)->whereIn('collager_id',$collager_id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+        $user = Collager::whereHas('user.roles', function($q) { $q->where('name', 'student'); })->pluck('id')->toArray();
       } else {
         $school_id = Auth::user()->school_id;
-        $student = User::where('school_id',$school_id)->whereHas('roles', function($q) { $q->where('name', 'student'); })->get();
-        $collager_id = [];
-        foreach ($student as $key => $value) {
-          $collager_id[] = $value->collager->id;
-        }
-        $data = QuizCollager::where('quiz_id',$id)->whereIn('collager_id',$collager_id)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+        $user = Collager::whereHas('user.roles', function($q) { $q->where('name', 'student'); })->whereHas('user', function($q) use ($school_id) { $q->where('school_id',$school_id); })->pluck('id')->toArray();
       }
+      $data = QuizCollager::where('quiz_id',$id)->whereIn('collager_id',$user)->with(['collager.user.school','quiz.quizType.quizCategory'])->get();
+
       return datatables()->of($data)
       ->addColumn('isTrue', function($row){
         return $row->answerSave->where('isTrue',1)->count();

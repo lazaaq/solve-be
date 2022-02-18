@@ -28,17 +28,13 @@ class HistoryController extends Controller
     public function getData()
     {
         if (Auth::user()->hasRole('admin')) {
-            $data = User::role('student')->get()->sortBy('name');
+            $data = User::with('school')->whereHas('roles', function($q){ $q->where('name', 'student'); })->get()->sortBy('name');
         } else {
-            $data = User::role('student')->where('school_id',Auth::user()->school_id)->get()->sortBy('name');
+            $data = User::with('school')->whereHas('roles', function($q){ $q->where('name', 'student'); })->where('school_id',Auth::user()->school_id)->get()->sortBy('name');
         }
         return datatables()->of($data)
-        ->addColumn('school', function($row){
-            if ($row->school) {
-              return $row->school->name;
-            }else {
-              return '-';
-            }
+        ->editColumn('school', function($row){
+            return $row->school->name ?: '-';
         })
         ->addColumn('action', function($row){
           $btn = '<a id="btn-detail" href="'.route('history.show',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
@@ -51,7 +47,7 @@ class HistoryController extends Controller
     public function getDataHistoryUser($id)
     {
         $collager_id = Collager::where('user_id',$id)->first()->id;
-        $data = QuizCollager::where('collager_id',$collager_id)->get();
+        $data = QuizCollager::with('quiz.quizType.quizCategory')->where('collager_id',$collager_id)->get();
         //return $data;
         return datatables()->of($data)->addColumn('action', function($row){
         $btn = '<a id="btn-detail" href="'.route('detailHistory',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-eye"></i></a>';
@@ -211,7 +207,7 @@ class HistoryController extends Controller
         $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
         $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
         $data->quiz = Quiz::find($data->quiz_id)->title;
-        
+
         $answerSave = AnswerSave::where('quiz_collager_id',$data->id)->get();
         $collection = [];
         foreach ($answerSave as $i => $item) {

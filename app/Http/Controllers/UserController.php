@@ -33,25 +33,17 @@ class UserController extends Controller
   public function getData(Request $request)
   {
     $filter = $request->filter;
-    $data = User::whereHas("roles", function($q) use ($filter) { $q->where("name", $filter); })->get();
+    $data = User::with('school')->whereHas("roles", function($q) use ($filter) { $q->where("name", $filter); })->get();
     return datatables()->of($data)->addColumn('action', function($row){
           $btn = '<a href="'.route('user.edit',$row->id).'" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
           $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
           return $btn;
     })
-    ->addColumn('school', function($row){
-      if ($row->school_id == NULL) {
-        return '-';
-      } else {
-        return School::find($row->school_id)->name;
-      }
+    ->editColumn('school', function($row){
+      return $row->school->name ?: '-';
     })
-    ->addColumn('phone_number', function($row){
-      if ($row->phone_number == NULL) {
-        return '-';
-      } else {
-        return $row->phone_number;
-      }
+    ->editColumn('phone_number', function($row){
+      return $row->phone_number ?: '-';
     })
     ->rawColumns(['action'])
     ->make(true);
