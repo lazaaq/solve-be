@@ -49,19 +49,16 @@ class QuestionController extends Controller
    */
   public function store(Request $request)
   {
-    //   dd($request->all());
     $this->validate($request,
     [
       'question.*' => 'required',
       'picture.*' => 'mimes:png,jpg,jpeg|max:2048',
       'choice.*.*' => 'required_without:picture_choice.*.*',
-      'essay.*' => 'required_if:question_type,essay',
       'picture_choice.*.*' => 'mimes:png,jpg,jpeg|max:2048|required_without:choice.*.*',
     ],
     [
       'question.*.required' => 'The question field is required.',
       'picture.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',
-      'essay.*.required_if' => 'The essay field is required.',
       'choice.*.*.required_without' => 'The choice field is required when file field is not present.',
       'picture_choice.*.*.required_without' => 'The file field is required when choice field is not present.',
       'picture_choice.*.*.mimes' => 'The file must be a file of type: png, jpg, jpeg.',

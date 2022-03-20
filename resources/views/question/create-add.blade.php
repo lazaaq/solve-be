@@ -76,7 +76,7 @@
 						</div>
             <div class="col-md-12">
               <div class="form-group">
-                <label>Picture</label>
+                <label class="control-label col-lg-3">Picture</label>
                 <input type="file" name="picture[{{$i}}]" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
                 {{-- <input type="file" name="picture[{{$i}}]" class="form-control"> --}}
                 @if ($errors->has('picture.'.$i))
@@ -87,131 +87,118 @@
               </div>
             </div>
             <div class="col-sm-12">
-				<div class="form-group" id="choice{{$i}}">
-                    <div class="isian">
-                        <label>Type Answer</label>
-                        <select id="question_type" class="select-search" name="question_type">
-                            <option value="option">Option</option>
-                            <option value="essay">Essay</option>
-                        </select>
-                    </div>
+							<div class="form-group" id="choice{{$i}}">
+                <div id="choice_1">
+                  <label>First Multiple Choice:</label>
+                  <input type="text" name="choice[{{$i}}][0]" class="form-control" value="{{ old('choice.'.$i.'.0') }}" placeholder="">
+                  <input type="file" name="picture_choice[{{$i}}][0]" class="form-control">
 
-                    <div id="essay" style="margin-top:20px" class="hide">
-                    <label>Essay:</label>
-                    <input type="text" name="essay[{{$i}}]" class="form-control" value="{{ old('essay.'.$i) }}" placeholder="">
-                    @if ($errors->has('essay.'.$i))
-                    <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('essay.'.$i)}}</strong>
-                    </label>
-                    @endif
-                    </div>
+                  <div class="btn-group" role="group">
+                    <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                  </div>
 
-                    <div id="choice_1" style="margin-top:20px">
-                    <label>First Multiple Choice:</label>
-                    <input type="text" name="choice[{{$i}}][0]" class="form-control" value="{{ old('choice.'.$i.'.0') }}" placeholder="">
-                    <input type="file" name="picture_choice[{{$i}}][0]" class="form-control">
-
-                    <div class="btn-group" role="group">
-                        <button type="button" value="{{$i}}" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
-                    </div>
-
-                    @if ($errors->has('choice.'.$i.'.0'))
+                  @if ($errors->has('choice.'.$i.'.0'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.0')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.0'))
                     <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.0')}}</strong>
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.0')}}</strong>
                     </label>
-                    @endif
-                    @if ($errors->has('picture_choice.'.$i.'.0'))
-                        <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.0')}}</strong>
-                        </label>
-                    @endif
-                    </div>
-                    <div id="choice_2" class="hide" style="margin-top:20px">
-                    @if ($choice2[$i] = $errors->has('choice.'.$i.'.1'))
+                  @endif
+                </div>
+                <br>
+                <div id="choice_2" class="hide">
+                  @if ($choice2[$i] = $errors->has('choice.'.$i.'.1'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.1')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.1'))
                     <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.1')}}</strong>
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.1')}}</strong>
                     </label>
-                    @endif
-                    @if ($errors->has('picture_choice.'.$i.'.1'))
-                        <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.1')}}</strong>
-                        </label>
-                    @endif
-                    </div>
-                    <div id="choice_3" class="hide" style="margin-top:20px">
-                    @if ($choice3[$i] = $errors->has('choice.'.$i.'.2'))
+                  @endif
+                  
+                </div>
+                <br>
+                <div id="choice_3" class="hide">
+                  @if ($choice3[$i] = $errors->has('choice.'.$i.'.2'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.2')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.2'))
                     <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.2')}}</strong>
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.2')}}</strong>
                     </label>
-                    @endif
-                    @if ($errors->has('picture_choice.'.$i.'.2'))
-                        <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.2')}}</strong>
-                        </label>
-                    @endif
-                    </div>
-                    <div id="choice_4" class="hide" style="margin-top:20px">
-                    @if ($choice4[$i] = $errors->has('choice.'.$i.'.3'))
+                @endif
+                </div>
+                <br>
+                <div id="choice_4" class="hide">
+                  @if ($choice4[$i] = $errors->has('choice.'.$i.'.3'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.3')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.3'))
                     <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.3')}}</strong>
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.3')}}</strong>
                     </label>
-                    @endif
-                    @if ($errors->has('picture_choice.'.$i.'.3'))
-                        <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.3')}}</strong>
-                        </label>
-                    @endif
-                    </div>
-                    <div id="choice_5" class="hide" style="margin-top:20px">
-                    @if ($choice5[$i] = $errors->has('choice.'.$i.'.4'))
+                  @endif                
+                </div>
+                <br>
+                <div id="choice_5" class="hide">
+                  @if ($choice5[$i] = $errors->has('choice.'.$i.'.4'))
+                  <label style="padding-top:7px;color:#F44336;">
+                      <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.4')}}</strong>
+                  </label>
+                  @endif
+                  @if ($errors->has('picture_choice.'.$i.'.4'))
                     <label style="padding-top:7px;color:#F44336;">
-                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('choice.'.$i.'.4')}}</strong>
+                        <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.4')}}</strong>
                     </label>
-                    @endif
-                    @if ($errors->has('picture_choice.'.$i.'.4'))
-                        <label style="padding-top:7px;color:#F44336;">
-                            <strong><i class="fa fa-times-circle"></i> {{$errors->first('picture_choice.'.$i.'.4')}}</strong>
-                        </label>
-                    @endif
-                    </div>
-				</div>
+                  @endif   
+                </div>
+						  </div>
             </div>
             <div class="col-md-12">
-				<div class="form-group" id="option{{$i}}">
-				<label class="display-block">True Answer:</label>
-                    <div id="first_{{$i}}" class="">
-                    <label class="radio-inline col-md-1">
-                        <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="1" class="styled">
-                        First
-                    </label>
-                    </div>
-                    <div id="second_{{$i}}" class="hide">
-                    <label class="radio-inline col-md-1">
-                        <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
-                        Second
-                    </label>
-                    </div>
-                    <div id="third_{{$i}}" class="hide">
-                    <label class="radio-inline col-md-1">
-                        <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="3" class="styled">
-                        Third
-                    </label>
-                    </div>
-                    <div id="fourth_{{$i}}" class="hide">
-                    <label class="radio-inline col-md-1">
-                        <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="4" class="styled">
-                        Fourth
-                    </label>
-                    </div>
-                    <div id="fifth_{{$i}}" class="hide">
-                    <label class="radio-inline col-md-1">
-                        <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="5" class="styled">
-                        Fifth
-                    </label>
-                    </div>
-				</div>
-                <br><br>
-			</div>
+							<div class="form-group" id="option{{$i}}">
+								<label class="display-block">True Answer:</label>
+                <div id="first_{{$i}}" class="">
+                  <label class="radio-inline col-md-1">
+                    <input checked type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(1) ? 'checked' : '' }} value="1" class="styled">
+                    First
+                  </label>
+                </div>
+                <div id="second_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(2) ? 'checked' : '' }} value="2" class="styled">
+                    Second
+                  </label>
+                </div>
+                <div id="third_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(3) ? 'checked' : '' }} value="3" class="styled">
+                    Third
+                  </label>
+                </div>
+                <div id="fourth_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(4) ? 'checked' : '' }} value="4" class="styled">
+                    Fourth
+                  </label>
+                </div>
+                <div id="fifth_{{$i}}" class="hide">
+                  <label class="radio-inline col-md-1">
+                    <input type="radio" name="true_answer[{{$i}}]" {{ collect(old('true_answer.'.$i))->contains(5) ? 'checked' : '' }} value="5" class="styled">
+                    Fifth
+                  </label>
+                </div>
+							</div>
+              <br><br>
+						</div>
             <div class="col-md-12">
 							<div class="form-group">
 								<label>Review:</label>
@@ -309,12 +296,6 @@
 
       });
 
-      $(document).on('change', "select[name=question_type]", function(){
-            var id = $(this).val();
-            console.log(id);
-            $('#choice'+id+' #essay').removeClass('hide');
-      });
-
       function temp_choice2($i){return "<label>Second Multiple Choice:</label>"+
                            "<input type='text' name='choice["+$i+"][1]' class='form-control' value='' placeholder=''>"+
                            "<input type='file' name='picture_choice["+$i+"][1]' class='form-control'>"+
@@ -376,7 +357,7 @@
           $('#choice'+'{{$i}}'+' #choice_3').find('.btn-group').addClass('hide');
           $('#fourth_'+'{{$i}}').removeClass('hide');
         @endif
-
+        
         @if ($choice5[$i] == 1)
           $('#choice'+'{{$i}}'+' #choice_5').prepend(temp_choice5('{{$i}}')).removeClass('hide');
           $('#choice'+'{{$i}}'+' #choice_4').find('.btn-group').addClass('hide');
