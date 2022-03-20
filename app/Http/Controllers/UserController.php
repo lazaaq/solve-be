@@ -40,7 +40,7 @@ class UserController extends Controller
           return $btn;
     })
     ->editColumn('school', function($row){
-      return $row->school->name ?: '-';
+      return @$row->school->name ?: '-';
     })
     ->editColumn('phone_number', function($row){
       return $row->phone_number ?: '-';
