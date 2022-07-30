@@ -27,7 +27,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-
+use GuzzleHttp\Client;
 
 class QuizController extends Controller
 {
@@ -207,7 +207,20 @@ class QuizController extends Controller
       $quiz = Quiz::where('id', $id)->first();
       $query = $request->get('query');
       $query = str_replace(" ", "%", $query);
-      $question = Question::where('quiz_id', $quiz->id)->where('question', 'like', '%'.$query.'%')->paginate(10);
+      $client = new Client();
+      $res = $client->request('POST', 'http://27.112.78.93:8000/SearchAPI', [
+        'json' => [
+            'query' => $query
+        ]
+      ]);
+      $response = $res->getBody()->getContents();
+      $arrayId = json_decode($response, true);
+      $idQuestion = [];
+      foreach ($arrayId['hasil'] as $key => $value) {
+        $idQuestion[] = $value['id soal'];
+      }
+      // return $idQuestion;
+      $question = Question::whereIn('id',$idQuestion)->where('quiz_id', $quiz->id)->paginate(10);
       $number = $question->firstItem();
       return view('quiz.view_data', compact('quiz','question','number'))->render();
      }
