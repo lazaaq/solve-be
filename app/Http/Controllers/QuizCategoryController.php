@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Input;
 use App\QuizCategory;
 use App\User;
 use App\School;
@@ -206,7 +205,7 @@ class QuizCategoryController extends Controller
 
   /* START OF API */
 
-  function api_index(Request $request){
+  public function api_index(Request $request){
     $school = School::find($request->get('school_id'));
     switch ($school->category) {
       case 'Lain-lain':
@@ -252,6 +251,15 @@ class QuizCategoryController extends Controller
       'status'=>'success',
       'result'=>$data
     ]);
+  }
+
+  public function api_show($idCategory) {
+    $response['result'] = QuizCategory::find($idCategory);
+    if(!$response['result']) {
+      $response['success'] = false;
+    }
+    $response['success'] = true;
+    return response()->json($response);
   }
 
 }

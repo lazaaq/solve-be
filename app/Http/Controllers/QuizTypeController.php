@@ -215,7 +215,7 @@ class QuizTypeController extends Controller
 
   /*START OF API*/
 
-  function api_index($id){
+  public function api_index($id){
 
     $data = QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
     // $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
@@ -225,6 +225,16 @@ class QuizTypeController extends Controller
       'status'=>'success',
       'result'=>$data
     ]);
+  }
+
+  public function api_show($id) {
+    $response['result'] = QuizType::find($id);
+    if(!$response['result']){
+      $response['success'] = false;
+      return response()->json($response);
+    }
+    $response['success'] = true;
+    return response()->json($response);
   }
 
 }

@@ -797,6 +797,15 @@ class QuizController extends Controller
     ]);
   }
 
+  public function api_show($id) {
+    $response['result'] = Quiz::find($id);
+    if($response['result']){
+      $response['success'] = false;
+    }
+    $response['success'] = true;
+    return response()->json($response);
+  }
+
 
   public function api_indexByCode($id){
     $data = Quiz::where('code', $id)
