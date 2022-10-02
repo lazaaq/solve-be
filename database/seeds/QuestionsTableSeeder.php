@@ -1,5 +1,6 @@
 <?php
 
+use App\Question;
 use Illuminate\Database\Seeder;
 
 class QuestionsTableSeeder extends Seeder
@@ -12,63 +13,21 @@ class QuestionsTableSeeder extends Seeder
      */
     public function run()
     {
-        
-
-        \DB::table('questions')->delete();
-        
-        \DB::table('questions')->insert(array (
-            0 => 
-            array (
-                'id' => 1,
-                'quiz_id' => 1,
-                'question' => 'Q1',
-                'pic_url' => '',
-                'created_at' => '2019-12-18 11:23:29',
-                'updated_at' => '2019-12-18 11:23:29',
-                'deleted_at' => NULL,
-            ),
-            1 => 
-            array (
-                'id' => 2,
-                'quiz_id' => 1,
-                'question' => 'Q2',
-                'pic_url' => '',
-                'created_at' => '2019-12-18 11:23:29',
-                'updated_at' => '2019-12-18 11:23:29',
-                'deleted_at' => NULL,
-            ),
-            2 => 
-            array (
-                'id' => 3,
-                'quiz_id' => 1,
-                'question' => 'Q3',
-                'pic_url' => '',
-                'created_at' => '2019-12-18 11:23:29',
-                'updated_at' => '2019-12-18 11:23:29',
-                'deleted_at' => NULL,
-            ),
-            3 => 
-            array (
-                'id' => 4,
-                'quiz_id' => 1,
-                'question' => 'Q4',
-                'pic_url' => '',
-                'created_at' => '2019-12-18 11:23:30',
-                'updated_at' => '2019-12-18 11:23:30',
-                'deleted_at' => NULL,
-            ),
-            4 => 
-            array (
-                'id' => 5,
-                'quiz_id' => 1,
-                'question' => 'Q5',
-                'pic_url' => '',
-                'created_at' => '2019-12-18 11:23:30',
-                'updated_at' => '2019-12-18 11:23:30',
-                'deleted_at' => NULL,
-            ),
-        ));
-        
-        
+        $categories = array('Astronomi', 'Biologi', 'Ekonomi', 'Fisika', 'Geografi', 'Kebumian', 'Kimia', 'Komputer', 'Matematika');
+        $types = array('Kota/Kabupaten', 'Provinsi', 'Nasional');
+        for($i=0; $i<count($categories); $i++) {
+            for($j=0; $j<count($types); $j++) {
+                for($k=0; $k<5; $k++) {
+                    Question::create([
+                        'quiz_id' => ($i)*3 + ($j+1),
+                        'question' => 'Q' . ($k+1),
+                        'pic_url' => '',
+                        'created_at' => '2019-12-18 11:23:29',
+                        'updated_at' => '2019-12-18 11:23:29',
+                        'deleted_at' => NULL,
+                    ]);
+                }
+            }
+        }
     }
 }

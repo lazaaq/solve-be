@@ -767,7 +767,7 @@ class QuizController extends Controller
     date_default_timezone_set('Asia/Jakarta');
     $date = date('Y-m-d H:i:s');
     $data = Quiz::where('quiz_type_id', $id)
-                  ->whereNull('code')
+                  // ->whereNull('code')
                   ->where('status', 'active')
                   ->where('start_time', '<=', $date)
                   ->where('end_time', '>=', $date)

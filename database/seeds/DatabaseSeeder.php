@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Permission;
 use App\User;
 use App\Lecture;
 use App\Collager;
+use App\School;
 
 class DatabaseSeeder extends Seeder
 {
@@ -59,5 +60,11 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionsTableSeeder::class);
         $this->call(AnswersTableSeeder::class);
         $this->call(SchoolsTableSeeder::class);
+        $this->call(UserSeeder::class);
+
+        // custom
+        School::find(123)->update([
+            'category' => 'SMA'
+        ]);
     }
 }

@@ -217,16 +217,10 @@ class QuizTypeController extends Controller
 
   function api_index($id){
 
-    $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
-      return QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
-    });
-    // foreach ($data as $key => $value) {
-    //   if($value->pic_url == 'blank.jpg'){
-    //     $value->pic_url = asset('img/'.$value->pic_url.'');
-    //   }else {
-    //     $value->pic_url = route('quiztype.picture',$value->id);
-    //   }
-    // }
+    $data = QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
+    // $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
+    //   return QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
+    // });
     return response()->json([
       'status'=>'success',
       'result'=>$data
