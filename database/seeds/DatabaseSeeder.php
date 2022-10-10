@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionsTableSeeder::class);
         $this->call(AnswersTableSeeder::class);
         $this->call(SchoolsTableSeeder::class);
-        $this->call(UserSeeder::class);
+        $this->call(UsersTableSeeder::class);
 
         // custom
         School::find(123)->update([
