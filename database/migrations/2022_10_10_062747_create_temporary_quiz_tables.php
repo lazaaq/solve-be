@@ -20,11 +20,11 @@ class CreateTemporaryQuizTables extends Migration
             $table->string('title');
             $table->string('description');
             $table->integer('sum_question');
-            $table->string('status');
-            $table->string('status_review');
-            $table->integer('start_time');
-            $table->integer('end_time');
-            $table->integer('time');
+            // $table->string('status');
+            // $table->string('status_review');
+            $table->datetime('start_time');
+            $table->datetime('end_time');
+            $table->string('time');
             $table->timestamps();
         });
     }
