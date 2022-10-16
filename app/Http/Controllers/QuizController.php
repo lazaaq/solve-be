@@ -835,6 +835,14 @@ class QuizController extends Controller
     ]);
   }
 
+  public function api_quiz_answers($id) {
+    $answer = Quiz::with('question.answer')->find($id);
+    return response()->json([
+      'status' => 'success',
+      'result' => $answer
+    ]);
+  }
+
   public function changeStatus(Request $request, $id){
     $data = Quiz::find($id);
     if ($request->type == 'status') {
