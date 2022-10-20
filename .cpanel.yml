@@ -1,0 +1,28 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/u1692061/public_html/
+    - /bin/cp -R app $DEPLOYPATH
+    - /bin/cp -R bootstrap $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R database $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R resources $DEPLOYPATH
+    - /bin/cp -R routes $DEPLOYPATH
+    - /bin/cp -R storage $DEPLOYPATH
+    - /bin/cp -R tests $DEPLOYPATH
+    - /bin/cp .editorconfig $DEPLOYPATH
+    - /bin/cp .gitattributes $DEPLOYPATH
+    - /bin/cp .gitignore $DEPLOYPATH
+    - /bin/cp .styleci.yml $DEPLOYPATH
+    - /bin/cp .cpanel.yml $DEPLOYPATH
+    - /bin/cp artisan $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH
+    - /bin/cp composer.lock $DEPLOYPATH
+    - /bin/cp package-lock.json $DEPLOYPATH
+    - /bin/cp .package $DEPLOYPATH
+    - /bin/cp phpunit.xml $DEPLOYPATH
+    - /bin/cp README.md $DEPLOYPATH
+    - /bin/cp server.php $DEPLOYPATH
+    - /bin/cp webpack.mix.js $DEPLOYPATH
+    - /bin/cp index.php $DEPLOYPATH
