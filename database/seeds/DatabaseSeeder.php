@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             'email'     => 'developer@dev.com',
             'password'  =>  bcrypt('devpass'),
             'picture'   => 'avatar.png',
+            'school_id' => 123
         ]);
         $admin->assignRole('admin');
 
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'email'     => 'teacher@dev.com',
             'password'  =>  bcrypt('devpass'),
             'picture'   => 'avatar.png',
+            'school_id' => 123
         ]);
         $teacher->assignRole('teacher');
         Lecture::create([
@@ -48,6 +50,7 @@ class DatabaseSeeder extends Seeder
             'email'     => 'student@dev.com',
             'password'  =>  bcrypt('devpass'),
             'picture'   => 'avatar.png',
+            'school_id' => 123
         ]);
         $student->assignRole('student');
         Collager::create([
