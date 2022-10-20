@@ -42,7 +42,7 @@ class Helper
 			// kalo ada foto
 			$decoded = base64_decode($foto);
 			// cek extension
-			$ext = Helper::checkExtensionImageBase64($decoded);
+			$ext = Helper::checkExtensionImageBase64($decoded);;
 			// set picture name
 			if($name != null)
 				$pictName = $name.$ext;
