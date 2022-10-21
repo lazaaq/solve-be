@@ -7,10 +7,9 @@ use App\User;
 use App\Collager;
 use App\QuizCollager;
 use App\Quiz;
-use App\Question;
 use App\AnswerSave;
 use DataTables;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class HistoryController extends Controller
 {
@@ -203,7 +202,7 @@ class HistoryController extends Controller
     {
         $collager_id = Auth::user()->collager->id;
         // $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->with('quiz.quizType.quizCategory')->first();
-        $data = QuizCollager::where('collager_id',$collager_id)->where('id',$quiz_collager_id)->first();
+        $data = QuizCollager::with('quiz.quizType.quizCategory')->where('collager_id',$collager_id)->where('id',$quiz_collager_id)->first();
         $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
         $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
         $data->quiz = Quiz::find($data->quiz_id)->title;
@@ -229,8 +228,10 @@ class HistoryController extends Controller
             }
             // OPTION
             else {
-              $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
-              $user_answer_pic = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->pic_url;
+              $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first();
+              $user_answer_content = $user_answer_content->content ?? $user_answer_content;
+              $user_answer_pic = $item->question->answer()->get()->where('option', $item->collager_answer)->first();
+              $user_answer_pic = $user_answer_pic->pic_url ?? $user_answer_pic;
             }
           }
           $collection[$i] = [
@@ -260,4 +261,11 @@ class HistoryController extends Controller
 
     }
 
+    public function api_result($quizCollagerId) {
+        $quizCollager = QuizCollager::with('quiz.question.answer', 'quiz.question.answerSave', 'quiz.quizType.quizCategory')->find($quizCollagerId);
+        return response()->json([
+            'status' => 'success',
+            'result' => $quizCollager
+        ]);
+    }
 }

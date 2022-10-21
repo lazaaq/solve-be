@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,6 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/quiz/answers/{id_quiz}', 'QuizController@api_quiz_answers');
   Route::post('/quiz/store','QuizCollagerController@api_store');
 
-  Route::get('/history','QuizCollagerController@api_history');
   Route::get('/leaderboard','QuizCollagerController@api_leaderboard');
   Route::get('/leaderboard-podium/{id_quiz}','QuizCollagerController@api_leaderboardQuizPodium');
   Route::get('/leaderboard-not-podium/{id_quiz}','QuizCollagerController@api_leaderboardQuizNotPodium');
@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
 
   Route::get('/history','HistoryController@api_index');
   Route::get('/history/{quiz_collager_id}','HistoryController@api_detailHistory');
-
+  Route::get('/history/{quiz_collager_id}/result', 'HistoryController@api_result');
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
