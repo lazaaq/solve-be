@@ -18,4 +18,10 @@ class QuizCategory extends Model
     {
         return $this->hasMany('App\QuizType', 'quiz_category_id', 'id');
     }
+
+    public function getPicUrlAttribute($value)
+    {
+        $categoryPath = "/img/categories/";
+        return env("APP_URL") . ":" . env("APP_PORT") . $categoryPath . $value;
+    }
 }

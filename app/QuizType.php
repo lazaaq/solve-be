@@ -23,4 +23,10 @@ class QuizType extends Model
     {
         return $this->belongsTo('App\QuizCategory', 'quiz_category_id', 'id');
     }
+
+    public function getPicUrlAttribute($value)
+    {
+        $typePath = "/img/types/";
+        return env("APP_URL") . ":" . env("APP_PORT") . $typePath . $value;
+    }
 }
