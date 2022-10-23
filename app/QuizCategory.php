@@ -24,4 +24,10 @@ class QuizCategory extends Model
         $categoryPath = "/img/categories/";
         return env("APP_URL") . ":" . env("APP_PORT") . $categoryPath . $value;
     }
+
+    public function getPicUrl2Attribute($value)
+    {
+        $categoryPath = "/img/categories/";
+        return env("APP_URL") . ":" . env("APP_PORT") . $categoryPath . $value;
+    }
 }
