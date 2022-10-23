@@ -19,6 +19,7 @@ class QuizCategorysTableSeeder extends Seeder
                 'name' => $categories[$i],
                 'description' => $categories[$i],
                 'pic_url' => $categories[$i] . '.png',
+                'pic_url_2' => $categories[$i] . '.png',
                 'created_by' => 1,
                 'created_at' => '2019-12-18 11:19:40',
                 'updated_at' => '2019-12-18 11:19:40',
