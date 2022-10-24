@@ -68,11 +68,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/history/{quiz_collager_id}', [HistoryController::class, 'api_detailHistory']);
   Route::get('/history/{quiz_collager_id}/result', [HistoryController::class, 'api_result']);
 
-  Route::get('/material', [MaterialController::class, 'api_index']);
-  Route::get('/material/{id}', [MaterialController::class, 'api_show']);
-  Route::post('/material', [MaterialController::class, 'api_store']);
-  Route::put('/material/{id}', [MaterialController::class, 'api_update']);
-  Route::delete('/material/{id}', [MaterialController::class, 'api_delete']);
+  Route::get('/material/{quiz_type_id}', [MaterialController::class, 'api_show']);
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
