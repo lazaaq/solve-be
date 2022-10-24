@@ -13,7 +13,7 @@ class CreateMaterialChapterMediaTable extends Migration
      */
     public function up()
     {
-        Schema::create('material_chapter_media', function (Blueprint $table) {
+        Schema::create('material_media', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('material_chapter_id');
             $table->string('name');
@@ -31,6 +31,6 @@ class CreateMaterialChapterMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_chapter_media');
+        Schema::dropIfExists('material_media');
     }
 }
