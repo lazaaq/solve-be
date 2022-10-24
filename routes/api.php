@@ -3,6 +3,7 @@
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizCategoryController;
 use App\Http\Controllers\QuizCollagerController;
@@ -66,6 +67,12 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/history', [HistoryController::class, 'api_index']);
   Route::get('/history/{quiz_collager_id}', [HistoryController::class, 'api_detailHistory']);
   Route::get('/history/{quiz_collager_id}/result', [HistoryController::class, 'api_result']);
+
+  Route::get('/material', [MaterialController::class, 'api_index']);
+  Route::get('/material/{id}', [MaterialController::class, 'api_show']);
+  Route::post('/material', [MaterialController::class, 'api_store']);
+  Route::put('/material/{id}', [MaterialController::class, 'api_update']);
+  Route::delete('/material/{id}', [MaterialController::class, 'api_delete']);
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {

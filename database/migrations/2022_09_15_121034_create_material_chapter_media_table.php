@@ -15,7 +15,7 @@ class CreateMaterialChapterMediaTable extends Migration
     {
         Schema::create('material_media', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('material_chapter_id');
+            $table->unsignedBigInteger('material_id');
             $table->string('name');
             $table->string('description');
             $table->string('video_url');
