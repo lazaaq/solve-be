@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\User;
 use App\Lecture;
 use App\Collager;
@@ -64,6 +63,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AnswersTableSeeder::class);
         $this->call(SchoolsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
+        $this->call(MaterialTableSeeder::class);
         $this->call(QuizTemporaryTableSeeder::class);
 
         // custom

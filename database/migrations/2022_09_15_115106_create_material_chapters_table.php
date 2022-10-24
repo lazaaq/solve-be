@@ -19,8 +19,8 @@ class CreateMaterialChaptersTable extends Migration
             $table->unsignedBigInteger('quiz_id');
             $table->string('name');
             $table->string('description');
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
