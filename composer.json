@@ -53,9 +53,6 @@
         "classmap": [
             "database/seeds",
             "database/factories"
-        ],
-        "files": [
-            "app/Helpers/quizHelper.php"
         ]
     },
     "autoload-dev": {

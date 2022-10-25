@@ -13,9 +13,9 @@ class CreateMaterialChapterModulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('material_chapter_modules', function (Blueprint $table) {
+        Schema::create('material_modules', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('material_chapter_id');
+            $table->unsignedBigInteger('material_id');
             $table->string('name');
             $table->string('description');
             $table->string('file_url');
@@ -31,6 +31,6 @@ class CreateMaterialChapterModulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('material_chapter_modules');
+        Schema::dropIfExists('material_modules');
     }
 }
