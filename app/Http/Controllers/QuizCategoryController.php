@@ -207,6 +207,7 @@ class QuizCategoryController extends Controller
 
   public function api_index(Request $request){
     $school = School::find($request->get('school_id'));
+    $data = null;
     switch ($school->category) {
       case 'Lain-lain':
         $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
