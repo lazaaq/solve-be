@@ -14,6 +14,7 @@ class QuizType extends Model
     protected $guarded = ['created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
+    // relation
     public function quiz()
     {
         return $this->hasMany('App\Quiz', 'quiz_type_id', 'id');
@@ -24,6 +25,12 @@ class QuizType extends Model
         return $this->belongsTo('App\QuizCategory', 'quiz_category_id', 'id');
     }
 
+    public function material()
+    {
+        return $this->hasOne(Material::class);
+    }
+
+    // accessor
     public function getPicUrlAttribute($value)
     {
         $typePath = "/img/types/";
