@@ -339,10 +339,7 @@ class QuestionController extends Controller
           // return $question;
 
       } else {
-        return response()->json([
-            'status' => 'failed',
-            'message'   => 'Quiz not found'
-        ]);
+        return responseAPI(400, false, null, "Quiz not found");
       }
 
       // $option  = [];
@@ -405,15 +402,13 @@ class QuestionController extends Controller
         ];
       }
 
-      $data = Arr::random($collection, $quiz->tot_visible);
-      shuffle($data);
+      $question = Arr::random($collection, $quiz->tot_visible);
+      shuffle($question);
       $status_review = $quiz->status_review;
-      return response()->json([
-          'status'        => 'success',
-          'status_review' => $status_review,
-          'quiz'          => $quiz,
-          'question'      => $data
-      ]);
+      $data['status_review'] = $status_review;
+      $data['quiz'] = $quiz;
+      $data['question'] = $question;
+      return responseAPI(200, true, $data);
   }
 
   public function api_store(Request $request)
@@ -465,10 +460,7 @@ class QuestionController extends Controller
     $data->true_sum = $data->answerSave()->where('isTrue', 1)->count();
     $data->false_sum = $data->answerSave()->where('isTrue', 0)->count();
     DB::commit();
-    return response()->json([
-        'status' => 'success',
-        'result'   => $data,
-    ]);
+    return responseAPI(200, true, $data);
   }
 }
 

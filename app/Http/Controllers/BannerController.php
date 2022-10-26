@@ -211,9 +211,6 @@ class BannerController extends Controller
 
     public function api_index(){
       $data = Banner::where('isView', '1')->get();
-      return response()->json([
-        'status'=>'success',
-        'result'=>$data
-      ]);
+      return responseAPI(200, true, $data);
     }
 }
