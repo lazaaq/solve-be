@@ -95,10 +95,7 @@ class QuizCollagerController extends Controller
             'total_score'=>request('total_score'),
       ]
     );
-    return response()->json([
-        'status' => 'success',
-        'result'   => $data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_history(){
@@ -114,10 +111,7 @@ class QuizCollagerController extends Controller
     //     $value->quiz_pic_url = route('quiz.picture',$value->id);
     //   }
     // }
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_leaderboard(){
@@ -136,10 +130,7 @@ class QuizCollagerController extends Controller
     //     $value->picture = route('user.picture',$value->user_id);
     //   }
     // }
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_leaderboardQuizPodium($id){
@@ -158,10 +149,7 @@ class QuizCollagerController extends Controller
                           ->orderBy('total_score','DESC')
                           ->limit(3)
                           ->get();
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_leaderboardQuizNotPodium($id){
@@ -182,10 +170,7 @@ class QuizCollagerController extends Controller
                           ->limit(12)
                           ->skip(3)
                           ->get();
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
 }

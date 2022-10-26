@@ -207,6 +207,7 @@ class QuizCategoryController extends Controller
 
   public function api_index(Request $request){
     $school = School::find($request->get('school_id'));
+    $data = null;
     switch ($school->category) {
       case 'Lain-lain':
         $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
@@ -247,19 +248,15 @@ class QuizCategoryController extends Controller
         $data = QuizCategory::whereIn('created_by',$user_id)->orderBy('id')->get();
         break;
     }
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_show($idCategory) {
-    $response['result'] = QuizCategory::find($idCategory);
-    if(!$response['result']) {
-      $response['success'] = false;
+    $data = QuizCategory::find($idCategory);
+    if(!$data) {
+      return responseAPI(400, false, $data);
     }
-    $response['success'] = true;
-    return response()->json($response);
+    return responseAPI(200, true, $data);
   }
 
 }

@@ -192,10 +192,7 @@ class HistoryController extends Controller
           $data[$key]->true_sum = $data[$key]->answerSave()->where('isTrue', 1)->count();
           $data[$key]->false_sum = $data[$key]->answerSave()->where('isTrue', 0)->count();
         }
-        return response()->json([
-            'status' => 'success',
-            'result'   => $data
-        ]);
+        return responseAPI(200, true, $data);
     }
 
     public function api_detailHistory($quiz_collager_id)
@@ -251,21 +248,13 @@ class HistoryController extends Controller
         }
 
         $status_review = Quiz::find($data->quiz_id)->status_review;
-
-        return response()->json([
-            'status'           => 'success',
-            'status_review'    => $status_review,
-            'result'           => $data,
-            'question'         => $collection,
-        ]);
-
+        $data['status_review']  = $status_review;
+        $data['question'] = $collection;
+        return responseAPI(200, true, $data);
     }
 
     public function api_result($quizCollagerId) {
         $quizCollager = QuizCollager::with('quiz.question.answer', 'quiz.question.answerSave', 'quiz.quizType.quizCategory')->find($quizCollagerId);
-        return response()->json([
-            'status' => 'success',
-            'result' => $quizCollager
-        ]);
+        return responseAPI(200, true, $quizCollager);
     }
 }

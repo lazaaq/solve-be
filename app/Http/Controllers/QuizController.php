@@ -778,32 +778,18 @@ class QuizController extends Controller
                   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status', 'quizs.time')
                   ->get();
     if (empty($data[0])) {
-      return response()->json([
-        'status'=>'failed',
-        'message'=>'Not found quiz data.'
-      ]);
+      return responseAPI(400, false, null, 'Not found quiz data.');
     }
-    // foreach ($data as $key => $value) {
-    //   if($value->pic_url == 'blank.jpg'){
-    //     $value->pic_url = asset('img/'.$value->pic_url.'');
-    //   }else {
-    //     $value->pic_url = route('quiz.picture',$value->id);
-    //   }
-    // }
 
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_show($id) {
-    $response['result'] = Quiz::find($id);
-    if($response['result']){
-      $response['success'] = false;
+    $data = Quiz::find($id);
+    if($data){
+      return responseAPI(400, false, $data);
     }
-    $response['success'] = true;
-    return response()->json($response);
+    return responseAPI(200, true, $data);
   }
 
 
@@ -815,32 +801,20 @@ class QuizController extends Controller
                   ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status' ,'quizs.start_time', 'quizs.end_time', 'quizs.time')
                   ->get();
     if (empty($data[0])) {
-      return response()->json([
-        'status'=>'failed',
-        'message'=>'Not found quiz data.'
-      ]);
+      return responseAPI(400, false, $data, "Not found quiz data.");
     }
     date_default_timezone_set('Asia/Jakarta');
     $date = date('Y-m-d H:i:s');
     if ($data[0]->status == 'inactive' || $date >= $data[0]->end_time || $date <= $data[0]->start_time) {
-      return response()->json([
-        'status'=>'failed',
-        'message'=>'Quiz is currently unavailable.'
-      ]);
+      return responseAPI(400, false, $data, "Quiz is currently unavailable.");
     }
 
-    return response()->json([
-      'status'=>'success',
-      'result'=>$data
-    ]);
+    return responseAPI(200, true, $data);
   }
 
   public function api_quiz_answers($id) {
     $answer = Quiz::with('question.answer')->find($id);
-    return response()->json([
-      'status' => 'success',
-      'result' => $answer
-    ]);
+    return responseAPI(200, true, $answer);
   }
 
   public function changeStatus(Request $request, $id){
