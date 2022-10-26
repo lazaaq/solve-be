@@ -19,4 +19,8 @@ class Material extends Model
     public function quiztype() {
         return $this->belongsTo(QuizType::class);
     }
+
+    public function quiz() {
+        return $this->belongsTo(Quiz::class);
+    }
 }
