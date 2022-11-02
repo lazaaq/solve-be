@@ -215,7 +215,8 @@ class HistoryController extends Controller
             if ($item->question->answer()->count() == 1) {
               // ISIAN BENAR
               if ($item->isTrue == 1) {
-                $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first()->content;
+                $user_answer_content = $item->question->answer()->get()->where('option', $item->collager_answer)->first();
+                $user_answer_content = $user_answer_content->content ?? $user_answer_content;
               }
               // ISIAN SALAH
               else {
