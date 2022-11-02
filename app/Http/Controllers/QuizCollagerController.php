@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use App\AnswerSave;
+use App\Quiz;
 use Illuminate\Http\Request;
 use App\QuizCollager;
 use Auth;
@@ -88,14 +91,52 @@ class QuizCollagerController extends Controller
 
   public function api_store(Request $request)
   {
-    $data = QuizCollager::create(
+    if(!$request['quiz_id'] || !$request['answers']) {
+      return responseAPI(400, false, null, "missing parameter");
+    }
+    $user = Auth::user();
+    $total_score = countTotalScore($request['answers']);
+    $quizCollager = QuizCollager::create(
       [
-            'quiz_id' => request('quiz_id'),
-            'collager_id' => Auth::user()->collager->id,
-            'total_score'=>request('total_score'),
+          'quiz_id' => $request['quiz_id'],
+          'collager_id' => $user->collager->id,
+          'total_score'=> $total_score,
       ]
     );
-    return responseAPI(200, true, $data);
+    $quiz = Quiz::find($request['quiz_id']);
+    $answers = array();
+    for($i=0; $i<count($request['answers']); $i++) {
+      if($request['answers'][$i]['answered']) {
+        $quizAnswer = Answer::find($request['answers'][$i]['answer_id']);
+        $scoreQuestion = null;
+        if($quizAnswer->isTrue) {
+          $scoreQuestion = getScoreQuiz('correct');
+        } else {
+          $scoreQuestion = getScoreQuiz('wrong');
+        }
+        $answer = AnswerSave::create([
+          'quiz_collager_id' => $quizCollager->id,
+          'question_id' => $request['answers'][$i]['question_id'],
+          'collager_answer' => $quizAnswer->content,
+          'isTrue' => $quizAnswer->isTrue,
+          'score' => $scoreQuestion,
+        ]);
+        array_push($answers, $answer);
+      } else { // if user does not choose any answer
+        $answer = AnswerSave::create([
+          'quiz_collager_id' => $quizCollager->id,
+          'question_id' => $request['answers'][$i]['question_id'],
+          'collager_answer' => '',
+          'isTrue' => 0,
+          'score' => getScoreQuiz('empty'),
+        ]);
+        array_push($answers, $answer);
+      } 
+    }
+    $quizCollager['quiz'] = $quiz;
+    $quizCollager['answers'] = $answers;
+    
+    return responseAPI(200, true, $quizCollager);
   }
 
   public function api_history(){
