@@ -8,3 +8,7 @@ function responseAPI($status, $success, $data=null, $message=null) {
         'message' => $message
     ]);
 }
+
+function getApiHost() {
+    return "http://localhost:8000";
+}

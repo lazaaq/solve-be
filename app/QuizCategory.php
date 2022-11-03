@@ -22,7 +22,7 @@ class QuizCategory extends Model
     public function getPicUrlAttribute($value)
     {
         $categoryPath = "/img/categories/";
-        return env("APP_URL") . ":" . env("APP_PORT") . $categoryPath . $value;
+        return getApiHost() . $categoryPath . $value;
     }
     
 }
