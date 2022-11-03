@@ -7,6 +7,7 @@ use App\AnswerSave;
 use App\Quiz;
 use Illuminate\Http\Request;
 use App\QuizCollager;
+use App\QuizTemporary;
 use Auth;
 use DB;
 
@@ -133,6 +134,10 @@ class QuizCollagerController extends Controller
         array_push($answers, $answer);
       } 
     }
+    
+    // remove quiz temporary
+    $quizTemporary = QuizTemporary::where("quiz_id", $request['quiz_id'])->where("collager_id", $user->collager->id)->delete();
+
     $quizCollager['quiz'] = $quiz;
     $quizCollager['answers'] = $answers;
     
