@@ -8,6 +8,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizCategoryController;
 use App\Http\Controllers\QuizCollagerController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuizTemporaryController;
 use App\Http\Controllers\QuizTypeController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\UserController;
@@ -69,6 +70,8 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/history/{quiz_collager_id}/result', [HistoryController::class, 'api_result']);
 
   Route::get('/material/{quiz_type_id}', [MaterialController::class, 'api_show']);
+
+  Route::post('/quiz-temporary', [QuizTemporaryController::class, 'store']);
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
