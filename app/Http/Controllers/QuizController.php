@@ -798,7 +798,7 @@ class QuizController extends Controller
                   ->where('status', 'active')
                   ->leftJoin('quiz_types', 'quizs.quiz_type_id', '=', 'quiz_types.id')
                   ->orderBy('quizs.id')
-                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status' ,'quizs.start_time', 'quizs.end_time', 'quizs.time')
+                  ->select('quizs.id', 'quiz_types.name as type', 'quizs.title', 'quizs.code', 'quizs.description', 'quizs.sum_question', 'quizs.tot_visible','quizs.pic_url', 'quizs.status' ,'quizs.start_time', 'quizs.end_time', 'quizs.time', 'quiz_types.id as type_id', 'quiz_types.quiz_category_id as category_id')
                   ->get();
     if (empty($data[0])) {
       return responseAPI(400, false, $data, "Not found quiz data.");
