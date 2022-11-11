@@ -255,7 +255,16 @@ class HistoryController extends Controller
     }
 
     public function api_result($quizCollagerId) {
-        $quizCollager = QuizCollager::with('quiz.question.answer', 'quiz.question.answerSave', 'quiz.quizType.quizCategory')->find($quizCollagerId);
+        $quizCollager = QuizCollager::with('quiz.question.answer', 'quiz.quizType.quizCategory')->find($quizCollagerId);
+        $answerSaves = AnswerSave::where('quiz_collager_id', $quizCollager->id)->get();
+        foreach($quizCollager['quiz']['question'] as $quizCollagerKey => $quizCollagerValue) {
+            foreach($answerSaves as $answerSaveKey => $answerSaveValue) {
+                if($quizCollagerValue['id'] == $answerSaveValue['question_id']) {
+                    $quizCollagerValue['answer_save'] = $answerSaveValue;
+                    continue;
+                }
+            }
+        }
         return responseAPI(200, true, $quizCollager);
     }
 }
