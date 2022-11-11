@@ -54,7 +54,7 @@ class QuizTemporaryController extends Controller
     }
 
     public function getDuration($endTime) {
-        $nowTime = date("H:i:s");
+        $nowTime = date("h:i:s");
         $array1 = explode(':', $nowTime);
         $array2 = explode(':', $endTime);
 
