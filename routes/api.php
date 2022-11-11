@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/material/{quiz_type_id}', [MaterialController::class, 'api_show']);
 
   Route::post('/quiz-temporary', [QuizTemporaryController::class, 'store']);
+  Route::post('/quiz-temporary/{id_quiz_temporary}', [QuizTemporaryController::class, 'storeAnswer']);
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {

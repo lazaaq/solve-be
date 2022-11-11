@@ -31,6 +31,7 @@ class QuizTemporaryController extends Controller
                         'collager_id' => $request->collager_id,
                         'start_time' => $start_time,
                         'end_time' => $end_time,
+                        'answers' => '{}'
                     ]);
                     return responseAPI(200, true, $newQuizTemporary);
                 }
@@ -45,12 +46,24 @@ class QuizTemporaryController extends Controller
                     'collager_id' => $request->collager_id,
                     'start_time' => $start_time,
                     'end_time' => $end_time,
+                    'answers' => '{}'
                 ]);
                 return responseAPI(200, true, $newQuizTemporary);
             }
         } catch (Exception $e) {
             return responseAPI(400, false, null, $e);
         }
+    }
+
+    public function storeAnswer(Request $request, $idQuizTemporary) {
+        $quizTemporary = QuizTemporary::find($idQuizTemporary);
+        $answers = $quizTemporary->answers;
+        $answers = json_decode($answers, true);
+        $answers[$request->question_id] = $request->answer_id;
+        $answers = json_encode($answers);
+        $quizTemporary->answers = $answers;
+        $quizTemporary->save();
+        return responseAPI(200, true, $quizTemporary);
     }
 
     public function getDuration($endTime) {

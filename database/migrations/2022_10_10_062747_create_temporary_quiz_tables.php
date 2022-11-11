@@ -19,6 +19,7 @@ class CreateTemporaryQuizTables extends Migration
             $table->unsignedBigInteger('collager_id');
             $table->datetime('start_time');
             $table->datetime('end_time');
+            $table->text('answers')->nullable();
             $table->timestamps();
         });
     }
