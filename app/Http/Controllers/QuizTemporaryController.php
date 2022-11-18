@@ -14,10 +14,9 @@ class QuizTemporaryController extends Controller
         try {
             $quizTemporary = QuizTemporary::where('quiz_id', $request->quiz_id)->where('collager_id', $request->collager_id)->first();
             if ($quizTemporary) {
-                $endTime = explode(" ", $quizTemporary->end_time);
-                $duration = $this->getDuration($endTime[1]);
+                $checkDateTime = $this->checkDatetime($quizTemporary->end_time);
                 
-                if($duration > 0) {
+                if($checkDateTime) {
                     return responseAPI(200, true, $quizTemporary);
                 } else {
                     $quizTemporary->delete();
@@ -66,15 +65,10 @@ class QuizTemporaryController extends Controller
         return responseAPI(200, true, $quizTemporary);
     }
 
-    public function getDuration($endTime) {
-        $nowTime = date("h:i:s");
-        $array1 = explode(':', $nowTime);
-        $array2 = explode(':', $endTime);
-
-        $duration1 = ($array1[0] * 3600.0 + $array1[1] * 60 + $array1[2]);
-        $duration2 = ($array2[0] * 3600.0 + $array2[1] * 60 + $array2[2]);
-
-        $duration = $duration2 - $duration1;
-        return $duration;
+    public function checkDatetime($endTime) {
+        $nowDateTime = new DateTime();
+        $endDateTime = new DateTime($endTime);
+        $checkDateTime = $nowDateTime < $endDateTime;
+        return $checkDateTime;
     }
 }
