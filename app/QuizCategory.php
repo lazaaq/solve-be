@@ -16,7 +16,7 @@ class QuizCategory extends Model
 
     public function quizType()
     {
-        return $this->hasMany('App\QuizType', 'quiz_category_id', 'id');
+        return $this->hasMany(QuizType::class);
     }
 
     public function getPicUrlAttribute($value)

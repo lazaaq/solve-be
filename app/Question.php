@@ -17,7 +17,7 @@ class Question extends Model
 
     public function quiz()
     {
-        return $this->belongsTo('App\Quiz', 'quiz_id', 'id');
+        return $this->belongsTo(Quiz::class);
     }
 
     public function answerSave()
@@ -27,7 +27,7 @@ class Question extends Model
 
     public function answer()
     {
-        return $this->hasMany('App\Answer', 'question_id', 'id');
+        return $this->hasMany(Answer::class);
     }
 
 }

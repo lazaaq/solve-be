@@ -13,16 +13,16 @@ class QuizCollager extends Model
 
     public function quiz()
     {
-        return $this->belongsTo('App\Quiz', 'quiz_id', 'id');
+        return $this->belongsTo(Quiz::class);
     }
 
     public function collager()
     {
-        return $this->belongsTo('App\Collager', 'collager_id', 'id');
+        return $this->belongsTo(Collager::class);
     }
 
     public function answerSave()
     {
-        return $this->hasMany('App\AnswerSave', 'quiz_collager_id', 'id');
+        return $this->hasMany(AnswerSave::class);
     }
 }

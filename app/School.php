@@ -12,6 +12,6 @@ class School extends Model
 
     public function user()
     {
-      return $this->hasMany('App\User', 'school_id', 'id');
+      return $this->hasMany(User::class);
     }
 }

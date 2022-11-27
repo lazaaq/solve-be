@@ -15,6 +15,6 @@ class CollagerClassroom extends Model
 
     public function collager()
     {
-        return $this->belongsTo('App\Collager', 'collager_id', 'id');
+        return $this->belongsTo(Collager::class);
     }
 }

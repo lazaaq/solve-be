@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TemporaryQuiz extends Model
 {
@@ -13,18 +14,13 @@ class TemporaryQuiz extends Model
     protected $guarded = ['created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
-    public function quizType()
+    public function quiz()
     {
-        return $this->belongsTo('App\QuizType', 'quiz_type_id', 'id');
+        return $this->belongsTo(Quiz::class);
     }
-
-    public function question()
+    
+    public function collager()
     {
-        return $this->hasMany('App\Question', 'quiz_id', 'id');
-    }
-
-    public function quizCollager()
-    {
-        return $this->hasMany('App\QuizCollager', 'quiz_id', 'id');
+        return $this->belongsTo(Collager::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\QuizController;
 use Illuminate\Database\Eloquent\Model;
 
 class Collager extends Model
@@ -13,7 +14,7 @@ class Collager extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function answerSave()
@@ -23,11 +24,11 @@ class Collager extends Model
 
     public function quizCollager()
     {
-        return $this->hasMany('App\QuizCollager', 'collager_id', 'id');
+        return $this->hasMany(QuizController::class);
     }
     public function collagerClassroom()
     {
-        return $this->hasMany('App\CollagerClassroom', 'collager_id', 'id');
+        return $this->hasMany(CollagerClassroom::class);
     }
 
 }

@@ -16,17 +16,17 @@ class Quiz extends Model
 
     public function quizType()
     {
-        return $this->belongsTo('App\QuizType', 'quiz_type_id', 'id');
+        return $this->belongsTo(QuizType::class);
     }
 
     public function question()
     {
-        return $this->hasMany('App\Question', 'quiz_id', 'id');
+        return $this->hasMany(Question::class);
     }
 
     public function quizCollager()
     {
-        return $this->hasMany('App\QuizCollager', 'quiz_id', 'id');
+        return $this->hasMany(QuizCollager::class);
     }
 
 }

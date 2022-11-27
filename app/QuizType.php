@@ -17,12 +17,12 @@ class QuizType extends Model
     // relation
     public function quiz()
     {
-        return $this->hasMany('App\Quiz', 'quiz_type_id', 'id');
+        return $this->hasMany(Quiz::class);
     }
 
     public function quizCategory()
     {
-        return $this->belongsTo('App\QuizCategory', 'quiz_category_id', 'id');
+        return $this->belongsTo(QuizCategory::class);
     }
 
     public function material()

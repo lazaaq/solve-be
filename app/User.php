@@ -44,24 +44,21 @@ class User extends Authenticatable
 
     public function lecture()
     {
-        return $this->hasOne('App\Lecture', 'user_id', 'id');
+        return $this->hasOne(Lecture::class);
     }
 
     public function collager()
     {
-        return $this->hasOne('App\Collager', 'user_id', 'id');
+        return $this->hasOne(Collager::class);
     }
 
     public function school()
     {
-        return $this->belongsTo('App\School', 'school_id', 'id');
+        return $this->belongsTo(School::class);
     }
+
     public function classroom()
     {
-        return $this->hasMany('App\Classroom', 'user_id', 'id');
-    }
-    public function quiz()
-    {
-        return $this->hasMany('App\Quiz', 'created_by', 'id');
+        return $this->hasMany(Classroom::class);
     }
 }
