@@ -33,9 +33,6 @@ class UsersTableSeeder extends Seeder
             'school_id' => 123
         ]);
         $teacher->assignRole('teacher');
-        Lecture::create([
-           'user_id' => $teacher->id,
-        ]);
 
         $student = User::create([
             'name'      => 'Student Dev',
@@ -46,8 +43,27 @@ class UsersTableSeeder extends Seeder
             'school_id' => 123
         ]);
         $student->assignRole('student');
-
         
+        for($i=0; $i<2; $i++) {
+            $user = User::create([
+                'name'      => 'User ' . ($i + 1),
+                'username'  => 'user_' . ($i + 1),
+                'email'     => 'user' . ($i + 1) . '@dev.com',
+                'password'  =>  bcrypt('userpass'),
+                'picture'   => 'avatar.png',
+                'school_id' => 123
+            ]);
+            $user->assignRole('student');
+
+            Collager::create([
+                'user_id' => $user->id,
+            ]);
+        }
+
+        Lecture::create([
+            'user_id' => $teacher->id,
+        ]);
+
         Collager::create([
            'user_id' => $admin->id,
         ]);
