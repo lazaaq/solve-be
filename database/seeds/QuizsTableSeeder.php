@@ -19,12 +19,13 @@ class QuizsTableSeeder extends Seeder
         $types = array('Kota/Kabupaten', 'Provinsi', 'Nasional');
         $quizPerType = 3;
 
+        $codeId = 1;
         for($i=0; $i<count($categories); $i++) {
             for($j=0; $j<count($types); $j++) {
                 for($k=0; $k<$quizPerType; $k++) {
                     Quiz::create([
                         'quiz_type_id' => ($i)*3 + ($j+1),
-                        'code' => 'CODE',
+                        'code' => 'CODE' . ($codeId++),
                         'title' => $types[$j] . ' ' . $categories[$i],
                         'description' => $types[$j] . ' ' . $categories[$i],
                         'pic_url' => 'blank.jpg',
