@@ -400,12 +400,6 @@ class UserController extends Controller
     $data= User::find(Auth::user()->id);
     if(Hash::check($request->password_current,$data->password)){
       $data->password = Hash::make($request->password);
-      $this->validate($request,
-        [
-          'password_current' => 'required',
-          'password' => 'required|string|min:8|confirmed|max:191',
-          'password_confirmation' => 'required',
-        ]);
       $data->save();
       return response()->json([
         'status'=>'success',
