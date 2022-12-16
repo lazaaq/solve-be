@@ -14,9 +14,9 @@ class AnswersTableSeeder extends Seeder
      */
     public function run()
     {
-        $questions = Question::all();
+        // $questions = Question::all();
         $option = array('A', 'B', 'C', 'D', 'E');
-        for($i=1; $i<=$questions->count(); $i++) {
+        for($i=11; $i<=145; $i++) {
             $random1 = rand(1,5);
             for($j=0; $j<$random1; $j++) {
                 Answer::create([
