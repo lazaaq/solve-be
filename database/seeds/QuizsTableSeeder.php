@@ -130,5 +130,84 @@ class QuizsTableSeeder extends Seeder
                 }
             }
         }
+
+        // custom soal
+        $mathst23 = Quiz::create([
+            'quiz_type_id' => 25,
+            'code' => 'MATHST23',
+            'title' => 'Soal KSN-K Matematika SMA 2021',
+            'description' => 'MATHST23',
+            'pic_url' => 'blank.jpg',
+            'sum_question' => 10,
+            'tot_visible' => 10,
+            'status' => 'active',
+            'start_time' => '2019-12-01 00:00:00',
+            'end_time' => '2024-12-31 23:59:00',
+            'created_at' => '2019-12-18 11:20:37',
+            'updated_at' => '2019-12-20 06:17:22',
+            'deleted_at' => NULL,
+        ]);
+        $questions = array(
+            'Pada suatu lingkaran dengan jari-jari r, terdapat segiempat talibusur ABC D dengan AB = 8 dan C D = 5. Sisi AB dan DC diperpanjang dan berpotongan di luar lingkaran di titik P. Jika ∠APD = 60◦ dan BP = 6, maka nilai dari r^2 adalah',
+            'Bilangan 1,2,3,··· ,999 digit-digitnya disusun membentuk angka baru m dengan menuliskan semua
+            digit bilangan-bilangan tadi dari kiri ke kanan. Jadi, m = 1234 · 91011 ··· 999. Hasil penjumlahan digit
+            ke-2021, 2022, 2023 dari m adalah',
+            'Diketahui ada 6 pasang suami-istri. Dari keenam pasangan tersebut, dipilih 6 orang secara acak. Banyaknya cara untuk memilih 6 orang tersebut sehingga paling banyak terdapat sepasang suami-istri adalah',
+            'Diketahui segitiga ABC dengan AB > AC. Garis bagi sudut BAC memotong BC di titik D. Titik E dan F
+            berturut-turut terletak pada sisi AC dan AB sehingga DE sejajar AB dan DF sejajar AC. Lingkaran luar
+            4BC E memotong sisi AB di titik K. Jika luas segitiga C DE adalah 75 dan luas segitiga DE F adalah 85,
+            maka luas segiempat DEK F adalah',
+            'Jika dua digit terakhir dari a^777 adalah 77, maka dua digit terkahir dari a adalah',
+            'Banyak fungsi (pemetaan) dari A = {1, 2, 3, 4, 5} ke B = {6, 7, 8, 9, 10} dengan syarat 9 dan 10 mempunyai prapeta, yaitu ada x dan y di A sehingga f(x) = 9 dan f(y) = 10 adalah',
+            'Banyaknya barisan ternary (sukunya 0, 1 atau 2) yang memuat 15 suku, memuat tepat 5 (angka) 0 dan
+            setiap di antara dua (angka) 0 ada paling sedikit dua suku bukan 0 adalah',
+            'Sebuah papan catur berukuran 109 × 21 akan dipasangi beberapa ubin berukuran 3 × 1. Berapa ubin
+            terbanyak yang bisa dipasang pada papan sehingga tidak ada 2 ubin yang bertumpuk atau bersentuhan?
+            (Bersentuhan pada titik sudut ubin juga tidak diperbolehkan)',
+            'Misalkan a, b, c bilangan real tak negatif dengan a + 2b + 3c = 1. Nilai maksimum
+            dari ab + 2ac adalah',
+            'Suatu komite yang terdiri dari beberapa anggota hendak menghadiri 40 rapat. Diketahui bahwa setiap rapat dihadiri tepat 10 anggota komite dan setiap dua anggota
+            menghadiri rapat bersama paling banyak satu kali. Banyaknya anggota komite
+            terkecil yang mungkin adalah'
+        );
+        $options = array('option');
+        $answers = array(
+            array('41'),
+            array('8'),
+            array('542'),
+            array('94'),
+            array('14'),
+            array('1024'),
+            array('240'),
+            array('14'),
+            array('1/6'),
+            array('61'),
+        );
+        $correctAnswer = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        for($i=0; $i<count($questions); $i++) {
+            $newQuestion = Question::create([
+                'quiz_id' => $mathst23->id,
+                'question' => $questions[$i],
+                'pic_url' => '',
+                'created_at' => '2019-12-18 11:23:29',
+                'updated_at' => '2019-12-18 11:23:29',
+                'deleted_at' => NULL,
+            ]);
+            for($j=0; $j<count($answers[$i]); $j++) {
+                if($correctAnswer[$i] == $j) {
+                    Answer::create([
+                        'question_id' => $newQuestion->id,
+                        'option' => $options[$j],
+                        'content' => $answers[$i][$j],
+                        'pic_url' => '',
+                        'isTrue' => 1,
+                        'created_at' => '2019-12-18 11:23:29',
+                        'updated_at' => '2019-12-18 11:23:29',
+                        'deleted_at' => NULL,
+                    ]);
+                } 
+            }
+        }
+        
     }
 }
