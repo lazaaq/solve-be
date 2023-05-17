@@ -17,6 +17,7 @@
             <li><a href="{{route('quizcategory.index')}}"><i class="icon-books"></i><span>Category</span></a></li>
             <li><a href="{{route('quiztype.index')}}"><i class="icon-book3"></i><span>Type</span></a></li>
             <li><a href="{{route('quiz.index')}}"><i class="icon-question4"></i><span>Quiz</span></a></li>
+            <li><a href="{{route('material.index')}}"><i class="icon-question4"></i><span>Material</span></a></li>
             @if(Auth::user()->hasRole('admin school'))
             <li><a href="{{route('lecture.index')}}"><i class="icon-user"></i><span>Teacher</span></a></li>
             @endif

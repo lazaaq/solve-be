@@ -92,6 +92,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('reporting/{id}', 'ReportingController@reporting')->name('reporting');
         Route::get('quiz-reporting/{id}', 'ReportingController@reportingQuiz')->name('reporting-quiz');
 
+        // material
+        Route::resource('material', 'MaterialController')->except('destroy');
+        Route::get('material/delete/{id}', 'MaterialController@destroy')->name('quiz.destroy');
+
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/table'], function () {
@@ -117,6 +121,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/data-history-quiz', 'HistoryQuizController@getData');
         Route::get('/data-history-quiz-detail/{id}', 'HistoryQuizController@getDataQuiz');
+
+        // material
+        Route::get('/data-material', 'MaterialController@getData');
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {

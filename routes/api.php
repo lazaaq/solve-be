@@ -37,6 +37,7 @@ Route::group(['middleware' => ['api'],'prefix' => '/collager'], function () {
   Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
   Route::get('/version', [VersionAppController::class, 'api_index']);
   Route::get('/school', [SchoolController::class, 'api_index']);
+
 });
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
   Route::get('/logout', [UserController::class, 'api_logout']);
@@ -69,10 +70,16 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::get('/history/{quiz_collager_id}', [HistoryController::class, 'api_detailHistory']);
   Route::get('/history/{quiz_collager_id}/result', [HistoryController::class, 'api_result']);
 
-  Route::get('/material/{quiz_type_id}', [MaterialController::class, 'api_show']);
 
   Route::post('/quiz-temporary', [QuizTemporaryController::class, 'store']);
   Route::post('/quiz-temporary/{id_quiz_temporary}', [QuizTemporaryController::class, 'storeAnswer']);
+
+  // material
+    Route::get('/material/{quiz_type_id}/{idMaterial}/module/{idModule}/detail', [MaterialController::class, 'api_module_detail']);
+    Route::get('/material/{quiz_type_id}/{id}/module', [MaterialController::class, 'api_show']);
+    Route::get('/material/{quiztype_id}', [MaterialController::class, 'api_index']);
+
+ 
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
