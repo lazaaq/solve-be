@@ -31,9 +31,9 @@ class QuizType extends Model
     }
 
     // accessor
-    public function getPicUrlAttribute($value)
-    {
-        $typePath = "/img/types/";
-        return env("APP_URL") . ":" . env("APP_PORT") . $typePath . $value;
-    }
+    // public function getPicUrlAttribute($value)
+    // {
+    //     $typePath = "/img/types/";
+    //     return env("APP_URL") . ":" . env("APP_PORT") . $typePath . $value;
+    // }
 }

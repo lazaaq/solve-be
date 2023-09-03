@@ -11,7 +11,8 @@ use App\School;
 use Validator;
 use File;
 use Auth;
-
+use Cache;
+use Carbon\Carbon; 
 class QuizCategoryController extends Controller
 {
   public function getData()
@@ -33,6 +34,9 @@ class QuizCategoryController extends Controller
       $data = QuizCategory::whereIn('created_by',$teacher_id)->get()->sortBy('name');
     }
     return datatables()->of($data)
+    ->editColumn('updated_at', function ($row) {
+      return Carbon::parse($row->updated_at)->format('Y-m-d H:i:s');  // Mengubah format waktu
+     })
     ->addColumn('action', function($row){
       $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
       $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
@@ -158,13 +162,21 @@ class QuizCategoryController extends Controller
   public function picture($id)
   {
     $picture = QuizCategory::find($id);
-    return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url))->response();
+    if(Storage::exists('public/images/quizcategory/' . $picture->pic_url)) {
+        return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url))->response();
+    } else {
+        return Image::make(Storage::get('public/images/blank.jpg'))->response();
+    }     
   }
 
   public function picture2($id)
   {
     $picture = QuizCategory::find($id);
-    return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url_2))->response();
+    if(Storage::exists('public/images/quizcategory/' . $picture->pic_url_2)) {
+        return Image::make(Storage::get('public/images/quizcategory/'.$picture->pic_url_2))->response();
+    } else {
+        return Image::make(Storage::get('public/images/blank.jpg'))->response();
+    }     
   }
 
   public function getSelect(Request $request)

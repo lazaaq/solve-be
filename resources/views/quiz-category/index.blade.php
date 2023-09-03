@@ -39,6 +39,7 @@
              <th>Id</th>
              <th>Name</th>
              <th>Description</th>
+             <th>Updated At</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -84,7 +85,12 @@
             { data: 'id', name:'id', visible:false},
             { data: 'name', name:'name', visible:true},
             { data: 'description', name:'description', visible:true},
-            { data: 'action', name:'action', visible:true},
+            { 
+            data: 'updated_at',
+            name:'updated_at', 
+            visible:true,
+            },
+            { data: 'action', name:'action', visible:true, orderable:false},
         ],
       });
 

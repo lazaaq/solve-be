@@ -45,6 +45,7 @@ class MaterialController extends Controller
       }
       $data = Material::with('quizType')->whereIn('created_by', $admin_id)->get()->sortBy('title');
     } else {
+ 
       $school_id = Auth::user()->school_id;
       $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
       $teacher_id = [];
@@ -53,6 +54,7 @@ class MaterialController extends Controller
       }
       $data = Material::with('quizType')->whereIn('created_by', $teacher_id)->get()->sortBy('title');
     }
+ 
     return datatables()->of($data)
     ->addColumn('action', function($row){
       $btn = '<a href="'.route('material.show',$row->id).'" title="View" class="btn border-success btn-xs text-success-600 btn-flat btn-icon"><i class="glyphicon glyphicon-eye-open"></i></a>';

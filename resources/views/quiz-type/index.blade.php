@@ -4,7 +4,7 @@
 <div class="page-header">
     <div class="page-header-content">
         <div class="page-title">
-            <h4><i class=""></i> <span class="text-semibold">Quiz Type</span></h4>
+            <h4><span class="text-semibold">Quiz Type</span></h4>
         </div>
     </div>
 
@@ -31,6 +31,7 @@
              <th>Category</th>
              <th>Name</th>
              <th>Description</th>
+             <th>Updated At</th>
              <th class="col-md-2">Action</th>
           </tr>
   			</thead>
@@ -46,74 +47,83 @@
 @endsection
 @push('after_script')
   <script>
-  var tableQuizType;
-    $(document).ready(function(){
-        $("#btn-create").on('click', function(){
-            $('.fileinput-remove-button').click();
-            $('input[name=name]').val('');
-            $('textarea[name=description]').val('');
-            $('#modal-create').modal('show');
-        });
-    		/* START OF DATATABLE */
-        tableQuizType = $('#table-quiz-type').DataTable({
-          processing	: true,
-          language: {
-                      search: "_INPUT_",
-                      searchPlaceholder: "Search records"
-                    },
-          // dom 		: "<fl<t>ip>",
-    			serverSide	: true,
-    			stateSave: true,
-          ajax		: {
-              url: "{{ url('table/data-quiz-type') }}",
-              type: "GET",
-          },
-          columns: [
-              { data: 'id', name:'id', visible:false},
-              { data: 'quiz_category', name:'quiz_category', visible:true},
-              { data: 'name', name:'name', visible:true},
-              { data: 'description', name:'description', visible:true},
-              { data: 'action', name:'action', visible:true},
-          ],
-        });
-        /* END  OF DATATABLE */
+    var tableQuizType;
 
+    $(document).ready(function(){
+      /* START OF DATATABLE */
+      tableQuizType = $('#table-quiz-type').DataTable({
+        processing: true,
+        language: {
+          search: "_INPUT_",
+          searchPlaceholder: "Search records"
+        },
+    		serverSide: true,
+    		stateSave: true,
+        ajax: {
+          url: "{{ url('table/data-quiz-type') }}",
+          type: "GET",
+        },
+        columns: [
+          { data: 'id', name:'id', visible:false},
+          { data: 'quiz_category', name:'quiz_category', visible:true},
+          { data: 'name', name:'name', visible:true},
+          { data: 'description', name:'description', visible:true},
+          { 
+            data: 'updated_at',
+            name:'updated_at', 
+            visible:true,
+           
+          },
+          { data: 'action', name:'action', visible:true,orderable:false},
+        ],
+      });
+      /* END  OF DATATABLE */
+
+      $("#btn-create").on('click', function(){
+        $('.fileinput-remove-button').click();
+        $('input[name=name]').val('');
+        $('textarea[name=description]').val('');
+        $('#modal-create').modal('show');
+      });
+    	
       /* START OF GET DATA FOR FORM EDIT */
       $("#table-quiz-type tbody").on('click','#btn-edit', function(){
-          $('.fileinput-remove-button').click();
-          $("#quiz-type-edit :input").val('');
-          $('#modal-edit').modal('show');
-          var data = tableQuizType.row( $(this).parents('tr') ).data();
-          var id = data['id'];
-          var category_id = data['quiz_category'];
-          var token = $('input[name=_token]').val();
-          var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
-          var d = new Date();
-          $.ajax({
-              type: 'GET',
-              dataType: 'json',
-              url: "{{ url('select/data-quiz-category') }}"+"/"+category_id,
-          }).then(function (data) {
-              // create the option and append to Select2
-              var option = new Option(data.name, data.id, true, true);
-              $('#quiz_category_edit').append(option).trigger('change');
-          });
+        $('.fileinput-remove-button').click();
+        $("#quiz-type-edit :input").val('');
+        $('#modal-edit').modal('show');
+        var data = tableQuizType.row( $(this).parents('tr') ).data();
+        var id = data['id'];
+        var category_id = data['quiz_category'];
+        var token = $('input[name=_token]').val();
+        var urlData = " {{ url('admin/quiztype') }}"+"/"+id+"/edit";
+        var d = new Date();
 
-          $.getJSON( urlData, function(data){
-          /*START GET PICTURE*/
-            $('#img-edit').empty();
-            var img = $('<img id="img-quiztype" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
-            if (data['data']['pic_url'] != "blank.jpg") {
-              var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz_type/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
-            }
-            $('#img-edit').append(img);
-          /*END GET PICTURE*/
-            $('input[name=_method]').val('PUT');
-            $('input[name=_token]').val(token);
-            $('input[name=name_edit]').val(data['data']['name']);
-            $('input[name=id_edit]').val(data['data']['id']);
-            $('textarea[name=description_edit]').val(data['data']['description']);
-          });
+        // set default value for column category name
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: "{{ url('select/data-quiz-category') }}"+"/"+category_id,
+        }).then(function (data) {
+            // create the option and append to Select2
+            var option = new Option(data.name, data.id, true, true);
+            $('#quiz_category_edit').append(option).trigger('change');
+        });
+
+        $.getJSON(urlData, function(data){
+        /*START GET PICTURE*/
+          $('#img-edit').empty();
+          var img = $('<img id="img-quiztype" class="img-responsive" src="{{asset('img/blank.jpg')}}" alt="Quiz Type" title="" width="100" height="50"><br>');
+          if (data['data']['pic_url'] != "blank.jpg") {
+            var img = $('<img id="img-quiztype" class="img-responsive" src="{{ url('storage/quiz_type/') }}/'+id+'?'+d.getTime()+'" alt="Quiz Type" title="" width="100" height="50"><br>');
+          }
+          $('#img-edit').append(img);
+        /*END GET PICTURE*/
+          $('input[name=_method]').val('PUT');
+          $('input[name=_token]').val(token);
+          $('input[name=name_edit]').val(data['data']['name']);
+          $('input[name=id_edit]').val(data['data']['id']);
+          $('textarea[name=description_edit]').val(data['data']['description']);
+        });
       });
       /*END OF GET DATA FOR FORM EDIT*/
 

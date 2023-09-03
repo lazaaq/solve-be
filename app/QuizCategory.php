@@ -19,10 +19,10 @@ class QuizCategory extends Model
         return $this->hasMany(QuizType::class);
     }
 
-    public function getPicUrlAttribute($value)
-    {
-        $categoryPath = "/img/categories/";
-        return getApiHost() . $categoryPath . $value;
-    }
+    // public function getPicUrlAttribute($value)
+    // {
+    //     $categoryPath = "/img/categories/";
+    //     return getApiHost() . $categoryPath . $value;
+    // }
     
 }

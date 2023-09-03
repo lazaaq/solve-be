@@ -33,12 +33,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(['middleware' => ['api'],'prefix' => '/collager'], function () {
   Route::post('/register', [UserController::class, 'api_collagerRegister']);
-  Route::post('/login', [UserController::class, 'api_collagerLogin']);
+Route::post('/login', [UserController::class, 'api_collagerLogin']);
   Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
   Route::get('/version', [VersionAppController::class, 'api_index']);
   Route::get('/school', [SchoolController::class, 'api_index']);
-
 });
+
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
   Route::get('/logout', [UserController::class, 'api_logout']);
   Route::get('/detail', [UserController::class, 'api_index']);

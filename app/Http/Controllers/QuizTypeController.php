@@ -12,35 +12,36 @@ use File;
 use Validator;
 use Cache;
 use Auth;
+use Carbon\Carbon; 
+
 
 class QuizTypeController extends Controller
 {
   public function getData()
   {
     if (Auth::user()->hasRole('admin')) {
-      $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
-      $admin_id = [];
-      foreach ($admin as $key => $value) {
-        $admin_id[] = $value->id;
-      }
-      $data = QuizType::whereIn('created_by',$admin_id)->get()->sortBy('name');
+        $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+        $admin_id = $admin->pluck('id')->toArray();
+        $data = QuizType::whereIn('created_by', $admin_id)->orderBy('updated_at', 'desc')->get();
     } else {
-      $school_id = Auth::user()->school_id;
-      $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
-      $teacher_id = [];
-      foreach ($teacher as $key => $value) {
-        $teacher_id[] = $value->id;
-      }
-      $data = QuizType::whereIn('created_by',$teacher_id)->get()->sortBy('name');
+        $school_id = Auth::user()->school_id;
+        $teacher = User::where('school_id', $school_id)->whereHas('lecture')->get();
+        $teacher_id = $teacher->pluck('id')->toArray();
+        $data = QuizType::whereIn('created_by', $teacher_id)->orderBy('updated_at', 'desc')->get();
     }
-    return datatables()->of($data)->addColumn('action', function($row){
-      $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
-      $btn = $btn.'  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
-      return $btn;
+
+    return datatables()->of($data)
+    ->editColumn('updated_at', function ($row) {
+        return Carbon::parse($row->updated_at)->format('Y-m-d H:i:s');  // Mengubah format waktu
+    })
+    ->addColumn('action', function ($row) {
+        $btn = '<a id="btn-edit" class="btn border-info btn-xs text-info-600 btn-flat btn-icon"><i class="icon-pencil6"></i></a>';
+        $btn = $btn . '  <button id="delete" class="btn border-warning btn-xs text-warning-600 btn-flat btn-icon"><i class="icon-trash"></i></button>';
+        return $btn;
     })
     ->rawColumns(['action'])
-    ->addColumn('quiz_category', function($row){
-      return $row->quizCategory->name;
+    ->addColumn('quiz_category', function ($row) {
+        return $row->quizCategory->name;
     })
     ->make(true);
   }
@@ -130,11 +131,12 @@ class QuizTypeController extends Controller
    * @param  int  $id
    * @return Response
    */
+
+  // call this function after click edit button to get data
   public function edit($id)
   {
     $data = QuizType::find($id);
     return response()->json(['status' => 'ok','data'=>$data],200);
-    // return view('quiz-type.edit', compact('data'));
   }
 
   public function picture($id)
@@ -143,7 +145,11 @@ class QuizTypeController extends Controller
       return QuizType::find($id)->pic_url;
     });
 
-    return Image::make(Storage::get('public/images/quiztype/'.$picture))->response();
+    if(Storage::exists('public/images/quiztype/' . $picture)) {
+      return Image::make(Storage::get('public/images/quiztype/'.$picture))->response();
+    } else {
+        return Image::make(Storage::get('public/images/blank.jpg'))->response();
+    }   
   }
 
   /**
@@ -199,10 +205,10 @@ class QuizTypeController extends Controller
   public function destroy($id)
   {
     $data = QuizType::find($id);
-    if (!empty($data->quiz)) {
+    if (!$data->quiz->isEmpty()) {
       return response()->json([
-        'status'=>'failed',
-        'message'=>'Data is being used by another table.',
+          'status'=>'failed',
+          'message'=>'Data is being used by another table.',
       ]);
     }
     else {
