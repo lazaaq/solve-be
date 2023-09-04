@@ -436,10 +436,56 @@ class UserController extends Controller
 
 public function handleGoogleCallback()
 {
-    $user = Socialite::driver('google')->user();
+  $user = Socialite::driver('google')->stateless()->user();
 
-    // Cek apakah pengguna sudah ada, jika tidak, buat pengguna baru
-    $existingUser = User::where('email', $user->email)->first();
+
+   // Cek apakah pengguna sudah ada, jika tidak, buat pengguna baru
+  $existingUser = User::where('email', $user->email)->first();
+
+  DB::beginTransaction();
+  if (!$existingUser) {
+    // Buat pengguna baru
+    $parts = explode("@", $user->email);
+    $username = $parts[0];
+    $existingUser = new User;
+    $existingUser->name = $user->name;
+    $existingUser->username = $username;
+    $existingUser->email = $user->email;
+    $existingUser->password = bcrypt($user->email); // Menggunakan bcrypt untuk hash
+    $existingUser->assignRole('student');  // Asumsi role default adalah 'student'
+    // tambahkan field lainnya jika ada
+    $existingUser->save();
+
+    // Buat entri untuk Collager
+    $addCollager = Collager::create([
+      'user_id' => $existingUser->id,
+    ]);
+
+    if (!$addCollager) {
+      DB::rollback();
+      return response()->json([
+        'status' => 'failed',
+        'error' => 'Something wrong!',
+        'message' => 'Something wrong!',
+      ]);
+    }
+
+  }
+  DB::commit();
+
+  $token = $existingUser->createToken('MyApp')->accessToken;
+
+  $collager = User::where('email', $existingUser->email)->with('collager')->first();
+  $collager->token = $token;
+        $collager->status = "success";
+
+      // return response()->json([
+      //       'status' => 'success',
+      //       'user' => $collager
+      // ]);
+
+      return redirect('http://localhost:8002/login-success?data=' . $collager);
+    
 
     if(!$existingUser){
         // Buat pengguna baru
@@ -449,17 +495,23 @@ public function handleGoogleCallback()
         $existingUser->name = $user->name;
         $existingUser->username =  $username;
         $existingUser->email = $user->email;
-        $existingUser->password = $user->email;
+        $existingUser->password = bcrypt($user->email); // Menggunakan bcrypt untuk hash
+        $existingUser->assignRole('student');  // Asumsi role default adalah 'student'
         // tambahkan field lainnya
         $existingUser->save();
     }
 
-    // Membuat token Passport
     $token = $existingUser->createToken('MyApp')->accessToken;
 
-    // Kembalikan respons token atau apapun yang Anda butuhkan
-    return response()->json(['token' => $token]);
-}
+        $collager = User::where('email', $existingUser->email)->with('collager')->first();
+        $collager->token = $token;
+        $collager->status = "success";
+
+  
+
+      return redirect('http://localhost:8002/login-success?data=' . $collager);
+  }
+
 }
 
 ?>
