@@ -93,3 +93,5 @@ Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
   Route::get('answer/{pictureName}', [ImageController::class, 'pictureAnswer']);
   Route::get('banner/{pictureName}', [ImageController::class, 'pictureBanner']);
 });
+
+

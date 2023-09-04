@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
 use Datatables;
 use App\User;
@@ -427,6 +427,39 @@ class UserController extends Controller
       'user'=>$data
     ]);
   }
+
+
+  public function redirectToGoogle()
+{
+    return Socialite::driver('google')->redirect();
+}
+
+public function handleGoogleCallback()
+{
+    $user = Socialite::driver('google')->user();
+
+    // Cek apakah pengguna sudah ada, jika tidak, buat pengguna baru
+    $existingUser = User::where('email', $user->email)->first();
+
+    if(!$existingUser){
+        // Buat pengguna baru
+        $parts = explode("@", $user->email);
+        $username = $parts[0];
+        $existingUser = new User;
+        $existingUser->name = $user->name;
+        $existingUser->username =  $username;
+        $existingUser->email = $user->email;
+        $existingUser->password = $user->email;
+        // tambahkan field lainnya
+        $existingUser->save();
+    }
+
+    // Membuat token Passport
+    $token = $existingUser->createToken('MyApp')->accessToken;
+
+    // Kembalikan respons token atau apapun yang Anda butuhkan
+    return redirect('/');
+}
 }
 
 ?>

@@ -43,5 +43,10 @@ return [
             'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
         ],
     ],
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID','467062017265-mjdhqnifquekmqu7fsgv44hama7jjoft.apps.googleusercontent.com'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET','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'),
+        'redirect' => 'http://localhost:9000/auth/callback/google',
+    ],
 
 ];

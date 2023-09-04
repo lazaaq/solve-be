@@ -19,6 +19,8 @@ Route::get('/clear-cache', function() {
 
 Auth::routes();
 // Auth::routes();
+Route::get('/auth/redirect/google', 'UserController@redirectToGoogle');
+Route::get('/auth/callback/google', 'UserController@handleGoogleCallback');
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route:: get ('/coba', function () {
