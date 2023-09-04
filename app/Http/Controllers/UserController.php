@@ -458,7 +458,7 @@ public function handleGoogleCallback()
     $token = $existingUser->createToken('MyApp')->accessToken;
 
     // Kembalikan respons token atau apapun yang Anda butuhkan
-    return redirect('/');
+    return response()->json(['token' => $token]);
 }
 }
 
