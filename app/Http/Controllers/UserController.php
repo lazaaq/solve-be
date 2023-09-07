@@ -484,7 +484,7 @@ public function handleGoogleCallback()
       //       'user' => $collager
       // ]);
 
-      return redirect('http://localhost:8002/login-success?data=' . $collager);
+      return redirect('http://localhost:8000/login-success?data=' . $collager);
     
 
     if(!$existingUser){
@@ -507,9 +507,33 @@ public function handleGoogleCallback()
         $collager->token = $token;
         $collager->status = "success";
 
-  
-
       return redirect('http://localhost:8002/login-success?data=' . $collager);
+  }
+
+
+  public function updateSchoolId(Request $request)
+  {
+      $this->validate($request, [
+          'user_id' => 'required|exists:users,id',
+          'school_id' => 'required|exists:schools,id',  // asumsikan Anda memiliki tabel schools
+      ]);
+
+      $userId = $request->input('user_id');
+      $schoolId = $request->input('school_id');
+
+      $user = User::find($userId);
+
+      if (!$user) {
+          return response()->json(['success' => false, 'message' => 'User not found'], 404);
+      }
+
+      $user->school_id = $schoolId;
+
+      if ($user->save()) {
+          return response()->json(['success' => true, 'message' => 'School ID updated successfully'], 200);
+      } else {
+          return response()->json(['success' => false, 'message' => 'Failed to update School ID'], 500);
+      }
   }
 
 }

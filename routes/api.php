@@ -37,6 +37,7 @@ Route::post('/login', [UserController::class, 'api_collagerLogin']);
   Route::post('/forgot-password', 'Auth\ForgotPasswordAPIController');
   Route::get('/version', [VersionAppController::class, 'api_index']);
   Route::get('/school', [SchoolController::class, 'api_index']);
+  Route::get('/schools', [SchoolController::class, 'api_schools']);
 });
 
 Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function () {
@@ -45,6 +46,9 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::put('/update', [UserController::class, 'api_update']);
   Route::put('/update-password', [UserController::class, 'api_updatePassword']);
   Route::put('/upload-avatar', [UserController::class, 'api_uploadAvatar']);
+
+  Route::post('/update-school', 'UserController@updateSchoolId');
+
 
   Route::get('/category', [QuizCategoryController::class, 'api_index']);
   Route::get('/quiztype/{category_id}', [QuizTypeController::class, 'api_index']);

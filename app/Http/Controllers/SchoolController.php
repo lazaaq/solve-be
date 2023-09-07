@@ -207,5 +207,25 @@ class SchoolController extends Controller
         ]);
     }
 
+    public function api_schools(Request $request)
+    {
+        $data = School::select('id','name','district','region')->get()->sortBy('name');
+        $list = [];
+        foreach ($data as $key => $value) {
+            $list[] = [
+                'id'=>$value->id,
+                'text'=>$value->name . ' - ' . $value->region .', '. $value->district
+                ];
+        }
+        $id = array_keys(array_column($list, 'text'), 'LAIN-LAIN - -, LAIN-LAIN');
+        if ($id != NULL) {
+            $list[$id[0]]['text'] = 'LAIN-LAIN';
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'result'   => $list
+        ]);
+    }
 
 }
