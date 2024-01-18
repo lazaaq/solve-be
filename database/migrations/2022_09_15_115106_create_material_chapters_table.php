@@ -16,7 +16,7 @@ class CreateMaterialChaptersTable extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quiz_type_id');
-            $table->unsignedBigInteger('quiz_id');
+            $table->unsignedBigInteger('quiz_id')->nullable();
             $table->string('name');
             $table->string('description');
             $table->unsignedBigInteger('created_by')->nullable();

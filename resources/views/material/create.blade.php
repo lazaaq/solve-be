@@ -59,9 +59,6 @@
                       @endif
                   </div>
                 </div>
-  
-            
-				
         			</fieldset>
               <div>
                 <div class="col-md-4">
@@ -111,6 +108,25 @@ $(document).ready(function(){
             },
 
         });
+    });
+
+    $("#category" ).on( "change", function() {
+      var selectedValue = $(this).val();
+      $.ajax({
+          url: "{{ url('select/data-quiz-category') }}/type/" + selectedValue,
+          method: "GET",
+          success: function(result) {
+            // Clear the existing options
+            $("#type").empty();
+            // Iterate through the result and add each option to the dropdown
+            $.each(result, function(index, item) {
+              $("#type").append(new Option(item.text, item.id));
+            });
+          },
+          error: function(xhr, status, error) {
+              console.error(error);
+          }
+      });   
     });
 });
 

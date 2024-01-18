@@ -36,16 +36,14 @@ class MaterialController extends Controller
 
   public function getData()
   {
- 
     if (Auth::user()->hasRole('admin')) {
       $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
       $admin_id = [];
       foreach ($admin as $key => $value) {
         $admin_id[] = $value->id;
       }
-      $data = Material::with('quizType')->whereIn('created_by', $admin_id)->get()->sortBy('title');
+      $data = Material::with('quizType.quizCategory')->whereIn('created_by', $admin_id)->get()->sortBy('title');
     } else {
- 
       $school_id = Auth::user()->school_id;
       $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
       $teacher_id = [];
@@ -79,6 +77,7 @@ class MaterialController extends Controller
    */
   public function index()
   {
+    
     $quizcategory = QuizCategory::all()->sortBy('name');
     $quiztype = QuizType::all()->sortBy('name');
     $material = Material::all()->sortBy('name');
@@ -156,12 +155,7 @@ class MaterialController extends Controller
   public function show($id)
   {
     $material = Material::with("modules")->where('id', $id)->first();
-
-    // $quiz = MaterialModule::where('material_id', $id)->paginate(10);
-    // $number = $quiz->firstItem();
-
-    // $question = DB::table('material_modules')->where('material_id', $id)->paginate(3);
-    return view('material.view', compact('material'));
+    return view('material.material_info', compact('material'));
   }
 
   public function search(Request $request, $id)
@@ -198,6 +192,7 @@ class MaterialController extends Controller
    */
   public function edit($id)
   {
+
     $data = Quiz::where('id', $id)->with('QuizType')->first();
     $data->quiz_category_id = QuizType::find($data->quiz_type_id)->quiz_category_id;
     $data->start_time = Carbon::parse($data->start_time)->format('Y-m-d\TH:i:s');
@@ -214,52 +209,15 @@ class MaterialController extends Controller
    */
   public function update(Request $request, $id)
   {
-    $data= Quiz::find($id);
+    $data= Material::find($id);
     $rules = [
-      'quiz_type_edit' => 'required',
-      'title_edit' => 'required|max:150|unique:quizs,title,'.$data->id.',id',
-      'description_edit' => 'required|max:191',
-      'total_visible_question_edit' => 'required',
-      'picture_edit' => 'max:2048|mimes:png,jpg,jpeg',
+      'name' => 'required',
+      'description' => 'required|max:191',
     ];
-    $validator = Validator::make($request->all(), $rules);
-    if ($validator->fails()) {
-      return response()->json(['errors' => $validator->errors()->all()]);
-    }else{
-      if(!empty($request->picture_edit)){
-           $file = $request->file('picture_edit');
-           $extension = strtolower($file->getClientOriginalExtension());
-           $filename = uniqid() . '.' . $extension;
-           Storage::delete('public/images/quiz/' . $data->pic_url);
-           Storage::put('public/images/quiz/' . $filename, File::get($file));
-      }else{
-           $filename=$data->pic_url;
-      }
-      if ($request->code_edit == 'checked') {
-        if ($request->code_container == NULL) {
-            $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
-            $validation = Quiz::where('code', $code)->first();
-            if (!empty($validation)) {
-              $code = strtoupper(substr(md5(microtime()),rand(0,26),5));
-            } else {
-              $code = $code;
-            }
-        } else {
-          $code = $request->code_container;
-        }
-      } else {
-        $code = NULL;
-      }
-    }
-    $data->code=$code;
-    $data->quiz_type_id=$request->quiz_type_edit;
-    $data->title=$request->title_edit;
-    $data->description=$request->description_edit;
-    $data->tot_visible=$request->total_visible_question_edit;
-    $data->pic_url=$filename;
-    $data->start_time = $request->start_time_edit;
-    $data->end_time = $request->end_time_edit;
-    $data->time=$request->time_edit;
+
+
+    $data->name=$request->name;
+    $data->description=$request->description;
     $data->updated_by=Auth::id();
     $data->save();
     return response()->json(['success'=>'Data updated successfully']);
@@ -728,13 +686,14 @@ class MaterialController extends Controller
 
   /*START OF API*/
   public function api_index($id){
+
     $school_id = Auth::user()->school_id;
     $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+
     $teacher_id = [];
     foreach ($teacher as $key => $value) {
       $teacher_id[] = $value->id;
     }
-
     $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
     $admin_id = [];
     foreach ($admin as $key => $value) {
@@ -746,8 +705,11 @@ class MaterialController extends Controller
 
     $data = Material::whereIn('created_by',$merged_id)->where('quiz_type_id', $id)
                   ->get();
+
+                  return responseAPI(200, true,     $data   );
+
     if (empty($data[0])) {
-      return responseAPI(400, false, null, 'Not found quiz data.');
+      return responseAPI(400, false, null, 'Not found materi data.');
     }
     return responseAPI(200, true, $data);
   

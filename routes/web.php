@@ -96,7 +96,12 @@ Route::group(['middleware' => 'auth'], function () {
 
         // material
         Route::resource('material', 'MaterialController')->except('destroy');
+  
         Route::get('material/delete/{id}', 'MaterialController@destroy')->name('quiz.destroy');
+
+        Route::post('material-info/file-materi/store', 'MaterialInfoController@storeFileMateri')->name('file_materi.store');
+        Route::get('material-info/file-materi//delete/{id}', 'MaterialInfoController@destroyFileMateri')->name('file_materi.destroy');
+
 
     });
 
@@ -126,6 +131,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         // material
         Route::get('/data-material', 'MaterialController@getData');
+
+        Route::get('/data-file-materi/{material_id}', 'MaterialInfoController@getFileMateri')->name("file_materi.index");
     });
 
     Route::group(['middleware' => ['role:admin|teacher'],'prefix' => '/select'], function () {
@@ -133,6 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/data-quiz-category/{id}', 'QuizCategoryController@getPreSelect');
         Route::get('/data-school', 'SchoolController@getSelect');
         Route::get('/data-school/{id}', 'SchoolController@getPreSelect');
+        Route::get('/data-quiz-category/type/{id}', 'QuizTypeController@getSelect');
     });
 });
 
@@ -156,4 +164,6 @@ Route::group(['prefix' => '/storage'], function () {
     Route::get('question/{pictureName}', 'ImageController@pictureQuestion');
     Route::get('answer/{pictureName}', 'ImageController@pictureAnswer');
     Route::get('banner/{pictureName}', 'ImageController@pictureBanner');
+    Route::get('file-materi/{filename}', 'MaterialInfoController@loadFIleMateri');
+
 });

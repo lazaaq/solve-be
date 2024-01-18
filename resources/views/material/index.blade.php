@@ -53,74 +53,96 @@
 <!-- /content area -->
 @include('material.create')
 @include('material.edit')
-
 @endsection
 @push('after_script')
-  <script>
-  var tableQuiz;
+<script>
+	var tableQuiz;
     $(document).ready(function(){
-
-
-      $("#btn-create-material").on('click', function(){
-          $('.fileinput-remove-button').click();
-          $('#modal-create-material').modal('show');
-      });
-
-
   		/* START OF DATATABLE */
       tableQuiz = $('#table-material').DataTable({
-        processing	: true,
-        language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search records"
-                  },
-        // dom 		: "<fl<t>ip>",
+			processing	: true,
+			language: {
+                	search: "_INPUT_",
+                	searchPlaceholder: "Search records"
+                },
   			serverSide	: true,
   			stateSave: true,
-        ajax		: {
-            url: "{{ url('table/data-material') }}",
-            type: "GET",
-        },
-        columns: [
-            { data: 'id', name:'id', visible:false},
-            { data: 'quiz_category', name:'quiz_category', visible:true},
-            { data: 'quiz_type', name: 'quiz_type', visible: true},
-            { data: 'name', name:'name', visible:true},
-            { data: 'description', name:'description', visible:true},
-            { data: 'action', name:'action', visible:true},
+			ajax		: {
+				url: "{{ url('table/data-material') }}",
+				type: "GET",
+			},
+			columns: [
+				{ data: 'id', name:'id', visible:false},
+				{ data: 'quiz_category', name:'quiz_category', visible:true},
+				{ data: 'quiz_type', name: 'quiz_type', visible: true},
+				{ data: 'name', name:'name', visible:true},
+				{ data: 'description', name:'description', visible:true},
+				{ data: 'action', name:'action', visible:true},
 
-        ],
-      }); 
+			],
+     	}); 
 
-      /* START OF DELETE DATA */
-      $('#table-material tbody').on( 'click', 'button', function () {
-          var data = tableQuiz.row( $(this).parents('tr') ).data();
-            swal({
-            // title: "Are you sure?",
-            text: "Are you sure to delete data?",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              $.ajax({
-                url: "{{ url('admin/material/delete') }}"+"/"+data['id'],
-                method: 'get',
-                success: function(result){
-                  tableQuiz.ajax.reload();
-                  swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                  });
-                }
+		/* START OF CREATE DATA*/
+		$("#btn-create-material").on('click', function(){
+    	$('.fileinput-remove-button').click();
+      // $('input[name=id_edit]').val(id);
+        $('.fileinput-remove-button').click();
+        $('input[name=name]').val('');
+        $('textarea[name=description]').val('');
+    	$('#modal-create-material').modal('show');
+    });
+
+    
+      /* START OF GET DATA FOR FORM EDIT */
+    $("#table-material tbody").on('click','#btn-edit', function(){
+      $("#material-edit :input").val('');
+      $('#modal-edit-material').modal('show');
+      var data = tableQuiz.row( $(this).parents('tr') ).data();
+      var id = data['id'];
+      var name = data['name']
+      var desc = data['description']
+      var token = $('input[name=_token]').val();
+      var urlData = " {{ url('admin/quizcategory') }}"+"/"+id+"/edit";
+      var d = new Date();
+      $.getJSON(urlData, function(data){
+        $('input[name=_method]').val('PUT');
+        $('input[name=_token]').val(token);
+        $('input[name=name]').val(name);
+        $('input[name=id_edit]').val(id);
+        $('textarea[name=description]').val(desc);
+      });
+    });
+    /*END OF GET DATA FOR FORM EDIT*/
+
+    /* START OF DELETE DATA */
+    $('#table-material tbody').on( 'click', 'button', function () {
+      var data = tableQuiz.row( $(this).parents('tr') ).data();
+        swal({
+        // title: "Are you sure?",
+        text: "Are you sure to delete data?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            url: "{{ url('admin/material/delete') }}"+"/"+data['id'],
+            method: 'get',
+            success: function(result){
+              tableQuiz.ajax.reload();
+              swal("Poof! Your imaginary file has been deleted!", {
+                icon: "success",
               });
-            } else {
-              swal("Your imaginary file is safe!");
             }
           });
+        } else {
+          swal("Your imaginary file is safe!");
+        }
+      });
       });
       /* END OF DELETE DATA */
 
     });
-  </script>
+</script>
 @endpush

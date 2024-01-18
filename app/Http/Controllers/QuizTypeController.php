@@ -222,13 +222,31 @@ class QuizTypeController extends Controller
   /*START OF API*/
 
   public function api_index($id){
-
+    if(empty($id)) {
+      return responseAPI(400, false, array(), "category id is empty");
+    }
     $data = QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
     // $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
     //   return QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
     // });
     return responseAPI(200, true, $data);
   }
+
+  public function api_getTypeWithSlug($slug){
+    if(empty($id)) {
+      return responseAPI(400, false, array(), "slug is empty");
+    }
+    $quizTypes = QuizType::with('quizCategory') // Eager load category
+    ->whereHas('quizCategory', function($query) use ($slug) {
+        $query->where('slug', $slug);
+    })
+    ->get();
+    // $data = Cache::remember('quiztype'.$id, 24*60, function() use ($id) {
+    //   return QuizType::where('quiz_category_id', $id)->orderBy('id')->get();
+    // });
+    return responseAPI(200, true, $data);
+  }
+  
 
   public function api_show($id) {
     $data = QuizType::find($id);
@@ -237,6 +255,37 @@ class QuizTypeController extends Controller
     }
     return responseAPI(200, true, $data);
   }
+
+  public function getSelect($id)
+  {
+  if (Auth::user()->hasRole('admin')) {
+    $admin = User::whereHas('roles', function($q) { $q->where('name', 'admin'); })->get();
+    $admin_id = [];
+    foreach ($admin as $key => $value) {
+      $admin_id[] = $value->id;
+    }
+    $data = QuizType::select('id','name')->whereIn('created_by',$admin_id)->where('quiz_category_id',$id)->get()->sortBy('name');
+  } else {
+    $school_id = Auth::user()->school_id;
+    $teacher = User::where('school_id',$school_id)->whereHas('lecture')->get();
+    $teacher_id = [];
+    foreach ($teacher as $key => $value) {
+      $teacher_id[] = $value->id;
+    }
+    $data = QuizType::select('id','name')->whereIn('quiz_category_id',$teacher_id)->where('id',$id)->get()->sortBy('name');
+  }
+  $list = [];
+    foreach ($data as $key => $value) {
+        $list[] = [
+            'id'=>$value->id,
+            'text'=>$value->name
+        ];
+    }
+    return response()->json($list);
 }
+
+
+}
+
 
 ?>

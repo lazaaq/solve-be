@@ -28,6 +28,7 @@ class Material extends Model
       {
           return $this->belongsTo(QuizType::class);
       }
+      
   
       // Add method to get category name
       public function getCategoryNameAttribute()

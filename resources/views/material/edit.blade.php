@@ -1,5 +1,4 @@
-<!-- Content area -->
-<div id="modal-edit" class="modal fade">
+<div id="modal-edit-material" class="modal fade">
 	<div class="modal-dialog modal-md">
 		<div class="modal-content">
       <div class="modal-header">
@@ -8,108 +7,71 @@
       <div class="modal-body">
       	<div class="panel panel-flat">
           <div class="panel-body">
-        		<form class="form-horizontal" id="quiz-edit" method="post" enctype="multipart/form-data" files=true>
-							@method('PUT')
+        		<form class="form-horizontal" id="material-edit" method="post" enctype="multipart/form-data" files=true>
+              
+              @method('PUT')
               @csrf
               <fieldset class="content-group">
-        				<legend class="text-bold">Edit Quiz</legend>
+        				<legend class="text-bold">Create Quiz</legend>
 								<div class="form-group">
                   <label class="control-label col-lg-3">Category Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-										<select id="category-edit" class="select-search" name="quiz_category_edit">
+										<select id="category" class="select-search" name="quiz_category">
                         @foreach($quizcategory as $value => $key)
-                            <option value="{{$key->id}}" {{collect(old('quiz_category_edit'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
+                            <option value="{{$key->id}}" {{collect(old('quiz_type'))->contains($key->id) ? 'selected':''}}>{{$key->name}}</option>
                         @endforeach
                     </select>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Quiz Type<span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">Type<span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-										<input type="hidden" name="id_edit" class="form-control" value="" placeholder="">
-                    <select id="type-edit" class="select-search" name="quiz_type_edit">
-                        @foreach($quiztype as $value => $key)
-                            <option value="{{$key->id}}" class="{{$key->quiz_category_id}}">{{$key->name}}</option>
+                    <select id="type" class="select-search" name="quiz_type">
+                        @foreach($quiztype as $value1 => $key1)
+                            <option value="{{$key1->id}}" {{collect(old('quiz_type'))->contains($key1->id) ? 'selected':''}} class="{{$key1->quiz_category_id}}">{{$key1->name}}</option>
                         @endforeach
                     </select>
+                      @if ($errors->has('quiz_type'))
+                      <label style="padding-top:7px;color:#F44336;">
+                          <strong><i class="fa fa-times-circle"></i> {{ $errors->first('quiz_type') }}</strong>
+                      </label>
+                      @endif
                   </div>
                 </div>
                 <div class="form-group">
-                  <label class="control-label col-lg-3">Title <span class="text-danger">*</span></label>
+                  <label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <input type="text" name="title_edit" class="form-control" value="" placeholder="">
+                    <input type="hidden" name="id_edit" class="form-control" value="" placeholder="">
+                    <input type="text" name="name" class="form-control" value="" placeholder="">
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="control-label col-lg-3">Total Question <span class="text-danger">*</span></label>
-                  <div class="col-lg-9">
-                    <input type="number" min="1" name="total_question_edit" class="form-control" value="" placeholder="" disabled>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-lg-3">Total Visible Question <span class="text-danger">*</span></label>
-                  <div class="col-lg-9">
-                    <input type="number" min="0" max="" name="total_visible_question_edit" class="form-control" value="" placeholder="">
-                  </div>
-                </div>
+              
                 <div class="form-group">
                   <label class="control-label col-lg-3">Description <span class="text-danger">*</span></label>
                   <div class="col-lg-9">
-                    <textarea type="text" name="description_edit" rows="3" class="form-control"  placeholder=""></textarea>
+                    <textarea type="text" name="description" rows="3" class="form-control"  placeholder="">{{ old('description') }}</textarea>
+                      @if ($errors->has('description'))
+                      <label style="padding-top:7px;color:#F44336;">
+                          <strong><i class="fa fa-times-circle"></i>{{ $errors->first('description') }}</strong>
+                      </label>
+                      @endif
                   </div>
                 </div>
-								<div class="form-group">
-                  <label class="control-label col-lg-3">Start Time <span class="text-danger">*</span></label>
-                  <div class="col-lg-9">
-                      <input type="datetime-local" class="form-control" name="start_time_edit" id="start_time_edit" value="{{old('start_time_edit')}}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-lg-3">End Time <span class="text-danger">*</span></label>
-                  <div class="col-lg-9">
-                    <input type="datetime-local" class="form-control" name="end_time_edit" id="end_time_edit" value="{{old('end_time_edit')}}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label col-lg-3">Time(minutes) <span class="text-danger">*</span></label>
-                  <div class="col-lg-9">
-                    <input type="number" min="0" class="form-control" name="time_edit" id="time_edit" value="" placeholder="">
-                  </div>
-                </div>
-                <div class="form-group">
-        					<label class="control-label col-lg-3">Picture</label>
-                  <div id="img-edit" class="col-lg-9"></div>
-									<label class="control-label col-lg-3"></label>
-									<div class="col-lg-9">
-										<input type="file" name="picture_edit" class="file-input-custom" data-show-caption="true" data-show-upload="false" accept="image/*">
-									</div>
-        				</div>
-								<div class="form-group">
-        					<label class="control-label col-lg-3">Use Code</label>
-        					<div class="col-lg-9">
-										<div class="checkbox">
-											<label>
-												<input type="checkbox" name="" id="code_edit">
-                        <input type="hidden" name="code_edit">
-                        <input type="hidden" name="code_container">
-												Check this if you want add "code" to this quiz.
-											</label>
-										</div>
-        					</div>
-        				</div>
+  
+            
+				
         			</fieldset>
               <div>
                 <div class="col-md-4">
                   <button type="button" class="btn btn-default" data-dismiss="modal"><i class="icon-arrow-left13"></i> Close</button>
                 </div>
                 <div class="col-md-8 text-right">
-                  <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button>
-                  <button type="submit" id="btn-save-konsul" class="btn btn-primary">Simpan</button>
+                  <!-- <button type="reset" class="btn btn-default" id="reset">Reset <i class="icon-reload-alt position-right"></i></button> -->
+                  <button type="submit" id="btn-submit" class="btn btn-primary">Save</button>
                 </div>
         			</div>
         		</form>
         	</div>
-      	<!-- /state saving -->
         </div>
       </div>
     </div>
@@ -120,39 +82,49 @@
 <script type="text/javascript" src="{{asset('js/libraries/jquery.chained.min.js')}}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $('#code_edit').click(function(){
-      if($(this).prop("checked") == true){
-          $('input[name="code_edit"]').val('checked');
-      }
-      else if($(this).prop("checked") == false){
-          $('input[name="code_edit"]').val('unchecked');
-      }
-  });
-	$("#type-edit").chained("#category-edit");
-    /* START OF SAVE DATA */
-		$('#quiz-edit').on('submit', function (e) {
+	$("#type").chained("#category");
+    /* save data */
+    $('#material-edit').on('submit', function (e) {
       e.preventDefault();
-			id = $('input[name=id_edit]').val();
         $.ajax({
-						'type': 'post',
-						'url' : "{{ url('admin/quiz') }}"+"/"+id,
-						'data': new FormData(this),
+            'type': 'post',
+            'url' : "{{ url('admin/material') }}"+"/"+$('input[name=id_edit]').val(),
+            'data': new FormData(this),
             'processData': false,
             'contentType': false,
             'dataType': 'JSON',
             'success': function(data){
 							if(data.success){
-                $('#modal-edit').modal('hide');
-								toastr.success('Successfully updated data!', 'Success', {timeOut: 5000});
-								tableQuiz.ajax.reload();
+                $('#modal-edit-material').modal('hide');
+                toastr.success('Successfully added data!', 'Success', {timeOut: 5000});
+                tableQuiz.ajax.reload();
               }else{
-                for(var count = 0; count < data.errors.length; count++){
+								console.log("fail",data);
+	              for(var count = 0; count < data.errors.length; count++){
 	              	toastr.error(data.errors[count], 'Error', {timeOut: 5000});
                 }
               }
             },
 
         });
+    });
+
+    $('#quiz_category').select2({
+      ajax : {
+        url :  "{{ url('select/data-quiz-category') }}",
+        dataType: 'json',
+        data: function(params){
+            return {
+                term: params.term,
+            };
+        },
+        processResults: function(data){
+            return {
+                results: data
+            };
+        },
+        cache : true,
+      },
     });
 });
 

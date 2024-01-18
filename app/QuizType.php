@@ -1,12 +1,13 @@
 <?php
 
 namespace App;
-
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class QuizType extends Model
 {
+    use Sluggable;
     use SoftDeletes;
 
     protected $table = 'quiz_types';
@@ -14,6 +15,15 @@ class QuizType extends Model
     protected $guarded = ['created_at', 'updated_at'];
     protected $dates = ['deleted_at'];
 
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+                'onUpdate' => true,
+            ]
+        ];
+    }
     // relation
     public function quiz()
     {

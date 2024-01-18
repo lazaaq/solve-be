@@ -74,7 +74,7 @@
 							</div>
 
 							<div class="form-group">
-								<button type="submit" class="btn bg-pink-400 btn-block">Sign in <i class="icon-circle-right2 position-right"></i></button>
+								<button type="submit" class="btn bg-pink-400 btn-block" data-test="login-btn">Sign in <i class="icon-circle-right2 position-right"></i></button>
 							</div>
 
 							<div class="text-center">
@@ -83,18 +83,13 @@
 						</div>
 					</form>
 					<!-- /simple login form -->
-
 				</div>
 				<!-- /content area -->
-
 			</div>
 			<!-- /main content -->
-
 		</div>
 		<!-- /page content -->
-
 	</div>
 	<!-- /page container -->
-
 </body>
 </html>

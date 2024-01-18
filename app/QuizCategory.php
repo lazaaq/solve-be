@@ -2,11 +2,13 @@
 
 namespace App;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class QuizCategory extends Model
 {
+    use Sluggable;
     use SoftDeletes;
     //
     protected $table = 'quiz_categorys';
@@ -17,6 +19,16 @@ class QuizCategory extends Model
     public function quizType()
     {
         return $this->hasMany(QuizType::class);
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+                'onUpdate' => true,
+            ]
+        ];
     }
 
     // public function getPicUrlAttribute($value)

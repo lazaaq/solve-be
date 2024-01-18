@@ -26,6 +26,7 @@ class MaterialTableSeeder extends Seeder
                     'quiz_type_id' => $i + 1,
                     'quiz_id' => $quizTypes[$i]['quiz'][$j]['id'],
                     'name' => 'Material name for ' . $quizTypes[$i]['name'] . ($j + 1),
+                    'created_by' => '1',
                     'description' => 'Material name for ' . $quizTypes[$i]['description'],
                 ]);
                 

@@ -10,6 +10,8 @@ use App\Http\Controllers\QuizCollagerController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\QuizTemporaryController;
 use App\Http\Controllers\QuizTypeController;
+use App\Http\Controllers\MaterialInfoController;
+
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VersionAppController;
@@ -79,11 +81,14 @@ Route::group(['middleware' => ['auth:api'],'prefix' => '/collager'], function ()
   Route::post('/quiz-temporary/{id_quiz_temporary}', [QuizTemporaryController::class, 'storeAnswer']);
 
   // material
+    Route::get('/material/{quiztype_id}', [MaterialController::class, 'api_index']);
     Route::get('/material/{quiz_type_id}/{idMaterial}/module/{idModule}/detail', [MaterialController::class, 'api_module_detail']);
     Route::get('/material/{quiz_type_id}/{id}/module', [MaterialController::class, 'api_show']);
-    Route::get('/material/{quiztype_id}', [MaterialController::class, 'api_index']);
 
- 
+    Route::get('/material/{material_id}/file-materi', [MaterialInfoController::class, 'api_showFileMateri']);
+    Route::get('/file-materi/{id}', [MaterialInfoController::class, 'api_DetailFileMateri']);
+
+
 });
 
 Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
@@ -93,6 +98,9 @@ Route::group(['middleware' => ['api'],'prefix' => '/storage'], function () {
   Route::get('quiz_category/{pictureName}', [ImageController::class, 'pictureCategory']);
   Route::get('quiz/{pictureName}', [ImageController::class, 'pictureQuiz']);
   Route::get('question/{pictureName}', [ImageController::class, 'pictureQuestion']);
+
+  Route::get('file-materi/{id}', [MaterialInfoController::class, 'fileMateri']);
+
 
   Route::get('answer/{pictureName}', [ImageController::class, 'pictureAnswer']);
   Route::get('banner/{pictureName}', [ImageController::class, 'pictureBanner']);
